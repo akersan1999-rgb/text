@@ -11,7 +11,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Kendi Firebase Config Bilgilerini Buraya Yerleştirdim 🚀
+    // Senin İçin Güncellenmiş Firebase Config Bilgileri 🚀
     const firebaseConfig = {
       apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
       authDomain: "test-bala3.firebaseapp.com",
@@ -259,7 +259,7 @@
       `;
       q.opts.forEach((opt, oi) => {
         html += `
-          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx},${oi})">
+          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx}, ${oi})">
             <input type="radio" name="q${idx}" value="${oi}" />
             <span class="dot"></span>
             <span class="option-text">${opt}</span>
@@ -372,7 +372,7 @@
     else comment = "Canın sağ olsun sevgilim, moral bozmak yok, her zaman yanındayım! 🧸💛";
     
     document.getElementById('gradeComment').textContent = comment;
-    document.getElementById('resultDetail').textContent = `✅ Doğru: ${correct}  |  ❌ Yanlış: ${wrong}  \vert{}  ⬜ Boş: ${empty}`;
+    document.getElementById('resultDetail').textContent = `✅ Doğru: ${correct}  |  ❌ Yanlış: ${wrong}  |  ⬜ Boş: ${empty}`;
     
     let analysisHtml = '';
     questions.forEach((q, idx) => {
@@ -386,5 +386,71 @@
       }
       analysisHtml += `
         <div class="analysis-item ${statusClass}">
-          <div style="font-weight:700; margin-bottom:8px;">Soru ${idx + 1}:${q.q}</div>
-          <div style="font-size:0.9rem; margin-bottom:4px;"><b>Senin Cevabın:
+          <div style="font-weight:700; margin-bottom:8px;">Soru ${idx + 1}: ${q.q}</div>
+          <div style="font-size:0.9rem; margin-bottom:4px;"><b>Senin Cevabın:</b> ${userChoiceText} (${statusText})</div>
+          <div style="font-size:0.9rem; color:#10b981;"><b>Doğru Cevap:</b> ${q.opts[q.ans]}</div>
+          <div class="analysis-note">💡 <b>Not:</b> ${q.note}</div>
+        </div>
+      `;
+    });
+    document.getElementById('analysisArea').innerHTML = analysisHtml;
+  }
+
+  // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
+  function openAdminPanel() {
+    const pin = prompt("Yönetici Şifresini Girin:");
+    if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
+
+    if (!window.db) { showToast("❌ Veritabanına ulaşılamıyor!", true); return; }
+
+    const examRef = window.dbRef(window.db, 'kpss_exam');
+    window.dbOnValue(examRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        alert("Henüz çözülmüş bir sınav verisi bulunamadı!");
+        return;
+      }
+
+      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)";
+      
+      const action = prompt(
+        `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
+        `👤 Aday: ${data.email}\n` +
+        `🏆 Puan: ${data.score} / 100\n` +
+        `📊 Sonuç: ${data.correct} Doğru, ${data.wrong} Yanlış, ${data.empty} Boş\n` +
+        `🔑 Durum: ${statusInfo}\n\n` +
+        `[1] SONUÇLARI YAYINLA (Onun ekranında anında açılır!)\n` +
+        `[2] Sonuçları Geri Kilitle (Onu bekleme ekranına alır)\n` +
+        `[3] Sınavı Sıfırla (Kız arkadaşına tekrar çözme hakkı verir)\n\n` +
+        `Yapmak istediğin işlem numarasını gir:`
+      );
+
+      if (action === "1") {
+        window.dbUpdate(examRef, { revealed: true }).then(() => {
+          showToast("🔓 Sonuçlar başarıyla yayınlandı! Onun ekranında anında açıldı.", false);
+        });
+      } else if (action === "2") {
+        window.dbUpdate(examRef, { revealed: false }).then(() => {
+          showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
+        });
+      } else if (action === "3") {
+        if(confirm("Sınavı tamamen silmek ve sıfırlamak istediğine emin misin?")) {
+          window.dbSet(examRef, null).then(() => {
+            showToast("🧹 Tüm veriler sıfırlandı! Sayfa yenileniyor...", false);
+            setTimeout(() => location.reload(), 1500);
+          });
+        }
+      }
+    }, { onlyOnce: true });
+  }
+
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast';
+    if (isError) t.classList.add('error');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+</script>
+</body>
+</html>
