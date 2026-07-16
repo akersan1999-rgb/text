@@ -1,429 +1,447 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2026 KPSS Deneme Sınavı</title>
-    <script src="https://cdn.emailjs.com/dist/email.min.js">
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        body {
-            background: #0b0f19;
-            color: #f1f5f9;
-            padding: 20px 10px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-        }
-        .wrapper {
-            max-width: 720px;
-            width: 100%;
-        }
-        .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(145deg, #131c2e, #18243e);
-            border-radius: 24px;
-            margin-bottom: 30px;
-            border: 1px solid #24324f;
-        }
-        .header h1 {
-            font-size: 2.4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #a5b4fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .header p {
-            color: #94a3b8;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-        .progress-wrap {
-            background: #1e2942;
-            border-radius: 20px;
-            height: 8px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #6366f1, #f59e0b);
-            transition: width 0.4s ease;
-            border-radius: 20px;
-        }
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            background: #131c2e;
-            padding: 12px 20px;
-            border-radius: 14px;
-            border: 1px solid #24324f;
-            margin-bottom: 25px;
-        }
-        .stats span {
-            font-weight: 600;
-            color: #94a3b8;
-        }
-        .stats .count {
-            color: #f59e0b;
-        }
-        .question-card {
-            background: #131c2e;
-            border: 1px solid #24324f;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        .question-card .q-head {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        .question-card .q-head .badge {
-            background: rgba(99, 102, 241, 0.2);
-            color: #818cf8;
-            padding: 4px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-        .question-card .q-head .status {
-            color: #94a3b8;
-            font-size: 0.8rem;
-        }
-        .question-card .q-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            line-height: 1.6;
-            margin-bottom: 18px;
-        }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .option {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            background: rgba(11, 15, 25, 0.4);
-            border: 2px solid #24324f;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .option:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .option input {
-            display: none;
-        }
-        .option .dot {
-            width: 22px;
-            height: 22px;
-            border: 2px solid #94a3b8;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: 0.3s;
-        }
-        .option .dot::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: #f59e0b;
-            border-radius: 50%;
-            transform: scale(0);
-            transition: 0.3s;
-        }
-        .option input:checked+.dot {
-            border-color: #f59e0b;
-        }
-        .option input:checked+.dot::after {
-            transform: scale(1);
-        }
-        .option input:checked~.option-text {
-            color: #fff;
-            font-weight: 600;
-        }
-        .option .option-text {
-            color: #cbd5e1;
-        }
-        .blank-option {
-            border-style: dashed;
-            color: #94a3b8;
-            font-style: italic;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border: none;
-            border-radius: 24px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #0b0f19;
-            cursor: pointer;
-            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-        .btn-submit:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 45px rgba(245, 158, 11, 0.4);
-        }
-        .btn-submit:active {
-            transform: scale(0.97);
-        }
-        .success-screen {
-            display: none;
-            text-align: center;
-            padding: 50px 20px;
-            background: #111827;
-            border: 2px solid #10b981;
-            border-radius: 24px;
-            margin-top: 20px;
-        }
-        .success-screen .icon {
-            font-size: 4.5rem;
-            display: block;
-            margin-bottom: 15px;
-        }
-        .success-screen h2 {
-            color: #10b981;
-            font-size: 2rem;
-        }
-        .success-screen p {
-            color: #94a3b8;
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(80px);
-            background: #10b981;
-            color: #fff;
-            padding: 14px 30px;
-            border-radius: 50px;
-            font-weight: 700;
-            opacity: 0;
-            transition: 0.5s;
-            pointer-events: none;
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        @media (max-width: 500px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            .question-card .q-text {
-                font-size: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 KPSS Deneme Sınavı</title>
+  <!-- GÜNCEL EMAILJS SDK (v4) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    body {
+      background: #0b0f19;
+      color: #f1f5f9;
+      padding: 20px 10px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+    .wrapper {
+      max-width: 720px;
+      width: 100%;
+    }
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(145deg, #131c2e, #18243e);
+      border-radius: 24px;
+      margin-bottom: 30px;
+      border: 1px solid #24324f;
+    }
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header p {
+      color: #94a3b8;
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+    .progress-wrap {
+      background: #1e2942;
+      border-radius: 20px;
+      height: 8px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #f59e0b);
+      transition: width 0.4s ease;
+      border-radius: 20px;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background: #131c2e;
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: 1px solid #24324f;
+      margin-bottom: 25px;
+    }
+    .stats span {
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .stats .count {
+      color: #f59e0b;
+    }
+    .question-card {
+      background: #131c2e;
+      border: 1px solid #24324f;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .question-card .q-head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .question-card .q-head .badge {
+      background: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .question-card .q-head .status {
+      color: #94a3b8;
+      font-size: 0.8rem;
+    }
+    .question-card .q-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(11, 15, 25, 0.4);
+      border: 2px solid #24324f;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .option input {
+      display: none;
+    }
+    .option .dot {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: 0.3s;
+    }
+    .option .dot::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: #f59e0b;
+      border-radius: 50%;
+      transform: scale(0);
+      transition: 0.3s;
+    }
+    .option input:checked+.dot {
+      border-color: #f59e0b;
+    }
+    .option input:checked+.dot::after {
+      transform: scale(1);
+    }
+    .option input:checked~.option-text {
+      color: #fff;
+      font-weight: 600;
+    }
+    .option .option-text {
+      color: #cbd5e1;
+    }
+    .blank-option {
+      border-style: dashed;
+      color: #94a3b8;
+      font-style: italic;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: none;
+      border-radius: 24px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0b0f19;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(245, 158, 11, 0.4);
+    }
+    .btn-submit:active {
+      transform: scale(0.97);
+    }
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 50px 20px;
+      background: #111827;
+      border: 2px solid #10b981;
+      border-radius: 24px;
+      margin-top: 20px;
+    }
+    .success-screen .icon {
+      font-size: 4.5rem;
+      display: block;
+      margin-bottom: 15px;
+    }
+    .success-screen h2 {
+      color: #10b981;
+      font-size: 2rem;
+    }
+    .success-screen p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #10b981;
+      color: #fff;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 700;
+      opacity: 0;
+      transition: 0.5s;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 500px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+      .question-card .q-text {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="header">
-            <h1>🎯 KPSS Özel Deneme</h1>
-            <p>Soruları dikkatle oku, doğru şıkkı seç. Başarılar! 🍀</p>
-        </div>
-        <div class="stats">
-            <span>📌 Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
-            <span>📊 <span id="progressPercent">0</span>%</span>
-        </div>
-        <div class="progress-wrap">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div id="quizArea"></div>
-        <button class="btn-submit" id="submitBtn" onclick="submitExam()">Sınavı Tamamla ve Gönder 🚀</button>
-        <div class="success-screen" id="successScreen">
-            <span class="icon">✅</span>
-            <h2>Cevaplarınız İletildi!</h2>
-            <p>Cevaplarınız hocanıza başarıyla ulaştı.<br>Sonuçlarınız en kısa sürede paylaşılacaktır.</p>
-        </div>
+  <div class="wrapper">
+    <div class="header">
+      <h1>🎯 KPSS Özel Deneme</h1>
+      <p>Soruları dikkatle oku, doğru şıkkı seç. Başarılar! 🍀</p>
     </div>
-    <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
+    <div class="stats">
+      <span>📌 Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
+      <span>📊 <span id="progressPercent">0</span>%</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div id="quizArea"></div>
+    <button class="btn-submit" id="submitBtn" onclick="submitExam()">Sınavı Tamamla ve Gönder 🚀</button>
+    <div class="success-screen" id="successScreen">
+      <span class="icon">✅</span>
+      <h2>Cevaplarınız İletildi!</h2>
+      <p>Cevaplarınız hocanıza başarıyla ulaştı.<br>Sonuçlarınız en kısa sürede paylaşılacaktır.</p>
+    </div>
+  </div>
+  <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
 
-    <script>
-        // ★★★ KENDİ BİLGİLERİNLE DEĞİŞTİR (KOPYALA-YAPIŞTIR) ★★★
-        emailjs.init("dbF3yWuvy9um9nAdp"); // YENİ Public Key
-        const SERVICE_ID = "service_qdab76q";
-        const TEMPLATE_ID = "template_64cuej9";
+  <script>
+    // ================================================================
+    // ★★★ YENİ PUBLIC KEY VE GÜNCEL SDK ★★★
+    // ================================================================
+    (function() {
+      // EmailJS'i başlat (yeni public key)
+      emailjs.init("dbF3yWuvy9um9nAdp");
+    })();
 
-        // ================================================================
-        // 20 SORU
-        // ================================================================
-        const questions = [
-            { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
-            { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0 },
-            { q: "Aşağıdakilerden hangisi ısı alışverişi türü değildir?", opts: ["Konveksiyon", "Radyasyon", "Kondüksiyon", "Adveksiyon", "Süblimleşme"], ans: 4 },
-            { q: "Türk Dil Kurumu hangi amaçla kurulmuştur?", opts: ["Türkçeyi arındırmak", "Doğru kullanım sağlamak", "Geliştirmek", "Hepsi", "Hiçbiri"], ans: 3 },
-            { q: "Kurtuluş Savaşı'nda Batı Cephesi'nde yapılmayan savaş?", opts: ["I. İnönü", "II. İnönü", "Kütahya-Eskişehir", "Sakarya", "Çanakkale"], ans: 4 },
-            { q: "Türkiye'nin en uzun akarsuyu?", opts: ["Fırat", "Dicle", "Kızılırmak", "Sakarya", "Yeşilırmak"], ans: 2 },
-            { q: "Tanzimat Fermanı hangi padişah döneminde ilan edildi?", opts: ["II. Mahmud", "Abdülmecid", "Abdülaziz", "V. Murad", "II. Abdülhamid"], ans: 1 },
-            { q: "UNESCO Dünya Mirası'ndaki Türk şehri?", opts: ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya"], ans: 0 },
-            { q: "En çok yağış alan bölge?", opts: ["Doğu Anadolu", "Karadeniz", "Akdeniz", "Ege", "Marmara"], ans: 1 },
-            { q: "Halkçılık ilkesi neyi savunur?", opts: ["Milli birlik", "Sosyal adalet", "Laiklik", "Devletçilik", "Cumhuriyet"], ans: 1 },
-            { q: "Hangisi milli park değildir?", opts: ["Göreme", "Olimpos", "Yedigöller", "Sapanca", "Kazdağları"], ans: 3 },
-            { q: "Türkiye'nin en kalabalık şehri?", opts: ["Ankara", "İstanbul", "İzmir", "Bursa", "Antalya"], ans: 1 },
-            { q: "Hangisi yapım ekidir?", opts: ["-ler", "-de", "-den", "-lik", "-e"], ans: 3 },
-            { q: "Hangisi Türkiye'de çıkarılmaz?", opts: ["Kömür", "Demir", "Altın", "Elmas", "Boksit"], ans: 3 },
-            { q: "Cumhuriyet kaç yılında ilan edildi?", opts: ["1920", "1921", "1922", "1923", "1924"], ans: 3 },
-            { q: "Hangisi ulaşım türü değildir?", opts: ["Kara", "Deniz", "Hava", "Demir", "Uzay"], ans: 4 },
-            { q: "Türkiye'nin en büyük gölü?", opts: ["Van", "Tuz", "Beyşehir", "Eğirdir", "İznik"], ans: 0 },
-            { q: "Hangisi Anadolu uygarlığı değildir?", opts: ["Hitit", "Frig", "Urartu", "Mısır", "Lidya"], ans: 3 },
-            { q: "Türkiye'nin başkenti?", opts: ["Ankara", "İstanbul", "İzmir", "Bursa", "Eskişehir"], ans: 0 },
-            { q: "Hangisi yazılım dili değildir?", opts: ["Python", "Java", "C++", "HTML", "Photoshop"], ans: 4 }
-        ];
+    const SERVICE_ID = "service_qdab76q";
+    const TEMPLATE_ID = "template_64cuej9";
 
-        // ================================================================
-        // DEĞİŞKENLER
-        // ================================================================
-        let answered = new Set();
-        const total = questions.length;
-        document.getElementById('totalQ').textContent = total;
+    // ================================================================
+    // 20 SORU
+    // ================================================================
+    const questions = [
+      { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
+      { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0 },
+      { q: "Aşağıdakilerden hangisi ısı alışverişi türü değildir?", opts: ["Konveksiyon", "Radyasyon", "Kondüksiyon", "Adveksiyon", "Süblimleşme"], ans: 4 },
+      { q: "Türk Dil Kurumu hangi amaçla kurulmuştur?", opts: ["Türkçeyi arındırmak", "Doğru kullanım sağlamak", "Geliştirmek", "Hepsi", "Hiçbiri"], ans: 3 },
+      { q: "Kurtuluş Savaşı'nda Batı Cephesi'nde yapılmayan savaş?", opts: ["I. İnönü", "II. İnönü", "Kütahya-Eskişehir", "Sakarya", "Çanakkale"], ans: 4 },
+      { q: "Türkiye'nin en uzun akarsuyu?", opts: ["Fırat", "Dicle", "Kızılırmak", "Sakarya", "Yeşilırmak"], ans: 2 },
+      { q: "Tanzimat Fermanı hangi padişah döneminde ilan edildi?", opts: ["II. Mahmud", "Abdülmecid", "Abdülaziz", "V. Murad", "II. Abdülhamid"], ans: 1 },
+      { q: "UNESCO Dünya Mirası'ndaki Türk şehri?", opts: ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya"], ans: 0 },
+      { q: "En çok yağış alan bölge?", opts: ["Doğu Anadolu", "Karadeniz", "Akdeniz", "Ege", "Marmara"], ans: 1 },
+      { q: "Halkçılık ilkesi neyi savunur?", opts: ["Milli birlik", "Sosyal adalet", "Laiklik", "Devletçilik", "Cumhuriyet"], ans: 1 },
+      { q: "Hangisi milli park değildir?", opts: ["Göreme", "Olimpos", "Yedigöller", "Sapanca", "Kazdağları"], ans: 3 },
+      { q: "Türkiye'nin en kalabalık şehri?", opts: ["Ankara", "İstanbul", "İzmir", "Bursa", "Antalya"], ans: 1 },
+      { q: "Hangisi yapım ekidir?", opts: ["-ler", "-de", "-den", "-lik", "-e"], ans: 3 },
+      { q: "Hangisi Türkiye'de çıkarılmaz?", opts: ["Kömür", "Demir", "Altın", "Elmas", "Boksit"], ans: 3 },
+      { q: "Cumhuriyet kaç yılında ilan edildi?", opts: ["1920", "1921", "1922", "1923", "1924"], ans: 3 },
+      { q: "Hangisi ulaşım türü değildir?", opts: ["Kara", "Deniz", "Hava", "Demir", "Uzay"], ans: 4 },
+      { q: "Türkiye'nin en büyük gölü?", opts: ["Van", "Tuz", "Beyşehir", "Eğirdir", "İznik"], ans: 0 },
+      { q: "Hangisi Anadolu uygarlığı değildir?", opts: ["Hitit", "Frig", "Urartu", "Mısır", "Lidya"], ans: 3 },
+      { q: "Türkiye'nin başkenti?", opts: ["Ankara", "İstanbul", "İzmir", "Bursa", "Eskişehir"], ans: 0 },
+      { q: "Hangisi yazılım dili değildir?", opts: ["Python", "Java", "C++", "HTML", "Photoshop"], ans: 4 }
+    ];
 
-        // ================================================================
-        // SORULARI BAS
-        // ================================================================
-        function renderQuestions() {
-            const area = document.getElementById('quizArea');
-            let html = '';
-            questions.forEach((q, idx) => {
-                html += `
-                    <div class="question-card" id="q-${idx}">
-                        <div class="q-head">
-                            <span class="badge">Soru ${idx + 1}</span>
-                            <span class="status" id="status-${idx}">Boş</span>
-                        </div>
-                        <div class="q-text">${q.q}</div>
-                        <div class="options">
-                    `;
-                q.opts.forEach((opt, oi) => {
-                    html += `
-                        <label class="option" onclick="selectOption(${idx}, ${oi})">
-                            <input type="radio" name="q${idx}" value="${oi}" />
-                            <span class="dot"></span>
-                            <span class="option-text">${opt}</span>
-                        </label>
-                    `;
-                });
-                html += `
-                        <label class="option blank-option" onclick="selectBlank(${idx})">
-                            <input type="radio" name="q${idx}" value="blank" checked />
-                            <span class="dot"></span>
-                            <span class="option-text">Bu soruyu boş bırak</span>
-                        </label>
-                    </div>
-                </div>`;
-            });
-            area.innerHTML = html;
-        }
+    // ================================================================
+    // DEĞİŞKENLER
+    // ================================================================
+    let answered = new Set();
+    const total = questions.length;
+    document.getElementById('totalQ').textContent = total;
 
-        // ================================================================
-        // SEÇİM
-        // ================================================================
-        function selectOption(qIdx, optIdx) {
-            const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
-            if (radio) {
-                radio.checked = true;
-                document.querySelectorAll(`input[name="q${qIdx}"]`).forEach(r => {
-                    if (r.value !== String(optIdx)) r.checked = false;
-                });
-            }
-            updateStatus(qIdx);
-        }
+    // ================================================================
+    // SORULARI BAS
+    // ================================================================
+    function renderQuestions() {
+      const area = document.getElementById('quizArea');
+      let html = '';
+      questions.forEach((q, idx) => {
+        html += `
+          <div class="question-card" id="q-${idx}">
+            <div class="q-head">
+              <span class="badge">Soru ${idx + 1}</span>
+              <span class="status" id="status-${idx}">Boş</span>
+            </div>
+            <div class="q-text">${q.q}</div>
+            <div class="options">
+        `;
+        q.opts.forEach((opt, oi) => {
+          html += `
+            <label class="option" onclick="selectOption(${idx}, ${oi})">
+              <input type="radio" name="q${idx}" value="${oi}" />
+              <span class="dot"></span>
+              <span class="option-text">${opt}</span>
+            </label>
+          `;
+        });
+        html += `
+            <label class="option blank-option" onclick="selectBlank(${idx})">
+              <input type="radio" name="q${idx}" value="blank" checked />
+              <span class="dot"></span>
+              <span class="option-text">Bu soruyu boş bırak</span>
+            </label>
+          </div>
+        </div>`;
+      });
+      area.innerHTML = html;
+    }
 
-        function selectBlank(qIdx) {
-            const radio = document.querySelector(`input[name="q${qIdx}"][value="blank"]`);
-            if (radio) radio.checked = true;
-            updateStatus(qIdx);
-        }
+    // ================================================================
+    // SEÇİM
+    // ================================================================
+    function selectOption(qIdx, optIdx) {
+      const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
+      if (radio) {
+        radio.checked = true;
+        document.querySelectorAll(`input[name="q${qIdx}"]`).forEach(r => {
+          if (r.value !== String(optIdx)) r.checked = false;
+        });
+      }
+      updateStatus(qIdx);
+    }
 
-        function updateStatus(qIdx) {
-            const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
-            const status = document.getElementById(`status-${qIdx}`);
-            if (!selected || selected.value === 'blank') {
-                answered.delete(qIdx);
-                status.textContent = 'Boş';
-                status.style.color = '#94a3b8';
-            } else {
-                answered.add(qIdx);
-                const letters = ['A', 'B', 'C', 'D', 'E'];
-                status.textContent = letters[parseInt(selected.value)];
-                status.style.color = '#f59e0b';
-            }
-            updateProgress();
-        }
+    function selectBlank(qIdx) {
+      const radio = document.querySelector(`input[name="q${qIdx}"][value="blank"]`);
+      if (radio) radio.checked = true;
+      updateStatus(qIdx);
+    }
 
-        function updateProgress() {
-            const count = answered.size;
-            const percent = Math.round((count / total) * 100);
-            document.getElementById('answeredCount').textContent = count;
-            document.getElementById('progressPercent').textContent = percent;
-            document.getElementById('progressBar').style.width = percent + '%';
-        }
+    function updateStatus(qIdx) {
+      const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
+      const status = document.getElementById(`status-${qIdx}`);
+      if (!selected || selected.value === 'blank') {
+        answered.delete(qIdx);
+        status.textContent = 'Boş';
+        status.style.color = '#94a3b8';
+      } else {
+        answered.add(qIdx);
+        const letters = ['A', 'B', 'C', 'D', 'E'];
+        status.textContent = letters[parseInt(selected.value)];
+        status.style.color = '#f59e0b';
+      }
+      updateProgress();
+    }
 
-        // ================================================================
-        // GÖNDER
-        // ================================================================
-        function submitExam() {
-            let list = [];
-            let bos = 0;
-            questions.forEach((q, idx) => {
-                const sel = document.querySelector(`input[name="q${idx}"]:checked`);
-                const val = sel ? sel.value : 'blank';
-                const harf = val === 'blank' ? 'Boş' : ['A', 'B', 'C', 'D', 'E'][parseInt(val)];
-                list.push(`Soru ${idx+1}: ${harf}`);
-                if (val === 'blank') bos++;
-            });
+    function updateProgress() {
+      const count = answered.size;
+      const percent = Math.round((count / total) * 100);
+      document.getElementById('answeredCount').textContent = count;
+      document.getElementById('progressPercent').textContent = percent;
+      document.getElementById('progressBar').style.width = percent + '%';
+    }
 
-            const mesaj =
-                `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
+    // ================================================================
+    // GÖNDER
+    // ================================================================
+    function submitExam() {
+      let list = [];
+      let bos = 0;
+      questions.forEach((q, idx) => {
+        const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+        const val = sel ? sel.value : 'blank';
+        const harf = val === 'blank' ? 'Boş' : ['A', 'B', 'C', 'D', 'E'][parseInt(val)];
+        list.push(`Soru ${idx+1}: ${harf}`);
+        if (val === 'blank') bos++;
+      });
 
-            emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-                    subject: 'Yeni KPSS Deneme Cevapları',
-                    message: mesaj
-                })
-                .then(() => {
-                    document.getElementById('quizArea').style.display = 'none';
-                    document.querySelector('.btn-submit').style.display = 'none';
-                    document.querySelector('.stats').style.display = 'none';
-                    document.querySelector('.progress-wrap').style.display = 'none';
-                    document.querySelector('.header').style.display = 'none';
-                    document.getElementById('successScreen').style.display = 'block';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    document.getElementById('toast').classList.add('show');
-                    setTimeout(() => document.getElementById('toast').classList.remove('show'), 4000);
-                })
-                .catch((err) => {
-                    alert('❌ Gönderme hatası: ' + JSON.stringify(err));
-                    console.error(err);
-                });
-        }
+      const mesaj =
+        `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
 
-        // ================================================================
-        // BAŞLAT
-        // ================================================================
-        renderQuestions();
-    </script>
+      const templateParams = {
+        subject: 'Yeni KPSS Deneme Cevapları',
+        message: mesaj
+      };
+
+      emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+          document.getElementById('quizArea').style.display = 'none';
+          document.querySelector('.btn-submit').style.display = 'none';
+          document.querySelector('.stats').style.display = 'none';
+          document.querySelector('.progress-wrap').style.display = 'none';
+          document.querySelector('.header').style.display = 'none';
+          document.getElementById('successScreen').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          showToast('✅ Cevaplar başarıyla gönderildi!');
+        })
+        .catch((err) => {
+          alert('❌ Gönderme hatası: ' + JSON.stringify(err));
+          console.error(err);
+        });
+    }
+
+    // ================================================================
+    // TOAST
+    // ================================================================
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    // ================================================================
+    // BAŞLAT
+    // ================================================================
+    renderQuestions();
+  </script>
 </body>
 </html>
