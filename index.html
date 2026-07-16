@@ -271,17 +271,21 @@
 
   <script>
     // ================================================================
-    // EMAILJS AYARLARI – SADECE BURAYI DOLDUR!
+    // ★★★ EMAILJS AYARLARI – DOĞRU BİLGİLERLE DOLDUR ★★★
     // ================================================================
     (function() {
-      emailjs.init("LBGkPD1nlzlZbU_OI");   // Public Key (doğru)
+      // Public Key (ekrandan alınan)
+      emailjs.init("LBGkPD1nIzIZbU_Ol");
     })();
 
-    const SERVICE_ID = "service_qdab76q";    // Service ID (doğru)
-    const TEMPLATE_ID = "template_...";      // ★ BURAYA KENDİ TEMPLATE ID'NI YAZ ★
+    // Service ID (değiştirme)
+    const SERVICE_ID = "service_qdab76q";
+
+    // Template ID (ekrandan alınan: template_p0pbl7h)
+    const TEMPLATE_ID = "template_p0pbl7h";
 
     // ================================================================
-    // 20 SORU (GÜNCEL KPSS TARZI)
+    // 20 SORU (KPSS TARZI)
     // ================================================================
     const questions = [
       { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
