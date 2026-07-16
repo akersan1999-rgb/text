@@ -264,12 +264,12 @@
   <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
 
   <script>
-    // ================================================================
-    // ★★★ YENİ PUBLIC KEY VE GÜNCEL SDK ★★★
-    // ================================================================
+    // ★★★ GÜNCEL EMAILJS KULLANIMI ★★★
     (function() {
-      // EmailJS'i başlat (yeni public key)
-      emailjs.init("dbF3yWuvy9um9nAdp");
+      // Yeni sürümde init böyle
+      emailjs.init({
+        publicKey: "dbF3yWuvy9um9nAdp"
+      });
     })();
 
     const SERVICE_ID = "service_qdab76q";
@@ -301,16 +301,10 @@
       { q: "Hangisi yazılım dili değildir?", opts: ["Python", "Java", "C++", "HTML", "Photoshop"], ans: 4 }
     ];
 
-    // ================================================================
-    // DEĞİŞKENLER
-    // ================================================================
     let answered = new Set();
     const total = questions.length;
     document.getElementById('totalQ').textContent = total;
 
-    // ================================================================
-    // SORULARI BAS
-    // ================================================================
     function renderQuestions() {
       const area = document.getElementById('quizArea');
       let html = '';
@@ -345,9 +339,6 @@
       area.innerHTML = html;
     }
 
-    // ================================================================
-    // SEÇİM
-    // ================================================================
     function selectOption(qIdx, optIdx) {
       const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
       if (radio) {
@@ -389,9 +380,6 @@
       document.getElementById('progressBar').style.width = percent + '%';
     }
 
-    // ================================================================
-    // GÖNDER
-    // ================================================================
     function submitExam() {
       let list = [];
       let bos = 0;
@@ -428,9 +416,6 @@
         });
     }
 
-    // ================================================================
-    // TOAST
-    // ================================================================
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -438,9 +423,6 @@
       setTimeout(() => t.classList.remove('show'), 4000);
     }
 
-    // ================================================================
-    // BAŞLAT
-    // ================================================================
     renderQuestions();
   </script>
 </body>
