@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>2026 KPSS Deneme Sınavı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
     <style>
-        /* ===== DEĞİŞKENLER ===== */
+        /* ============================================================
+           TEMA & DEĞİŞKENLER
+           ============================================================ */
         :root {
             --bg-main: #0b0f19;
             --bg-surface: #131c2e;
             --bg-surface-light: #1e2942;
             --primary: #6366f1;
             --primary-light: #818cf8;
-            --primary-glow: rgba(99,102,241,0.2);
+            --primary-glow: rgba(99,102,241,0.25);
             --accent: #f59e0b;
-            --accent-glow: rgba(245,158,11,0.2);
+            --accent-glow: rgba(245,158,11,0.25);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --success: #10b981;
-            --success-glow: rgba(16,185,129,0.25);
+            --success-glow: rgba(16,185,129,0.3);
             --error: #ef4444;
             --error-glow: rgba(239,68,68,0.2);
             --border: #24324f;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --radius-sm: 8px;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-lg: 24px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -43,70 +45,79 @@
             min-height: 100vh;
             padding: 20px 10px;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(245,158,11,0.06) 0%, transparent 40%);
+                radial-gradient(circle at 20% 30%, rgba(99,102,241,0.10) 0%, transparent 45%),
+                radial-gradient(circle at 80% 70%, rgba(245,158,11,0.08) 0%, transparent 45%);
             background-attachment: fixed;
-            animation: fadeIn 0.6s ease;
+            animation: fadeInBody 0.8s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInBody {
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         .wrapper {
-            max-width: 680px;
+            max-width: 720px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* ===== İLERLEME ÇUBUĞU ===== */
+        /* ============================================================
+           İLERLEME ÇUBUĞU
+           ============================================================ */
         .progress-container {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            background: rgba(11,15,25,0.8);
-            backdrop-filter: blur(8px);
+            height: 7px;
+            background: rgba(11,15,25,0.85);
+            backdrop-filter: blur(10px);
             z-index: 1000;
         }
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmerProgress 3s linear infinite;
             box-shadow: 0 0 20px var(--primary);
             transition: width 0.6s ease;
         }
+        @keyframes shimmerProgress {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 
-        /* ===== SABİT BİLGİ ÇUBUĞU ===== */
+        /* ============================================================
+           SABİT BİLGİ ÇUBUĞU
+           ============================================================ */
         .sticky-stats {
             position: sticky;
-            top: 12px;
+            top: 14px;
             z-index: 900;
-            background: rgba(19,28,46,0.88);
-            backdrop-filter: blur(14px);
+            background: rgba(19,28,46,0.90);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border);
-            padding: 10px 20px;
+            padding: 12px 22px;
             border-radius: var(--radius-md);
-            margin-bottom: 25px;
+            margin-bottom: 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideDown 0.5s ease;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            animation: slideDown 0.6s ease;
         }
-
         @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
         .stat-badge {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 30px;
+            padding: 6px 16px;
+            border-radius: 40px;
             background: var(--bg-surface-light);
             border: 1px solid var(--border);
             color: var(--text-muted);
@@ -114,58 +125,81 @@
             align-items: center;
             gap: 8px;
         }
+        .stat-badge .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: inline-block;
+            animation: pulseDot 2s infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
         .stat-badge.active {
             color: var(--accent);
-            border-color: rgba(245,158,11,0.4);
+            border-color: rgba(245,158,11,0.5);
             background: var(--accent-glow);
         }
 
-        /* ===== BAŞLIK KARTI ===== */
+        /* ============================================================
+           BAŞLIK KARTI
+           ============================================================ */
         .master-card {
-            background: linear-gradient(145deg, var(--bg-surface), #15223c);
+            background: linear-gradient(145deg, var(--bg-surface), #18243e);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            padding: 35px 25px;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             transition: var(--transition);
         }
         .master-card:hover {
-            transform: scale(1.01);
+            transform: translateY(-4px) scale(1.01);
             border-color: rgba(99,102,241,0.3);
         }
         .master-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 60%);
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 60%);
             pointer-events: none;
+            animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .master-card h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             letter-spacing: -0.5px;
+            position: relative;
         }
         .master-card p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-muted);
-            line-height: 1.6;
-            max-width: 480px;
+            line-height: 1.7;
+            max-width: 500px;
             margin: 0 auto;
+            position: relative;
         }
 
-        /* ===== DURUM EKRANI (CEVAPLAR GÖNDERİLDİ) ===== */
+        /* ============================================================
+           DURUM EKRANI (SINAV BİTTİ)
+           ============================================================ */
         #state-screen {
             display: none;
             background: linear-gradient(135deg, #111827, #1f2937);
@@ -174,69 +208,69 @@
             padding: 40px 25px;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            animation: cardAppear 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes cardAppear {
-            from { transform: scale(0.95) rotate(-2deg); opacity: 0; }
-            to { transform: scale(1) rotate(0); opacity: 1; }
+            0% { transform: scale(0.9) rotate(-2deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
         }
 
-        .state-icon-container {
-            width: 80px;
-            height: 80px;
-            background: var(--primary-glow);
-            border: 2px dashed var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px auto;
-            color: var(--primary-light);
-            font-size: 2.8rem;
-            animation: pulseRing 2s infinite;
+        .state-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: block;
+            animation: bounceIcon 2s infinite;
         }
-        @keyframes pulseRing {
-            0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(99,102,241,0); }
-            100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
         .state-title {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #fff;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .state-desc {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-muted);
             line-height: 1.6;
             margin-bottom: 20px;
         }
 
-        /* ===== SONUÇ ÖZET KARTI ===== */
+        /* ============================================================
+           SONUÇ ÖZET KARTI
+           ============================================================ */
         .result-summary {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: 20px;
             margin: 20px 0;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 12px;
         }
         .result-item {
             text-align: center;
-            padding: 8px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        .result-item:hover {
+            transform: scale(1.05);
         }
         .result-item .number {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-weight: 800;
             display: block;
+            line-height: 1.2;
         }
         .result-item .label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
@@ -246,26 +280,29 @@
         .result-item.empty .number { color: var(--accent); }
 
         .result-percentage {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--accent);
             margin: 10px 0 5px;
+            text-shadow: 0 0 20px rgba(245,158,11,0.3);
         }
 
-        /* ===== WHATSAPP & PAYLAŞ BUTONLARI ===== */
+        /* ============================================================
+           PAYLAŞ BUTONLARI
+           ============================================================ */
         .action-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 18px;
         }
         .action-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 50px;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 60px;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
@@ -273,94 +310,102 @@
             transition: var(--transition);
             text-decoration: none;
             color: #fff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
         .action-btn:hover {
-            transform: translateY(-3px) scale(1.04);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
         .action-btn:active {
             transform: scale(0.95);
         }
         .action-btn.whatsapp {
             background: #25D366;
-            box-shadow: 0 8px 25px rgba(37,211,102,0.3);
         }
         .action-btn.whatsapp:hover {
-            box-shadow: 0 12px 35px rgba(37,211,102,0.45);
+            box-shadow: 0 12px 35px rgba(37,211,102,0.4);
         }
         .action-btn.telegram {
             background: #0088cc;
-            box-shadow: 0 8px 25px rgba(0,136,204,0.3);
         }
         .action-btn.telegram:hover {
-            box-shadow: 0 12px 35px rgba(0,136,204,0.45);
+            box-shadow: 0 12px 35px rgba(0,136,204,0.4);
         }
         .action-btn.copy {
             background: var(--primary);
-            box-shadow: 0 8px 25px rgba(99,102,241,0.3);
         }
         .action-btn.copy:hover {
-            box-shadow: 0 12px 35px rgba(99,102,241,0.45);
+            box-shadow: 0 12px 35px rgba(99,102,241,0.4);
         }
 
-        /* ===== ADMIN PANELİ ===== */
+        /* ============================================================
+           ADMIN PANELİ
+           ============================================================ */
         .admin-controls {
             margin-top: 30px;
-            padding-top: 20px;
+            padding-top: 22px;
             border-top: 1px solid var(--border);
         }
         .admin-controls p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--accent);
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         .admin-input-group {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
-            max-width: 320px;
+            max-width: 340px;
             margin: 0 auto;
         }
         .admin-input {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border-radius: var(--radius-sm);
             border: 2px solid var(--border);
             background: var(--bg-main);
             color: #fff;
             font-weight: 600;
             text-align: center;
+            font-size: 1rem;
             outline: none;
             transition: var(--transition);
         }
         .admin-input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
         .admin-btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, var(--primary), #4f46e5);
             color: #fff;
             border: none;
             border-radius: var(--radius-sm);
             font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: 0 8px 20px var(--primary-glow);
         }
         .admin-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.06);
+            box-shadow: 0 12px 30px var(--primary-glow);
         }
 
-        /* ===== SORU KARTLARI ===== */
+        /* ============================================================
+           SORU KARTLARI
+           ============================================================ */
         .question-card {
             background: var(--bg-surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
             transition: var(--transition);
-            animation: fadeInUp 0.5s ease forwards;
             opacity: 0;
+            animation: cardSlideUp 0.6s ease forwards;
         }
         .question-card:nth-child(1) { animation-delay: 0.05s; }
         .question-card:nth-child(2) { animation-delay: 0.10s; }
@@ -383,47 +428,52 @@
         .question-card:nth-child(19) { animation-delay: 0.95s; }
         .question-card:nth-child(20) { animation-delay: 1.00s; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes cardSlideUp {
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .question-card:hover {
             border-color: rgba(99,102,241,0.4);
-            box-shadow: 0 15px 35px rgba(99,102,241,0.1);
-            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(99,102,241,0.08);
+            transform: translateY(-6px);
         }
 
         .card-header-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
         .q-badge {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 4px 12px;
-            border-radius: 30px;
+            letter-spacing: 1.2px;
+            padding: 5px 14px;
+            border-radius: 40px;
             background: var(--primary-glow);
             color: var(--primary-light);
-            border: 1px solid rgba(99,102,241,0.2);
+            border: 1px solid rgba(99,102,241,0.25);
+        }
+        .q-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         .question-body {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--text-main);
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         .option-wrapper {
@@ -434,6 +484,7 @@
         .option-wrapper:hover .option-content {
             border-color: rgba(255,255,255,0.2);
             background: rgba(255,255,255,0.03);
+            transform: translateX(4px);
         }
 
         .option-input {
@@ -445,11 +496,11 @@
         .option-content {
             display: flex;
             align-items: center;
-            padding: 16px 18px;
+            padding: 16px 20px;
             background: rgba(11,15,25,0.4);
             border: 2px solid var(--border);
             border-radius: var(--radius-md);
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             font-weight: 500;
             color: rgba(241,245,249,0.85);
             transition: var(--transition);
@@ -457,11 +508,11 @@
         }
 
         .option-indicator {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--border);
             border-radius: 50%;
-            margin-right: 14px;
+            margin-right: 16px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -470,8 +521,8 @@
         }
         .option-indicator::after {
             content: '';
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--accent);
             border-radius: 50%;
             transform: scale(0);
@@ -483,6 +534,7 @@
             background: var(--accent-glow);
             color: #fff;
             font-weight: 600;
+            transform: scale(1.01);
         }
         .option-input:checked + .option-content .option-indicator {
             border-color: var(--accent);
@@ -504,16 +556,46 @@
             color: var(--text-main);
         }
 
-        /* ===== DEĞERLENDİRME RENKLERİ ===== */
+        /* ============================================================
+           DOĞRU CEVAP & AÇIKLAMA (SINAV SONRASI GÖSTERİLECEK)
+           ============================================================ */
+        .answer-reveal {
+            display: none;
+            margin-top: 22px;
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            background: rgba(11,15,25,0.6);
+            border-left: 6px solid var(--primary);
+            animation: revealSlide 0.5s ease forwards;
+        }
+        @keyframes revealSlide {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .answer-reveal .correct-answer {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+        .answer-reveal .explanation {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* ============================================================
+           DEĞERLENDİRME RENKLERİ (KARTLAR)
+           ============================================================ */
         .card-eval-correct {
             border-color: var(--success) !important;
             background: linear-gradient(to bottom right, var(--bg-surface), rgba(16,185,129,0.06)) !important;
-            box-shadow: 0 10px 25px rgba(16,185,129,0.08) !important;
+            box-shadow: 0 12px 30px rgba(16,185,129,0.08) !important;
         }
         .card-eval-wrong {
             border-color: var(--error) !important;
             background: linear-gradient(to bottom right, var(--bg-surface), rgba(239,68,68,0.06)) !important;
-            box-shadow: 0 10px 25px rgba(239,68,68,0.08) !important;
+            box-shadow: 0 12px 30px rgba(239,68,68,0.08) !important;
         }
         .card-eval-blank {
             border-color: var(--accent) !important;
@@ -545,44 +627,52 @@
             background: var(--error);
         }
 
-        .explanation-banner {
-            display: none;
-            margin-top: 20px;
-            padding: 16px;
-            border-radius: var(--radius-md);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            background: rgba(11,15,25,0.7);
-            border-left: 4px solid var(--primary);
-            animation: slideDown 0.4s ease forwards;
-        }
-
-        /* ===== ANA BUTON ===== */
+        /* ============================================================
+           ANA BUTON (SINAVI TAMAMLA)
+           ============================================================ */
         .master-submit-btn {
             display: block;
             width: 100%;
-            padding: 20px;
+            padding: 22px;
             background: linear-gradient(135deg, var(--accent), #d97706);
             color: #0b0f19;
             border: none;
             border-radius: var(--radius-lg);
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 15px 35px var(--accent-glow);
+            box-shadow: 0 18px 40px var(--accent-glow);
             transition: var(--transition);
             text-align: center;
             margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .master-submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            animation: btnShine 6s linear infinite;
+        }
+        @keyframes btnShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .master-submit-btn:hover {
-            transform: translateY(-5px) scale(1.01);
-            box-shadow: 0 20px 45px rgba(245,158,11,0.4);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 24px 50px rgba(245,158,11,0.5);
         }
         .master-submit-btn:active {
             transform: scale(0.97);
         }
 
-        /* ===== TOAST ===== */
+        /* ============================================================
+           TOAST
+           ============================================================ */
         .copy-toast {
             position: fixed;
             bottom: 30px;
@@ -590,27 +680,31 @@
             transform: translateX(-50%) translateY(120px);
             background: var(--success);
             color: #fff;
-            padding: 14px 28px;
-            border-radius: 50px;
+            padding: 16px 32px;
+            border-radius: 60px;
             font-weight: 700;
-            font-size: 0.95rem;
-            box-shadow: 0 10px 30px rgba(16,185,129,0.3);
+            font-size: 1rem;
+            box-shadow: 0 12px 35px rgba(16,185,129,0.3);
             z-index: 2000;
-            transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease;
             opacity: 0;
+            backdrop-filter: blur(8px);
         }
         .copy-toast.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 480px) {
-            .master-card h1 { font-size: 1.8rem; }
-            .question-body { font-size: 0.95rem; }
-            .option-content { padding: 14px; font-size: 0.9rem; }
-            .result-summary { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 500px) {
+            .master-card h1 { font-size: 2rem; }
+            .question-body { font-size: 1rem; }
+            .option-content { padding: 14px 16px; font-size: 0.9rem; }
+            .result-summary { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .action-buttons { flex-direction: column; align-items: stretch; }
+            .sticky-stats { flex-wrap: wrap; gap: 8px; justify-content: center; }
         }
     </style>
 </head>
@@ -626,7 +720,7 @@
         <!-- SABİT BİLGİ ÇUBUĞU -->
         <div class="sticky-stats" id="live-indicator">
             <div class="stat-badge">
-                <span style="width:8px;height:8px;background:var(--primary);border-radius:50%;display:inline-block;"></span>
+                <span class="dot"></span>
                 <span>2026 KPSS Ortaöğretim</span>
             </div>
             <div class="stat-badge active" id="completion-badge">
@@ -640,12 +734,13 @@
             <p>Senin için hazırladığım sınav provası. Soruları dikkatle oku, en doğru şıkkı seç. Başarılar dilerim! 🍀</p>
         </div>
 
-        <!-- DURUM EKRANI (CEVAPLAR GÖNDERİLDİ) -->
+        <!-- DURUM EKRANI (SINAV BİTTİ) -->
         <div id="state-screen">
-            <div class="state-icon-container">📤</div>
-            <h2 class="state-title">Cevapların Hazır!</h2>
+            <span class="state-icon">📤</span>
+            <h2 class="state-title">Sınav Tamamlandı!</h2>
             <p class="state-desc">
-                Cevaplarını başarıyla kaydettik. Aşağıdaki butonlardan istediğin platform üzerinden bana gönderebilirsin.
+                Aşağıda her sorunun doğru cevabını ve açıklamasını bulabilirsin.
+                Dilersen sonuçları WhatsApp veya Telegram ile bana gönderebilirsin.
             </p>
 
             <!-- SONUÇ ÖZET KARTI -->
@@ -663,7 +758,7 @@
                     <span class="label">⬜ Boş</span>
                 </div>
             </div>
-            <div class="result-percentage" id="percentageDisplay">Başarı Oranı: %0</div>
+            <div class="result-percentage" id="percentageDisplay">📊 Başarı Oranı: %0</div>
 
             <!-- PAYLAŞ BUTONLARI -->
             <div class="action-buttons">
@@ -679,7 +774,7 @@
                     <input type="password" id="gateKey" class="admin-input" placeholder="Yetki Kodu">
                     <button type="button" class="admin-btn" onclick="yetkilendirVeYayinla()">Onayla</button>
                 </div>
-                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">Yetki kodu: <strong>1907</strong></p>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:10px;">Yetki kodu: <strong>1907</strong></p>
             </div>
         </div>
 
@@ -693,11 +788,13 @@
 
     </div>
 
-    <!-- TOAST BİLDİRİMİ -->
+    <!-- TOAST -->
     <div class="copy-toast" id="toast-msg">✅ Cevaplar panoya kopyalandı!</div>
 
     <script>
-        // ===== 20 SORU VERİSİ =====
+        // ============================================================
+        // 20 SORU VERİSİ (her birinde doğru cevap dizini ve açıklama var)
+        // ============================================================
         const dataSet = [
             { q: "Aşağıdaki cümlelerin hangisinde, hem ünsüz benzeşmesi (sertleşme) hem de ünsüz yumuşamasına uğramış bir sözcük kullanılmıştır?", s: ["Sıcak çayını yudumlarken geçmiş günleri özlemle andı.", "Gittiği her yerde kendinden bir iz bırakmayı başarırdı.", "Yaptığı işlerin her zaman arkasında duran bir insandı.", "Çiçeğin yaprakları sıcaktan dolayı büzüşmeye başlamıştı.", "Gençliğinde yazdığı şiirleri bir defterde toplamıştı."], a: 2, e: "<b>Cevap C</b>: 'Yaptığı' sözcüğünde; 'yap-mak' fiiline '-dık' sıfat-fiil eki gelirken 'k' sesi 'g' sesine yumuşamış, aynı zamanda 'd' eki 't' sesine sertleşmiştir (benzeşmiştir)." },
             { q: "Aşağıdaki cümlelerin hangisinde bir yazım yanlışı yapılmıştır?", s: ["Laboratuvardaki tüm cihazlar sabaha karşı aniden bozuldu.", "Bu projede her şeyin usulüne uygun yapılması gerekiyor.", "Sınav başvurusunu kılavuzda belirtilen tarihe kadar yapmalısın.", "Onun bu vurdumduymaz tavırları herkesi çileden çıkardı.", "Birkaç gün sonra gerçekleştirilecek olan kurultay çok önemli."], a: 1, e: "<b>Cevap B</b>: 'her şey' sözcüğü her zaman ayrı yazılır. Cümlede birleşik yazılarak yazım hatası yapılmıştır." },
@@ -721,13 +818,17 @@
             { q: "Dünyanın en derin kanyonları arasında gösterilen ve Türkiye'nin doğa turizmi açısından büyük önem taşıyan, Kastamonu sınırlarında yer alan ünlü kanyon hangisidir?", s: ["Ihlara Vadisi", "Saklıkent Kanyonu", "Valla Kanyonu", "Köprülü Kanyon", "Karanlık Kanyon"], a: 2, e: "<b>Cevap C</b>: Kastamonu Pınarbaşı ilçesinde yer alan Valla Kanyonu, geçişi oldukça zor ve dünyanın en derin/büyük kanyonları arasında yer alan doğa harikasıdır." }
         ];
 
-        // ===== DEĞİŞKENLER =====
+        // ============================================================
+        // DEĞİŞKENLER
+        // ============================================================
         const root = document.getElementById('dynamic-cards-root');
         let answeredRegistry = new Set();
         let payloadStringDump = '';
         let correctCount = 0, wrongCount = 0, emptyCount = 0;
 
-        // ===== SORULARI RENDER ET =====
+        // ============================================================
+        // SORULARI RENDER ET
+        // ============================================================
         function renderQuiz() {
             let html = '';
             dataSet.forEach((item, idx) => {
@@ -735,7 +836,7 @@
                     <div class="question-card" id="q-box-${idx}">
                         <div class="card-header-meta">
                             <span class="q-badge">Soru ${idx + 1}</span>
-                            <span style="font-size:0.75rem;color:var(--text-muted);" id="badge-status-${idx}">Boş bırakıldı</span>
+                            <span class="q-status" id="badge-status-${idx}">Boş bırakıldı</span>
                         </div>
                         <div class="question-body">${item.q}</div>
                         <div class="options-list">
@@ -760,13 +861,19 @@
                             </div>
                         </label>
                     </div>
-                    <div class="explanation-banner" id="explain-${idx}"></div>
+                    <!-- CEVAP VE AÇIKLAMA ALANI (sınav bitince gösterilecek) -->
+                    <div class="answer-reveal" id="answer-reveal-${idx}">
+                        <div class="correct-answer">✅ Doğru Cevap: ${['A','B','C','D','E'][item.a]}</div>
+                        <div class="explanation">${item.e}</div>
+                    </div>
                 </div>`;
             });
             root.innerHTML = html;
         }
 
-        // ===== CEVAP İLERLEMESİ =====
+        // ============================================================
+        // CEVAP İLERLEMESİ
+        // ============================================================
         window.recalcProgress = function(sIdx, oIdx) {
             const statusLabel = document.getElementById(`badge-status-${sIdx}`);
             if (oIdx === 'blank') {
@@ -784,7 +891,9 @@
             document.getElementById('exam-progress').style.width = `${(count / 20) * 100}%`;
         }
 
-        // ===== CEVAPLARI PAKETLE VE GÖNDER =====
+        // ============================================================
+        // SINAVI TAMAMLA - CEVAPLARI GÖSTER VE PAYLAŞ
+        // ============================================================
         window.cevaplariPaketleVeGonder = function() {
             let cevapList = [];
             let dogru = 0, yanlis = 0, bos = 0;
@@ -795,14 +904,19 @@
                 const harf = val === 'blank' ? 'Boş' : ['A','B','C','D','E'][parseInt(val)];
                 cevapList.push(`Soru ${sIndex+1}: ${harf}`);
 
-                // Doğru/Yanlış/Boş hesapla (sonuç özeti için)
+                // Doğru / Yanlış / Boş hesapla
                 if (val === 'blank') bos++;
                 else {
                     const chosen = parseInt(val);
                     if (chosen === soru.a) dogru++;
                     else yanlis++;
                 }
+
+                // Tüm inputları devre dışı bırak
                 document.querySelectorAll(`input[name="input-q-${sIndex}"]`).forEach(inp => inp.disabled = true);
+
+                // CEVAP VE AÇIKLAMA BÖLÜMÜNÜ GÖSTER
+                document.getElementById(`answer-reveal-${sIndex}`).style.display = 'block';
             });
 
             correctCount = dogru;
@@ -813,7 +927,7 @@
             payloadStringDump = 
                 `📝 2026 KPSS Deneme Sınavı Cevapları\n\n${cevapList.join('\n')}\n\n✅ Doğru: ${dogru}\n❌ Yanlış: ${yanlis}\n⬜ Boş: ${bos}\n📊 Başarı Oranı: %${yuzde}`;
 
-            // Formu gizle, durum ekranını göster
+            // Formu gizle, durum ekranını göster (başlık ve paylaş butonları)
             document.getElementById('quizFrame').style.display = 'none';
             document.getElementById('welcome-header').style.display = 'none';
             document.getElementById('live-indicator').style.display = 'none';
@@ -828,19 +942,19 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // ===== WHATSAPP GÖNDER =====
+        // ============================================================
+        // PAYLAŞ FONKSİYONLARI
+        // ============================================================
         window.whatsappGonder = function() {
             const mesaj = encodeURIComponent(payloadStringDump);
             window.open(`https://api.whatsapp.com/send?text=${mesaj}`, '_blank');
         }
 
-        // ===== TELEGRAM GÖNDER =====
         window.telegramGonder = function() {
             const mesaj = encodeURIComponent(payloadStringDump);
             window.open(`https://t.me/share/url?url=&text=${mesaj}`, '_blank');
         }
 
-        // ===== KOPYALA =====
         window.kopyalaCevapKodu = function() {
             kopyalaMetin(payloadStringDump);
         }
@@ -872,13 +986,16 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // ===== YETKİLENDİR VE YAYINLA =====
+        // ============================================================
+        // YETKİLENDİR VE YAYINLA (HOCA PANELİ)
+        // ============================================================
         window.yetkilendirVeYayinla = function() {
             if (document.getElementById('gateKey').value !== "1907") {
                 alert("❌ Geçersiz yetki kodu!");
                 return;
             }
 
+            // Durum ekranını gizle, başlığı değiştir
             document.getElementById('state-screen').style.display = 'none';
             document.getElementById('welcome-header').style.display = 'block';
             document.getElementById('welcome-header').innerHTML = `
@@ -888,14 +1005,12 @@
             document.getElementById('quizFrame').style.display = 'block';
             document.getElementById('master-submit-trigger').style.display = 'none';
 
+            // Her soruyu değerlendir ve renklendir
             dataSet.forEach((soru, sIndex) => {
                 const checked = document.querySelector(`input[name="input-q-${sIndex}"]:checked`);
                 const userChoice = checked ? checked.value : 'blank';
                 const card = document.getElementById(`q-box-${sIndex}`);
-                const explain = document.getElementById(`explain-${sIndex}`);
-                explain.innerHTML = soru.e;
-                explain.style.display = 'block';
-
+                // Açıklama zaten gösteriliyor, sadece renklendirme yap
                 if (userChoice === 'blank') {
                     card.classList.add('card-eval-blank');
                     document.getElementById(`opt-node-${sIndex}-${soru.a}`).parentNode.classList.add('eval-true-choice');
@@ -910,12 +1025,16 @@
                         document.getElementById(`opt-node-${sIndex}-${soru.a}`).parentNode.classList.add('eval-true-choice');
                     }
                 }
+                // Cevapları ve açıklamaları zaten gösterdik, ama tekrar gösterilmesini sağla
+                document.getElementById(`answer-reveal-${sIndex}`).style.display = 'block';
             });
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ===== BAŞLAT =====
+        // ============================================================
+        // BAŞLAT
+        // ============================================================
         renderQuiz();
     </script>
 </body>
