@@ -19,9 +19,16 @@
       padding:20px;overflow-x:hidden;
       background:linear-gradient(135deg, #0b0914 0%, #1a1030 50%, #0b0914 100%);
       background-size:400% 400%;animation:bgMove 15s ease infinite;
+      position:relative;
+    }
+    /* Arka plan parçacıkları */
+    body::before{
+      content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+      background-image:radial-gradient(circle, rgba(244,63,94,0.03) 1px, transparent 1px);
+      background-size:30px 30px;pointer-events:none;z-index:0;
     }
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    .container{max-width:800px;width:100%}
+    .container{max-width:800px;width:100%;position:relative;z-index:1}
 
     .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s cubic-bezier(0.22,0.61,0.36,1)}
     .screen.active{display:block}
@@ -79,6 +86,8 @@
     .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:12px;font-size:0.9rem}
     .glow-text{animation:textGlow 2s infinite alternate}
     @keyframes textGlow{from{text-shadow:0 0 10px var(--accent)}to{text-shadow:0 0 25px var(--accent), 0 0 50px var(--accent2)}}
+    .particle{position:fixed;pointer-events:none;z-index:0;animation:floatUp 4s linear infinite;opacity:0.3}
+    @keyframes floatUp{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-100px) scale(1)}}
   </style>
 </head>
 <body>
@@ -171,10 +180,10 @@
         <div id="questionList" style="max-height:450px;overflow-y:auto"></div>
       </div>
       <div id="mailTab" style="display:none">
-        <p style="color:var(--text2);margin-bottom:10px">Template içeriği: Merhaba { {to_name} }, ... Puanın: { {score} } ...</p>
-        <input id="emailjsPublicKey" placeholder="EmailJS Public Key" />
-        <input id="emailjsServiceId" placeholder="EmailJS Service ID" />
-        <input id="emailjsTemplateId" placeholder="EmailJS Template ID" />
+        <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarları (kullanıcının yazdığı e-postaya sonuç gider)</p>
+        <input id="emailjsPublicKey" placeholder="EmailJS Public Key" value="dbF3yWuvy9um9nAdp"/>
+        <input id="emailjsServiceId" placeholder="EmailJS Service ID" value="service_qdab76q"/>
+        <input id="emailjsTemplateId" placeholder="EmailJS Template ID" value="template_64cuej9"/>
         <button id="saveMailSettingsBtn" style="background:var(--success)">💾 Kaydet</button>
       </div>
     </div>
@@ -202,7 +211,7 @@ const questionsRef = ref(db, 'questions');
 const mailSettingsRef = ref(db, 'mailSettings');
 const ADMIN_PASSWORD = "1923";
 
-// 100+ Soru Havuzu
+// 100+ soru havuzu
 const defaultQuestions = [
   { q:"Türkiye'nin en kalabalık şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
@@ -311,6 +320,23 @@ let answeredSet = new Set();
 let timer = null;
 let remaining = 1800;
 
+// Parçacık animasyonu
+function createParticles() {
+  const colors = ['#f43f5e', '#ec4899', '#6366f1', '#10b981'];
+  for (let i=0; i<20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random()*100+'%';
+    particle.style.width = Math.random()*4+2+'px';
+    particle.style.height = particle.style.width;
+    particle.style.background = colors[Math.floor(Math.random()*colors.length)];
+    particle.style.animationDuration = Math.random()*3+3+'s';
+    particle.style.animationDelay = Math.random()*2+'s';
+    document.body.appendChild(particle);
+  }
+}
+createParticles();
+
 // Oturum
 if (sessionStorage.getItem('examState')) {
   const state = JSON.parse(sessionStorage.getItem('examState'));
@@ -319,9 +345,23 @@ if (sessionStorage.getItem('examState')) {
   if (state.userData) userData = state.userData;
 }
 
+// Mail ayarlarını varsayılan olarak kaydet
+(async function initMailDefaults() {
+  const snap = await get(mailSettingsRef);
+  if (!snap.exists()) {
+    await set(mailSettingsRef, {
+      publicKey: 'dbF3yWuvy9um9nAdp',
+      serviceId: 'service_qdab76q',
+      templateId: 'template_64cuej9'
+    });
+  }
+})();
+
 async function initQuestions() {
   const snap = await get(questionsRef);
-  if (!snap.exists()) for (const q of defaultQuestions) await push(questionsRef, q);
+  if (!snap.exists()) {
+    for (const q of defaultQuestions) await push(questionsRef, q);
+  }
   onValue(questionsRef, snap => {
     const data = snap.val() || {};
     allQuestions = Object.entries(data).map(([id, val]) => ({ id, ...val })).sort(() => Math.random()-0.5).slice(0, 20);
@@ -337,6 +377,19 @@ function showScreen(id) {
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 function goHome() { showScreen('loginScreen'); }
+
+// Sayı animasyonu
+function animateValue(id, start, end, duration) {
+  const el = document.getElementById(id);
+  let startTime = null;
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    el.textContent = Math.floor(progress * (end - start) + start);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 
 document.getElementById('startBtn').addEventListener('click', async () => {
   const name = document.getElementById('nameInput').value.trim();
@@ -407,15 +460,17 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
 
 function showResult(data) {
   showScreen('resultScreen');
-  document.getElementById('scoreDisplay').textContent=data.score;
-  document.getElementById('correctDisplay').textContent=data.correct;
-  document.getElementById('wrongDisplay').textContent=data.wrong;
-  document.getElementById('emptyDisplay').textContent=data.empty;
+  animateValue('scoreDisplay', 0, data.score, 800);
+  animateValue('correctDisplay', 0, data.correct, 800);
+  animateValue('wrongDisplay', 0, data.wrong, 800);
+  animateValue('emptyDisplay', 0, data.empty, 800);
   document.getElementById('nameSurnameDisplay').textContent=`${data.name} ${data.surname} - ${data.email}`;
   const total = data.correct + data.wrong + data.empty;
   const percent = total ? Math.round((data.correct/total)*100) : 0;
-  document.getElementById('progressFill').style.width = percent+'%';
-  document.getElementById('progressText').textContent = `%${percent} başarı`;
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = percent+'%';
+    document.getElementById('progressText').textContent = `%${percent} başarı`;
+  }, 500);
   let html='';
   allQuestions.forEach((q,i) => {
     const ua=data.answers[i]; let color='#6b7280', status='⬜ Boş', choice='Seçilmedi';
@@ -424,7 +479,9 @@ function showResult(data) {
       <b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br><b>Doğru:</b> ${q.o[q.a]}<br><small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML=html;
-  confetti({ particleCount:120, spread:80, origin:{y:0.6} });
+  confetti({ particleCount:150, spread:90, origin:{y:0.6} });
+  setTimeout(() => confetti({ particleCount:80, spread:60, origin:{x:0.3, y:0.7} }), 300);
+  setTimeout(() => confetti({ particleCount:80, spread:60, origin:{x:0.7, y:0.7} }), 600);
   const link = location.origin+location.pathname+'?exam='+examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Sonucum: '+link)}`);
   document.getElementById('sendMailResult').onclick = () => sendResultMail(data, link);
@@ -433,7 +490,7 @@ function showResult(data) {
 async function sendResultMail(data, link) {
   const snap = await get(mailSettingsRef);
   const s = snap.val() || {};
-  if (!s.publicKey) { alert('Yönetici mail ayarlarını yapmadı.'); return; }
+  if (!s.publicKey) { alert('Mail ayarları yapılmamış.'); return; }
   emailjs.init(s.publicKey);
   try {
     await emailjs.send(s.serviceId, s.templateId, {
