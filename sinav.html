@@ -91,7 +91,7 @@
     <p>Senin için hazırlanmış çok özel bir deneme sınavı. Hazır olduğunda başla düğmesine basarak testi başlatabilirsin.</p>
     <div class="warning-box">⚠️ Dikkat: Bu sınava sadece 30 dakikan var!</div>
     <input type="email" id="userEmail" placeholder="E-posta adresini girerek başla..." />
-    <button class="btn-primary" onclick="startExam()">Sınava Başla 🚀</button>
+    <button class="btn-primary" id="startExamBtn">Sınava Başla 🚀</button>
   </div>
 
   <!-- SINAV EKRANI -->
@@ -110,7 +110,7 @@
       <span><span id="progressPercent">0</span>%</span>
     </div>
     <div id="quizArea"></div>
-    <button class="btn-submit" id="submitBtn" onclick="submitExam()">Sınavı Bitir ve Gönder ✨</button>
+    <button class="btn-submit" id="submitBtn">Sınavı Bitir ve Gönder ✨</button>
   </div>
 
   <!-- BEKLEME EKRANI (SEVGİLİNİN ONAYINI BEKLERKEN) -->
@@ -132,7 +132,7 @@
   </div>
 
   <!-- GIZLI YONETICI GIRISI -->
-  <div class="admin-panel-trigger" onclick="openAdminPanel()">⚙️ Yönetici Paneli</div>
+  <div class="admin-panel-trigger" id="adminPanelBtn">⚙️ Yönetici Paneli</div>
 
 </div>
 
@@ -159,9 +159,9 @@
 
   const ADMIN_PIN = "1923"; 
   
-  // URL'de "?admin=true" parametresi olup olmadığını kontrol ediyoruz.
+  // URL parametre kontrolü
   const urlParams = new URLSearchParams(window.location.search);
-  const isAdmin = urlParams.get('admin') === 'true'; // Eğer URL'de admin=true varsa bu tarayıcı SADECE yöneticidir.
+  const isAdmin = urlParams.get('admin') === 'true';
 
   // Sorular listesi
   const questions = [
@@ -198,7 +198,7 @@
   // GERÇEK ZAMANLI EKRAN DEĞİŞİM TAKİBİ
   const examRef = ref(db, 'kpss_exam');
   
-  // EĞER ADMİN İSEK VERİTABANI DEĞİŞİMLERİNİN SENİN EKRANINI KİLİTLEMEYE ÇALIŞMASINI TAMAMEN BLOKE EDİYORUZ!
+  // Admin değilse normal dinleyiciyi çalıştır
   if (!isAdmin) {
     onValue(examRef, (snapshot) => {
       const data = snapshot.val();
@@ -252,16 +252,14 @@
       `;
       q.opts.forEach((opt, oi) => {
         html += `
-          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx}, ${oi})">
-            <input type="radio" name="q${idx}" value="${oi}" />
+          <label class="option" id="opt-label-${idx}-${oi}" data-q="${idx}" data-o="${oi}">
             <span class="dot"></span>
             <span class="option-text">${opt}</span>
           </label>
         `;
       });
       html += `
-          <label class="option blank-option" id="opt-label-${idx}-blank" onclick="selectBlank(${idx})">
-            <input type="radio" name="q${idx}" value="blank" checked />
+          <label class="option blank-option" id="opt-label-${idx}-blank" data-q="${idx}" data-o="blank">
             <span class="dot"></span>
             <span class="option-text">Boş bırak</span>
           </label>
@@ -269,11 +267,26 @@
       </div>`;
     });
     area.innerHTML = html;
+
+    // Seçenek tıklama olaylarını JS ile bağlıyoruz (Garantili yöntem)
+    document.querySelectorAll('.option').forEach(element => {
+      element.addEventListener('click', function() {
+        const qIdx = parseInt(this.getAttribute('data-q'));
+        const optVal = this.getAttribute('data-o');
+        if (optVal === 'blank') {
+          selectBlank(qIdx);
+        } else {
+          selectOption(qIdx, parseInt(optVal));
+        }
+      });
+    });
   }
 
+  // Kullanıcının seçtiği cevapları tutacak yerel hafıza
+  let tempAnswers = {};
+
   function selectOption(qIdx, optIdx) {
-    const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
-    if (radio) { radio.checked = true; }
+    tempAnswers[qIdx] = optIdx;
     document.getElementById(`q-${qIdx}`).classList.add('active-q');
     document.querySelectorAll(`#q-${qIdx} .option`).forEach(label => label.classList.remove('selected-opt'));
     document.getElementById(`opt-label-${qIdx}-${optIdx}`).classList.add('selected-opt');
@@ -281,8 +294,7 @@
   }
 
   function selectBlank(qIdx) {
-    const radio = document.querySelector(`input[name="q${qIdx}"][value="blank"]`);
-    if (radio) radio.checked = true;
+    tempAnswers[qIdx] = 'blank';
     document.getElementById(`q-${qIdx}`).classList.remove('active-q');
     document.querySelectorAll(`#q-${qIdx} .option`).forEach(label => label.classList.remove('selected-opt'));
     document.getElementById(`opt-label-${qIdx}-blank`).classList.add('selected-opt');
@@ -290,14 +302,14 @@
   }
 
   function updateStatus(qIdx) {
-    const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
+    const selectedValue = tempAnswers[qIdx];
     const status = document.getElementById(`status-${qIdx}`);
-    if (!selected || selected.value === 'blank') {
+    if (selectedValue === undefined || selectedValue === 'blank') {
       answered.delete(qIdx);
       status.textContent = 'Boş';
     } else {
       answered.add(qIdx);
-      status.textContent = ['A','B','C','D','E'][parseInt(selected.value)];
+      status.textContent = ['A','B','C','D','E'][selectedValue];
     }
     updateProgress();
   }
@@ -316,11 +328,10 @@
     let userAnswers = [];
 
     questions.forEach((q, idx) => {
-      const sel = document.querySelector(`input[name="q${idx}"]:checked`);
-      const val = sel ? sel.value : 'blank';
+      const val = tempAnswers[idx] !== undefined ? tempAnswers[idx] : 'blank';
       userAnswers.push(val); 
       if (val === 'blank') { emptyCount++; } 
-      else { if (parseInt(val) === q.ans) { correctCount++; } else { wrongCount++; } }
+      else { if (val === q.ans) { correctCount++; } else { wrongCount++; } }
     });
 
     const totalScore = Math.round((correctCount / total) * 100);
@@ -385,7 +396,6 @@
 
   // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
   function openAdminPanel() {
-    // Admin url kontrolü yoksa önce uyaralım
     if (!isAdmin) {
       alert("Bu tarayıcı yönetici modunda değil! Lütfen sayfaya URL sonuna '?admin=true' ekleyerek girin. Örn: https://akersan1999-rgb.github.io/sinav.html?admin=true");
       return;
@@ -403,7 +413,7 @@
         return;
       }
 
-      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)";
+      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLI (Kız arkadaşın bekliyor)";
       
       const action = prompt(
         `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
@@ -446,12 +456,10 @@
     setTimeout(() => t.classList.remove('show'), 4000);
   }
 
-  // HTML Üzerinden Çağırılan Fonksiyonları Pencereye (window) Bağımlı Yapıyoruz
-  window.startExam = startExam;
-  window.selectOption = selectOption;
-  window.selectBlank = selectBlank;
-  window.submitExam = submitExam;
-  window.openAdminPanel = openAdminPanel;
+  // Butonların tıklama olaylarını doğrudan JS Modülü içinden bağlıyoruz (Garanti Çözüm)
+  document.getElementById('startExamBtn').addEventListener('click', startExam);
+  document.getElementById('submitBtn').addEventListener('click', submitExam);
+  document.getElementById('adminPanelBtn').addEventListener('click', openAdminPanel);
 </script>
 </body>
 </html>
