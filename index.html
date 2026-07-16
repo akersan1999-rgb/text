@@ -154,10 +154,6 @@
     .option input:checked + .dot::after {
       transform: scale(1);
     }
-    .option input:checked ~ span {
-      color: #fff;
-      font-weight: 600;
-    }
     .option input:checked ~ .option-text {
       color: #fff;
       font-weight: 600;
@@ -262,7 +258,7 @@
     <!-- GÖNDER BUTONU -->
     <button class="btn-submit" id="submitBtn" onclick="submitExam()">Sınavı Tamamla ve Gönder 🚀</button>
 
-    <!-- BAŞARI EKRANI (ÖĞRENCİ BUNU GÖRÜR) -->
+    <!-- BAŞARI EKRANI -->
     <div class="success-screen" id="successScreen">
       <span class="icon">✅</span>
       <h2>Cevaplarınız İletildi!</h2>
@@ -275,17 +271,17 @@
 
   <script>
     // ================================================================
-    // ⚙️ EMAILJS AYARLARI – KENDİ BİLGİLERİNLE DEĞİŞTİR!
+    // EMAILJS AYARLARI – SADECE BURAYI DOLDUR!
     // ================================================================
     (function() {
-      emailjs.init("user_...");          // ← Public Key (user_ ile başlar)
+      emailjs.init("LBGkPD1nlzlZbU_OI");   // Public Key
     })();
 
-    const SERVICE_ID = "service_qdab76q"; // ← Service ID
-    const TEMPLATE_ID = "template_...";   // ← Template ID
+    const SERVICE_ID = "service_qdab76q";    // Service ID
+    const TEMPLATE_ID = "template_...";      // ★ BURAYA KENDİ TEMPLATE ID'Nİ YAZ ★
 
     // ================================================================
-    // 20 SORU (GÜNCEL KPSS TARZI)
+    // 20 SORU
     // ================================================================
     const questions = [
       { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
@@ -318,7 +314,7 @@
     document.getElementById('totalQ').textContent = total;
 
     // ================================================================
-    // SORULARI EKRANA BAS
+    // SORULARI BAS
     // ================================================================
     function renderQuestions() {
       const area = document.getElementById('quizArea');
@@ -355,13 +351,12 @@
     }
 
     // ================================================================
-    // SEÇİM FONKSİYONLARI
+    // SEÇİM
     // ================================================================
     function selectOption(qIdx, optIdx) {
       const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
       if (radio) {
         radio.checked = true;
-        // Diğerlerini temizle
         document.querySelectorAll(`input[name="q${qIdx}"]`).forEach(r => {
           if (r.value !== String(optIdx)) r.checked = false;
         });
@@ -400,10 +395,9 @@
     }
 
     // ================================================================
-    // SINAVI GÖNDER
+    // GÖNDER
     // ================================================================
     function submitExam() {
-      // Tüm cevapları topla
       let list = [];
       let bos = 0;
       questions.forEach((q, idx) => {
@@ -416,7 +410,6 @@
 
       const mesaj = `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
 
-      // EmailJS ile gönder
       const templateParams = {
         subject: 'Yeni KPSS Deneme Cevapları',
         message: mesaj
@@ -424,7 +417,6 @@
 
       emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
         .then(() => {
-          // Başarılı – öğrenciye sadece teşekkür ekranı
           document.getElementById('quizArea').style.display = 'none';
           document.querySelector('.btn-submit').style.display = 'none';
           document.querySelector('.stats').style.display = 'none';
