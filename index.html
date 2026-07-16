@@ -4,12 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 KPSS Deneme Sınavı</title>
-  <!-- Güncel EmailJS SDK (v4) -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-  </script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* stiller aynı */
     * {
       margin: 0;
       padding: 0;
@@ -265,14 +261,8 @@
   <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
 
   <script>
-    // ★★★ EN GÜNCEL EMAILJS KULLANIMI ★★★
-    (function() {
-      // EmailJS'i başlat (YENİ SÜRÜM)
-      emailjs.init({
-        publicKey: "dbF3yWuvy9um9nAdp"
-      });
-    })();
-
+    // ★★★ EMAILJS AYARLARI (REST API KULLANILACAK) ★★★
+    const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
     const SERVICE_ID = "service_qdab76q";
     const TEMPLATE_ID = "template_64cuej9";
 
@@ -391,7 +381,7 @@
     }
 
     // ================================================================
-    // GÖNDER
+    // GÖNDER (REST API ile)
     // ================================================================
     function submitExam() {
       let list = [];
@@ -407,13 +397,28 @@
       const mesaj =
         `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
 
-      const templateParams = {
-        subject: 'Yeni KPSS Deneme Cevapları',
-        message: mesaj
+      // EmailJS REST API'ye istek
+      const url = 'https://api.emailjs.com/api/v1.0/email/send';
+      const data = {
+        service_id: SERVICE_ID,
+        template_id: TEMPLATE_ID,
+        user_id: PUBLIC_KEY,
+        template_params: {
+          subject: 'Yeni KPSS Deneme Cevapları',
+          message: mesaj
+        }
       };
 
-      emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
-        .then(() => {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          // Başarılı
           document.getElementById('quizArea').style.display = 'none';
           document.querySelector('.btn-submit').style.display = 'none';
           document.querySelector('.stats').style.display = 'none';
@@ -422,11 +427,17 @@
           document.getElementById('successScreen').style.display = 'block';
           window.scrollTo({ top: 0, behavior: 'smooth' });
           showToast('✅ Cevaplar başarıyla gönderildi!');
-        })
-        .catch((err) => {
-          alert('❌ Gönderme hatası: ' + JSON.stringify(err));
-          console.error(err);
-        });
+        } else {
+          // Hata
+          response.text().then(text => {
+            alert('❌ Gönderme hatası: ' + text);
+          });
+        }
+      })
+      .catch(error => {
+        alert('❌ Ağ hatası: ' + error);
+        console.error(error);
+      });
     }
 
     // ================================================================
