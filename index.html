@@ -481,7 +481,7 @@
     <span class="icon">💖</span>
     <h2>Cevapların Bana Ulaştı Sevgilim!</h2>
     <p>Harika bir iş çıkardın.<br />Cevaplarını aldım. Şimdi senin için kontrol edeceğim ve onaylayacağım. Çok az sonra sonuçlarını sorgulayabilirsin! 🥰</p>
-    <button class="btn-result-link" onclick="showResultScreen()">📊 Sonuçlarımı Gör</button>
+    <button class="btn-result-link" onclick="showResultScreenFromPending()">📊 Sonuçlarımı Gör</button>
   </div>
 
   <!-- SONUÇ SORGULAMA EKRANI -->
@@ -534,7 +534,7 @@
   // ★★★ SORULAR VE CEVAPLARI ★★★
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim, ülkemizde değil. ❤️" },
-    { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan Ulusal Egemenlik ve Çocuk Bayramı meclisimizin açılış günüdür bitanem! 🌸" },
+    { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan Uluset Egemenlik ve Çocuk Bayramı meclisimizin açılış günüdür bitanem! 🌸" },
     { q: "Aşağıdakilerden hangisi ısı alışverişi türü değildir?", opts: ["Konveksiyon", "Radyasyon", "Kondüksiyon", "Adveksiyon", "Süblimleşme"], ans: 4, note: "Süblimleşme bir hal değişimidir tatlım (katıdan doğrudan gaza geçme). Isı alışveriş türü değildir. ✨" },
     { q: "Türk Dil Kurumu hangi amaçla kurulmuştur?", opts: ["Türkçeyi arındırmak", "Doğru kullanım sağlamak", "Geliştirmek", "Hepsi", "Hiçbiri"], ans: 3, note: "Hepsi TDK'nın asil ve güzel amaçlarındandır güzel gözlüm. 📚" },
     { q: "Kurtuluş Savaşı'nda Batı Cephesi'nde yapılmayan savaş?", opts: ["I. İnönü", "II. İnönü", "Kütahya-Eskişehir", "Sakarya", "Çanakkale"], ans: 4, note: "Çanakkale Savaşı I. Dünya Savaşı cephesidir sevgilim, Kurtuluş Savaşı Batı Cephesi değil. 🇹🇷" },
@@ -591,6 +591,13 @@
     document.getElementById('resultDisplay').style.display = 'none';
     document.getElementById('resultEmail').value = '';
   }
+  function showResultScreenFromPending() {
+    document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
+    document.getElementById('resultScreen').style.display = 'block';
+    document.getElementById('resultDisplay').style.display = 'none';
+    // Kullanıcının başta girdiği mail adresini otomatik doldur
+    document.getElementById('resultEmail').value = userEmail;
+  }
   function showAdminScreen() {
     document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
     document.getElementById('adminScreen').style.display = 'block';
@@ -599,6 +606,7 @@
   }
   window.showMailScreen = showMailScreen;
   window.showResultScreen = showResultScreen;
+  window.showResultScreenFromPending = showResultScreenFromPending;
   window.showAdminScreen = showAdminScreen;
 
   // ★★★ SINAV BAŞLAT ★★★
@@ -709,7 +717,7 @@
     questions.forEach((q, idx) => {
       const sel = document.querySelector(`input[name="q${idx}"]:checked`);
       const val = sel ? sel.value : 'blank';
-      userAnswers.push(val); // Boş ise 'blank', değilse seçtiği indeks (0-4)
+      userAnswers.push(val); 
 
       let harf = 'Boş';
       if (val === 'blank') {
@@ -726,13 +734,11 @@
       list.push(`Soru ${idx+1}: ${harf}`);
     });
 
-    // Puanlama: Her doğru 5 puan (KPSS tarzında istersen formülü değiştirebilirsin)
-    const totalScore = correctCount * 5;
+    // Dinamik Puanlama Formülü (Soru sayısı değişse bile 100 üzerinden hesaplar)
+    const totalScore = Math.round((correctCount / total) * 100);
 
-    // EmailJS mesaj gövdesi (Otomatik detaylı raporlama)
     const mesaj = `📝 2026 Sevgilime Özel KPSS Sonuç Raporu\n👤 Sevgilimin Maili: ${userEmail}\n\n🏆 OTOMATİK SKOR ANALİZİ:\n--------------------------------------\n⭐ Toplam Puan: ${totalScore} / 100\n✅ Doğru Sayısı: ${correctCount}\n❌ Yanlış Sayısı: ${wrongCount}\n⬜ Boş Sayısı: ${emptyCount}\n--------------------------------------\n\nCEVAP DETAYLARI:\n${list.join('\n')}`;
 
-    // localstorage sonuçlarına kaydet (Onay Bekliyor olarak)
     const existingIndex = results.findIndex(r => r.email === userEmail);
     const examData = {
       email: userEmail,
@@ -741,7 +747,7 @@
       wrong: wrongCount,
       empty: emptyCount,
       answers: userAnswers,
-      onaylandi: false // Yönetici onaylayana kadar beklemede
+      onaylandi: false 
     };
 
     if (existingIndex !== -1) {
@@ -791,7 +797,7 @@
   }
   window.submitExam = submitExam;
 
-  // ★★★ DETAYLI SONUÇ SORGULAMA (Açıklama ve Soru Analizi Dahil) ★★★
+  // ★★★ DETAYLI SONUÇ SORGULAMA ★★★
   function checkResult() {
     const email = document.getElementById('resultEmail').value.trim();
     if (!email || !email.includes('@')) { showToast('❌ Geçerli mail adresini girmelisin aşkım!', true); return; }
@@ -805,7 +811,6 @@
       if (result.onaylandi) {
         document.getElementById('resultGrade').textContent = result.grade + ' Puan';
         
-        // Puana göre romantik ve destekleyici yorumlar
         let comment = "";
         if (result.grade >= 85) {
           comment = "Sen benim dahi sevgilimsin! Geleceğin memuru şimdiden hazır! 🏆👑❤️";
@@ -817,7 +822,6 @@
         document.getElementById('gradeComment').innerHTML = comment;
         document.getElementById('resultDetail').textContent = `✅ Doğru: ${result.correct}  |  ❌ Yanlış: ${result.wrong}  |  ⬜ Boş: ${result.empty}`;
         
-        // DETAYLI SORU DEĞERLENDİRME ANALİZİ OLUŞTURMA
         let analysisHtml = '<div class="analysis-title">✨ Soru Soru Detaylı Değerlendirmen:</div>';
         
         questions.forEach((q, idx) => {
@@ -886,7 +890,14 @@
   }
   window.adminLogin = adminLogin;
 
-  // ★★★ SİSTEMSEL ONAY SÜRECİ (Yönetici sadece tek tuşla onaylar) ★★★
+  // Şifre alanında Enter'a basınca otomatik giriş yapsın
+  document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      adminLogin();
+    }
+  });
+
+  // ★★★ SİSTEMSEL ONAY SÜRECİ ★★★
   function approveResultDirectly(index) {
     results[index].onaylandi = true;
     localStorage.setItem('examResults', JSON.stringify(results));
@@ -904,9 +915,6 @@
     }
     let html = '';
     results.forEach((r, i) => {
-      const statusClass = r.onaylandi ? 'approved' : 'pending';
-      const statusText = r.onaylandi ? '✅ Onaylı' : '⏳ Bekliyor';
-      
       html += `
         <div class="result-item">
           <div class="result-row">
