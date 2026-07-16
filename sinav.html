@@ -78,7 +78,7 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.error { background: #ef4444; }
 
-    .admin-panel-trigger { text-align: center; margin-top: 40px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.25); cursor: pointer; padding: 10px; }
+    .admin-panel-trigger { text-align: center; margin-top: 40px; font-size: 0.9rem; font-weight: bold; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; }
   </style>
 </head>
 <body>
@@ -387,9 +387,8 @@
     document.getElementById('analysisArea').innerHTML = analysisHtml;
   }
 
-  // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
+  // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ (HER ZAMAN AÇILAN HALİ) ★★★
   function openAdminPanel() {
-    // HİÇBİR URL KONTROLÜ YOK! DOĞRUDAN ŞİFRE EKRANI ÇIKACAK.
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
 
@@ -397,30 +396,32 @@
     
     get(examRef).then((snapshot) => {
       const data = snapshot.val();
-      if (!data) {
-        alert("Henüz çözülmüş bir sınav verisi bulunamadı!");
-        return;
-      }
-
-      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)";
+      
+      // VERİTABANI BOŞ OLSA BİLE MENÜYÜ GÖREBİLMEK İÇİN GÜNCELLENDİ
+      const statusInfo = data ? (data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)") : "VERİ YOK (Sınav henüz çözülmedi)";
+      const emailInfo = data ? data.email : "Henüz giren yok";
+      const scoreInfo = data ? data.score + " / 100" : "Sınav yapılmadı";
+      const resultsInfo = data ? `${data.correct} Doğru, ${data.wrong} Yanlış, ${data.empty} Boş` : "Veri yok";
       
       const action = prompt(
         `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
-        `👤 Aday: ${data.email}\n` +
-        `🏆 Puan: ${data.score} / 100\n` +
-        `📊 Sonuç: ${data.correct} Doğru, ${data.wrong} Yanlış, ${data.empty} Boş\n` +
+        `👤 Aday: ${emailInfo}\n` +
+        `🏆 Puan: ${scoreInfo}\n` +
+        `📊 Sonuç: ${resultsInfo}\n` +
         `🔑 Durum: ${statusInfo}\n\n` +
-        `[1] SONUÇLARI YAYINLA (Onun ekranında anında açılır!)\n` +
-        `[2] Sonuçları Geri Kilitle (Onu bekleme ekranına alır)\n` +
+        `[1] SONUÇLARI YAYINLA\n` +
+        `[2] Sonuçları Geri Kilitle\n` +
         `[3] Sınavı Sıfırla (Kız arkadaşına tekrar çözme hakkı verir)\n\n` +
         `Yapmak istediğin işlem numarasını gir:`
       );
 
       if (action === "1") {
+        if(!data) { alert("Ortada yayınlanacak bir sınav yok!"); return; }
         update(examRef, { revealed: true }).then(() => {
           showToast("🔓 Sonuçlar başarıyla yayınlandı! Onun ekranında anında açıldı.", false);
         });
       } else if (action === "2") {
+        if(!data) return;
         update(examRef, { revealed: false }).then(() => {
           showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
         });
@@ -445,7 +446,7 @@
     setTimeout(() => t.classList.remove('show'), 4000);
   }
 
-  // Butonların tıklama olaylarını doğrudan JS Modülü içinden bağlıyoruz (Garanti Çözüm)
+  // Butonların tıklama olaylarını doğrudan JS Modülü içinden bağlıyoruz
   document.getElementById('startExamBtn').addEventListener('click', startExam);
   document.getElementById('submitBtn').addEventListener('click', submitExam);
   document.getElementById('adminPanelBtn').addEventListener('click', openAdminPanel);
