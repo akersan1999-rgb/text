@@ -20,87 +20,78 @@
       background:linear-gradient(135deg, #0b0914 0%, #1a1030 50%, #0b0914 100%);
       background-size:400% 400%;animation:bgMove 15s ease infinite;
     }
-    @keyframes bgMove{
-      0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
-    }
-    .container{max-width:780px;width:100%}
+    @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .container{max-width:800px;width:100%}
 
-    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 12px 30px rgba(0,0,0,0.4);animation:screenIn 0.5s cubic-bezier(0.22,0.61,0.36,1)}
+    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s cubic-bezier(0.22,0.61,0.36,1)}
     .screen.active{display:block}
     @keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2rem}
+    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem;text-shadow:0 0 20px rgba(244,63,94,0.4)}
     h3{color:var(--accent);margin-bottom:12px;font-weight:700}
     input,button,textarea{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;transition:0.3s}
     input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(244,63,94,0.2)}
-    button{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;
-      font-size:1rem;display:flex;align-items:center;justify-content:center;gap:6px;
-      transition:all 0.3s;position:relative;overflow:hidden;
-    }
-    button:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(244,63,94,0.4)}
-    button:active{transform:scale(0.97)}
-    button::after{
-      content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;
-      background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s;
-    }
+    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;position:relative;overflow:hidden}
+    button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(244,63,94,0.4)}
+    button:active{transform:scale(0.96)}
+    button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
     button:active::after{width:300px;height:300px}
 
     .row{display:flex;gap:10px}.row>*{flex:1}
 
-    .back-btn{background:var(--info);width:auto;padding:10px 20px;margin-bottom:15px;display:inline-flex;border-radius:10px;animation:pulse 2s infinite}
-    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(99,102,241,0.4)}70%{box-shadow:0 0 0 10px rgba(99,102,241,0)}100%{box-shadow:0 0 0 0 rgba(99,102,241,0)}}
+    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
-    .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.4rem;animation:glow 2s infinite alternate}
-    @keyframes glow{from{box-shadow:0 0 5px rgba(244,63,94,0.2)}to{box-shadow:0 0 20px rgba(244,63,94,0.4)}}
+    .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.5rem;animation:glow 2s infinite alternate}
+    @keyframes glow{from{box-shadow:0 0 10px rgba(244,63,94,0.2)}to{box-shadow:0 0 25px rgba(244,63,94,0.5)}}
 
-    .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.25);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
-    .stats-item{flex:1;animation:popIn 0.5s ease backwards}
+    .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
+    .stats-item{flex:1;animation:popIn 0.6s ease backwards}
     .stats-item:nth-child(1){animation-delay:0.1s}.stats-item:nth-child(2){animation-delay:0.2s}.stats-item:nth-child(3){animation-delay:0.3s}.stats-item:nth-child(4){animation-delay:0.4s}
-    @keyframes popIn{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
-    .stats-item .value{display:block;font-size:2.5rem;font-weight:800;color:var(--accent)}.stats-item .label{font-size:0.85rem;color:var(--text2)}
+    @keyframes popIn{from{opacity:0;transform:scale(0.3) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent);text-shadow:0 0 15px rgba(244,63,94,0.5)}.stats-item .label{font-size:0.9rem;color:var(--text2);margin-top:5px}
 
-    .progress-bar-bg{background:#2d2844;border-radius:10px;height:24px;margin:20px 0;overflow:hidden}
-    .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--danger),var(--warning),var(--success));transition:width 1s ease;width:0%}
+    .progress-bar-bg{background:#2d2844;border-radius:14px;height:28px;margin:20px 0;overflow:hidden}
+    .progress-fill{height:100%;border-radius:14px;background:linear-gradient(90deg, var(--danger), var(--warning), var(--success));transition:width 1.2s ease;width:0%}
 
-    .opt{
-      padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;
-      display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s;
-      animation:slideLeft 0.3s ease backwards;
-    }
+    .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s;animation:slideLeft 0.3s ease backwards}
     @keyframes slideLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(5px)}
-    .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.12)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(6px)}
+    .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15);box-shadow:0 0 15px rgba(244,63,94,0.2)}
+    .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
 
-    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:12px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem}
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex;animation:fadeIn 0.3s}
+    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem;transition:0.3s}.link-box:hover{background:rgba(244,63,94,0.05)}
+
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex;animation:fadeIn 0.3s}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:580px;border:1px solid var(--accent);max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.6);animation:scaleIn 0.3s}
-    @keyframes scaleIn{from{transform:scale(0.9)}to{transform:scale(1)}}
-    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
-    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.3s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.06);transform:scale(1.01)}.list-item.selected{background:rgba(244,63,94,0.1);border-left:4px solid var(--accent)}
-    .detail-box{background:rgba(0,0,0,0.2);padding:15px;border-radius:12px;margin-top:15px;max-height:220px;overflow-y:auto;font-size:0.9rem}
-    .tabs{display:flex;gap:6px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.3s}.tab:hover{background:var(--border)}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:600px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto;box-shadow:0 30px 60px rgba(0,0,0,0.7);animation:scaleIn 0.3s}
+    @keyframes scaleIn{from{transform:scale(0.8)}to{transform:scale(1)}}
+    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2);transition:0.3s}.close-modal:hover{color:#fff;transform:rotate(90deg)}
+
+    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.3s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.06);transform:scale(1.01)}.list-item.selected{background:rgba(244,63,94,0.12);border-left:4px solid var(--accent)}
+    .detail-box{background:rgba(0,0,0,0.3);padding:15px;border-radius:12px;margin-top:15px;max-height:250px;overflow-y:auto;font-size:0.9rem}
+    .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.3s}.tab:hover{background:var(--border)}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
     .btn-sm{padding:10px 18px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
-    .tag{display:inline-block;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:600}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
+    .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
     .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px}
-    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.3s}.admin-fab:hover{transform:scale(1.1) rotate(90deg);box-shadow:0 12px 35px rgba(244,63,94,0.7)}
-    .help-mail{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
+    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.4s}.admin-fab:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 15px 35px rgba(244,63,94,0.7)}
+    .help-mail{text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
     .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:12px;font-size:0.9rem}
-    .confetti-trigger{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999}
+    .glow-text{animation:textGlow 2s infinite alternate}
+    @keyframes textGlow{from{text-shadow:0 0 10px var(--accent)}to{text-shadow:0 0 25px var(--accent), 0 0 50px var(--accent2)}}
   </style>
 </head>
 <body>
 <div class="container">
   <!-- Giriş -->
   <div class="screen active" id="loginScreen">
-    <h2>🎯 KPSS Deneme Sınavı</h2>
-    <p style="text-align:center;margin-bottom:20px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
+    <h2 class="glow-text">🎯 KPSS Deneme Sınavı</h2>
+    <p style="text-align:center;margin-bottom:25px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
     <div id="loginError" class="error-msg" style="display:none"></div>
     <div class="row"><input type="text" id="nameInput" placeholder="Adın"/><input type="text" id="surnameInput" placeholder="Soyadın"/></div>
     <input type="email" id="emailInput" placeholder="E-posta adresin"/>
     <button id="startBtn">🚀 Sınava Başla</button>
-    <div class="help-mail">📧 Yardım & Bilgi: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
   </div>
 
   <!-- Sınav -->
@@ -135,15 +126,15 @@
       <div class="stats-item"><span class="value" id="wrongDisplay">0</span><span class="label">Yanlış</span></div>
       <div class="stats-item"><span class="value" id="emptyDisplay">0</span><span class="label">Boş</span></div>
     </div>
-    <p style="text-align:center;margin-bottom:20px;font-weight:600" id="nameSurnameDisplay"></p>
+    <p style="text-align:center;margin-bottom:20px;font-weight:600;font-size:1.1rem" id="nameSurnameDisplay"></p>
     <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
-    <p style="text-align:center; color:var(--text2); margin-top:5px" id="progressText"></p>
+    <p style="text-align:center;color:var(--text2);margin-top:5px" id="progressText"></p>
     <div id="analysisContainer"></div>
     <div class="share-buttons" style="margin-top:15px">
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp</button>
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
     </div>
-    <div class="help-mail">📧 Yardım & Bilgi: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
   </div>
 </div>
 
@@ -176,10 +167,11 @@
       </div>
       <div id="questionsTab" style="display:none">
         <button id="addQuestionBtn" style="background:var(--success);margin-bottom:15px">➕ Yeni Soru Ekle</button>
-        <div id="questionList" style="max-height:400px;overflow-y:auto"></div>
+        <p style="color:var(--text2);margin-bottom:10px">Toplam <span id="totalQuestions">0</span> soru</p>
+        <div id="questionList" style="max-height:450px;overflow-y:auto"></div>
       </div>
       <div id="mailTab" style="display:none">
-        <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarları (template'te {{to_email}}, {{to_name}}, {{score}}, {{correct}}, {{wrong}}, {{empty}}, {{link}} kullan)</p>
+        <p style="color:var(--text2);margin-bottom:10px">Template içeriği: Merhaba { {to_name} }, ... Puanın: { {score} } ...</p>
         <input id="emailjsPublicKey" placeholder="EmailJS Public Key" />
         <input id="emailjsServiceId" placeholder="EmailJS Service ID" />
         <input id="emailjsTemplateId" placeholder="EmailJS Template ID" />
@@ -210,7 +202,7 @@ const questionsRef = ref(db, 'questions');
 const mailSettingsRef = ref(db, 'mailSettings');
 const ADMIN_PASSWORD = "1923";
 
-// Geniş soru havuzu
+// 100+ Soru Havuzu
 const defaultQuestions = [
   { q:"Türkiye'nin en kalabalık şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
@@ -262,7 +254,53 @@ const defaultQuestions = [
   { q:"Bilgisayarın beyni?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"easy", n:"CPU." },
   { q:"AB dışı ülke?", o:["Almanya","Fransa","İsviçre","İtalya","Hollanda"], a:2, difficulty:"medium", n:"İsviçre." },
   { q:"Yer çekimi yasası?", o:["Einstein","Newton","Galileo","Darwin","Tesla"], a:1, difficulty:"easy", n:"Newton." },
-  { q:"Element olmayan?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." }
+  { q:"Element olmayan?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." },
+  { q:"Atatürk'ün annesi?", o:["Zübeyde Hanım","Makbule Hanım","Latife Hanım","Fikriye Hanım","Halide Edip"], a:0, difficulty:"easy", n:"Zübeyde Hanım." },
+  { q:"İlk Türk İslam devleti?", o:["Karahanlılar","Gazneliler","Selçuklular","Osmanlılar","Büyük Selçuklu"], a:0, difficulty:"hard", n:"Karahanlılar." },
+  { q:"En büyük kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
+  { q:"Türkiye'nin en yüksek barajı?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"hard", n:"Yusufeli." },
+  { q:"Aşağıdakilerden hangisi bir meyve değildir?", o:["Elma","Armut","Domates","Patates","Portakal"], a:3, difficulty:"easy", n:"Patates." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Aşağıdakilerden hangisi bir müzik aleti değildir?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"Yılın en kısa günü?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Aşağıdakilerden hangisi bir gezegen değildir?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton (cüce gezegen)." },
+  { q:"Türk bayrağının rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"Aşağıdakilerden hangisi bir içecek değildir?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk (femur)." },
+  { q:"İlk telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"medium", n:"Alexander Graham Bell." },
+  { q:"Dünyanın en uzun kara sınırı?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
+  { q:"Hangi ülkenin başkenti yoktur?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
+  { q:"En çok Oscar alan film?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur (11 Oscar)." },
+  { q:"Bir düzine kaç adettir?", o:["6","10","12","20","24"], a:2, difficulty:"easy", n:"12." },
+  { q:"En hızlı balık?", o:["Ton balığı","Yelken balığı","Köpekbalığı","Som balığı","Alabalık"], a:1, difficulty:"hard", n:"Yelken balığı." },
+  { q:"İngiltere'nin para birimi?", o:["Euro","Dolar","Sterlin","Frank","Mark"], a:2, difficulty:"easy", n:"Sterlin." },
+  { q:"Türkiye'nin en doğusundaki il?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
+  { q:"Aşağıdakilerden hangisi sürüngen değildir?", o:["Yılan","Kertenkele","Kurbağa","Timsah","Kaplumbağa"], a:2, difficulty:"easy", n:"Kurbağa." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"medium", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili (yüzölçüm)?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"hard", n:"Konya." },
+  { q:"Aşağıdakilerden hangisi bir programlama dili değildir?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML (işaretleme dili)." },
+  { q:"Futbol sahası kaç kişiyle oynanır?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"En büyük gezegen?", o:["Dünya","Mars","Jüpiter","Satürn","Uranüs"], a:2, difficulty:"easy", n:"Jüpiter." },
+  { q:"Türk lirasının simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"En yüksek şelale?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel (Venezuela)." },
+  { q:"Aşağıdakilerden hangisi bir vitamin değildir?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"medium", n:"Kalsiyum (mineral)." },
+  { q:"En kalabalık Afrika ülkesi?", o:["Mısır","Etiyopya","Nijerya","Güney Afrika","Kenya"], a:2, difficulty:"medium", n:"Nijerya." },
+  { q:"İlk bilgisayarın adı?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
+  { q:"Aşağıdakilerden hangisi bir gezegen değildir?", o:["Venüs","Mars","Ay","Jüpiter","Merkür"], a:2, difficulty:"easy", n:"Ay (uydu)." },
+  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep (antik Zeugma)." },
+  { q:"İnsan vücudunda kaç kemik var?", o:["186","206","226","256","286"], a:1, difficulty:"medium", n:"206." },
+  { q:"Aşağıdakilerden hangisi bir doğal sayı değildir?", o:["0","1","2","-1","3"], a:3, difficulty:"easy", n:"-1 (negatif)." },
+  { q:"En soğuk kıta?", o:["Asya","Avrupa","Antarktika","Kuzey Amerika","Güney Amerika"], a:2, difficulty:"easy", n:"Antarktika." },
+  { q:"İlk insanlı uzay aracı?", o:["Apollo 11","Sputnik","Vostok 1","Mercury","Gemini"], a:2, difficulty:"hard", n:"Vostok 1 (Gagarin)." },
+  { q:"Bir kilo kaç gram?", o:["10","100","500","1000","10000"], a:3, difficulty:"easy", n:"1000." },
+  { q:"Hangi ülkenin bayrağında ejderha var?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
+  { q:"Aşağıdakilerden hangisi bir sürüngen değildir?", o:["Yılan","Bukalemun","Kurbağa","Varan","Gecko"], a:2, difficulty:"easy", n:"Kurbağa." },
+  { q:"Dünyanın en küçük ülkesi?", o:["Monako","Vatikan","San Marino","Liechtenstein","Andorra"], a:1, difficulty:"easy", n:"Vatikan." },
+  { q:"En pahalı baharat?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"medium", n:"Safran." },
+  { q:"Aşağıdakilerden hangisi bir kıta değildir?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"easy", n:"Grönland (ada)." },
+  { q:"Türk milli içeceği?", o:["Çay","Ayran","Rakı","Boza","Şalgam"], a:1, difficulty:"easy", n:"Ayran." }
 ];
 
 let allQuestions = [];
@@ -286,7 +324,8 @@ async function initQuestions() {
   if (!snap.exists()) for (const q of defaultQuestions) await push(questionsRef, q);
   onValue(questionsRef, snap => {
     const data = snap.val() || {};
-    allQuestions = Object.entries(data).map(([id, val]) => ({ id, ...val })).sort(() => Math.random()-0.5).slice(0,20);
+    allQuestions = Object.entries(data).map(([id, val]) => ({ id, ...val })).sort(() => Math.random()-0.5).slice(0, 20);
+    document.getElementById('totalQuestions').textContent = Object.keys(data).length;
     renderQuestionBank();
   });
 }
@@ -299,7 +338,6 @@ function showScreen(id) {
 }
 function goHome() { showScreen('loginScreen'); }
 
-// Giriş
 document.getElementById('startBtn').addEventListener('click', async () => {
   const name = document.getElementById('nameInput').value.trim();
   const surname = document.getElementById('surnameInput').value.trim();
@@ -374,12 +412,10 @@ function showResult(data) {
   document.getElementById('wrongDisplay').textContent=data.wrong;
   document.getElementById('emptyDisplay').textContent=data.empty;
   document.getElementById('nameSurnameDisplay').textContent=`${data.name} ${data.surname} - ${data.email}`;
-  
   const total = data.correct + data.wrong + data.empty;
   const percent = total ? Math.round((data.correct/total)*100) : 0;
   document.getElementById('progressFill').style.width = percent+'%';
   document.getElementById('progressText').textContent = `%${percent} başarı`;
-  
   let html='';
   allQuestions.forEach((q,i) => {
     const ua=data.answers[i]; let color='#6b7280', status='⬜ Boş', choice='Seçilmedi';
@@ -388,10 +424,7 @@ function showResult(data) {
       <b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br><b>Doğru:</b> ${q.o[q.a]}<br><small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML=html;
-  
-  // Konfeti patlat
-  confetti({ particleCount:100, spread:70, origin:{y:0.6} });
-  
+  confetti({ particleCount:120, spread:80, origin:{y:0.6} });
   const link = location.origin+location.pathname+'?exam='+examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Sonucum: '+link)}`);
   document.getElementById('sendMailResult').onclick = () => sendResultMail(data, link);
@@ -536,6 +569,7 @@ function renderQuestionBank() {
   onValue(questionsRef, snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+    document.getElementById('totalQuestions').textContent = arr.length;
     let html = '';
     arr.forEach(q => {
       html += `<div class="list-item" style="justify-content:space-between">
