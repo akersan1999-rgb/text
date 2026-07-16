@@ -131,7 +131,7 @@
     <div class="analysis-container" id="analysisArea"></div>
   </div>
 
-  <!-- GIZLI YONETICI GIRISI -->
+  <!-- GİZLİ YÖNETİCİ GİRİŞİ -->
   <div class="admin-panel-trigger" id="adminPanelBtn">⚙️ Yönetici Paneli</div>
 
 </div>
@@ -156,7 +156,6 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-
   const ADMIN_PIN = "1923"; 
 
   // Sorular listesi
@@ -188,12 +187,12 @@
   const total = questions.length;
   let timerInterval = null;
   let secondsRemaining = 1800; 
+  let tempAnswers = {};
 
   document.getElementById('totalQ').textContent = total;
-
-  // GERÇEK ZAMANLI EKRAN DEĞİŞİM TAKİBİ
   const examRef = ref(db, 'kpss_exam');
   
+  // EKRAN DURUMU DİNLEYİCİSİ
   onValue(examRef, (snapshot) => {
     const data = snapshot.val();
     if (data && data.status === 'completed') {
@@ -261,22 +260,15 @@
     });
     area.innerHTML = html;
 
-    // Seçenek tıklama olaylarını JS ile bağlıyoruz
     document.querySelectorAll('.option').forEach(element => {
       element.addEventListener('click', function() {
         const qIdx = parseInt(this.getAttribute('data-q'));
         const optVal = this.getAttribute('data-o');
-        if (optVal === 'blank') {
-          selectBlank(qIdx);
-        } else {
-          selectOption(qIdx, parseInt(optVal));
-        }
+        if (optVal === 'blank') selectBlank(qIdx);
+        else selectOption(qIdx, parseInt(optVal));
       });
     });
   }
-
-  // Kullanıcının seçtiği cevapları tutacak yerel hafıza
-  let tempAnswers = {};
 
   function selectOption(qIdx, optIdx) {
     tempAnswers[qIdx] = optIdx;
@@ -329,7 +321,6 @@
 
     const totalScore = Math.round((correctCount / total) * 100);
 
-    const examRef = ref(db, 'kpss_exam');
     set(examRef, {
       email: userEmail,
       score: totalScore,
@@ -344,8 +335,6 @@
       document.getElementById('waitingScreen').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       showToast('✨ Sınav başarıyla kaydedildi! Sevgilin onayladığında sonuçlar açılacak.', false);
-    }).catch(err => {
-      showToast('❌ Veritabanı Hatası: ' + err, true);
     });
   }
 
@@ -387,54 +376,43 @@
     document.getElementById('analysisArea').innerHTML = analysisHtml;
   }
 
-  // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ (HER ZAMAN AÇILAN HALİ) ★★★
+  // ★ YÖNETİCİ PANELİ (SORUNSUZ / URL OLMADAN DİREKT AÇILIR) ★
   function openAdminPanel() {
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
-
-    const examRef = ref(db, 'kpss_exam');
     
     get(examRef).then((snapshot) => {
       const data = snapshot.val();
       
-      // VERİTABANI BOŞ OLSA BİLE MENÜYÜ GÖREBİLMEK İÇİN GÜNCELLENDİ
-      const statusInfo = data ? (data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)") : "VERİ YOK (Sınav henüz çözülmedi)";
+      const statusInfo = data ? (data.revealed ? "YAYINLANDI" : "KİLİTLİ (Kız arkadaşın bekliyor)") : "VERİ YOK (Sınav çözülmedi)";
       const emailInfo = data ? data.email : "Henüz giren yok";
       const scoreInfo = data ? data.score + " / 100" : "Sınav yapılmadı";
-      const resultsInfo = data ? `${data.correct} Doğru, ${data.wrong} Yanlış, ${data.empty} Boş` : "Veri yok";
       
       const action = prompt(
         `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
         `👤 Aday: ${emailInfo}\n` +
         `🏆 Puan: ${scoreInfo}\n` +
-        `📊 Sonuç: ${resultsInfo}\n` +
         `🔑 Durum: ${statusInfo}\n\n` +
         `[1] SONUÇLARI YAYINLA\n` +
         `[2] Sonuçları Geri Kilitle\n` +
-        `[3] Sınavı Sıfırla (Kız arkadaşına tekrar çözme hakkı verir)\n\n` +
-        `Yapmak istediğin işlem numarasını gir:`
+        `[3] Sınavı Sıfırla (Tekrar çözme hakkı verir)\n\n` +
+        `İşlem numarası gir:`
       );
 
       if (action === "1") {
         if(!data) { alert("Ortada yayınlanacak bir sınav yok!"); return; }
-        update(examRef, { revealed: true }).then(() => {
-          showToast("🔓 Sonuçlar başarıyla yayınlandı! Onun ekranında anında açıldı.", false);
-        });
+        update(examRef, { revealed: true }).then(() => showToast("🔓 Sonuçlar yayınlandı!", false));
       } else if (action === "2") {
         if(!data) return;
-        update(examRef, { revealed: false }).then(() => {
-          showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
-        });
+        update(examRef, { revealed: false }).then(() => showToast("🔒 Sonuçlar tekrar kilitlendi.", false));
       } else if (action === "3") {
-        if(confirm("Sınavı tamamen silmek ve sıfırlamak istediğine emin misin?")) {
+        if(confirm("Sınavı tamamen silmek istediğine emin misin?")) {
           set(examRef, null).then(() => {
-            showToast("🧹 Tüm veriler sıfırlandı! Sayfa yenileniyor...", false);
+            showToast("🧹 Sıfırlandı! Yenileniyor...", false);
             setTimeout(() => location.reload(), 1500);
           });
         }
       }
-    }).catch((err) => {
-      showToast("❌ Veri çekme hatası: " + err, true);
     });
   }
 
@@ -446,7 +424,6 @@
     setTimeout(() => t.classList.remove('show'), 4000);
   }
 
-  // Butonların tıklama olaylarını doğrudan JS Modülü içinden bağlıyoruz
   document.getElementById('startExamBtn').addEventListener('click', startExam);
   document.getElementById('submitBtn').addEventListener('click', submitExam);
   document.getElementById('adminPanelBtn').addEventListener('click', openAdminPanel);
