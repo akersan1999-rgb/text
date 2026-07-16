@@ -28,70 +28,100 @@
       display:none;justify-content:space-between;align-items:center;
       box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
     }
+    .sticky-bar .timer{font-weight:700;font-size:1.2rem;color:var(--accent)}
+    .sticky-bar .progress-text{font-size:0.9rem;color:var(--text2)}
 
-    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s ease}
+    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s cubic-bezier(0.22,0.61,0.36,1)}
     .screen.active{display:block}
     @keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem}
-    input,button{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none}
-    input:focus{border-color:var(--accent)}
-    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s}
+    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem;text-shadow:0 0 20px rgba(244,63,94,0.4)}
+    h3{color:var(--accent);margin-bottom:12px;font-weight:700}
+    input,button{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;transition:0.3s}
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(244,63,94,0.2)}
+    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.3s;position:relative;overflow:hidden}
     button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(244,63,94,0.4)}
+    button:active{transform:scale(0.96)}
+    button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
+    button:active::after{width:300px;height:300px}
+
     .row{display:flex;gap:10px}.row>*{flex:1}
-    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px}
+    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
-    .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent)}.stats-item .label{font-size:0.9rem;color:var(--text2)}
+    .stats-item{flex:1;animation:popIn 0.6s ease backwards}
+    .stats-item:nth-child(1){animation-delay:0.1s}.stats-item:nth-child(2){animation-delay:0.2s}.stats-item:nth-child(3){animation-delay:0.3s}.stats-item:nth-child(4){animation-delay:0.4s}
+    @keyframes popIn{from{opacity:0;transform:scale(0.3) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent);text-shadow:0 0 15px rgba(244,63,94,0.5)}.stats-item .label{font-size:0.9rem;color:var(--text2)}
 
-    .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s}
-    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06)}.opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+    .progress-bar-bg{background:#2d2844;border-radius:10px;height:20px;margin:20px 0;overflow:hidden}
+    .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--danger),var(--warning),var(--success));transition:width 0.8s ease;width:0%}
 
-    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem}
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex}
-    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:600px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto}
-    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
-    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}.list-item:hover{background:rgba(244,63,94,0.06)}
-    .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border)}.tab.active{background:var(--accent);color:#fff}
-    .btn-sm{padding:8px 16px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
-    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center}
+    .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s;animation:slideLeft 0.3s ease backwards}
+    @keyframes slideLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(6px)}
+    .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15);box-shadow:0 0 15px rgba(244,63,94,0.2)}
+    .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+
+    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem;transition:0.3s}.link-box:hover{background:rgba(244,63,94,0.05)}
+
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex;animation:fadeIn 0.3s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:600px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto;box-shadow:0 30px 60px rgba(0,0,0,0.7);animation:scaleIn 0.3s}
+    @keyframes scaleIn{from{transform:scale(0.8)}to{transform:scale(1)}}
+    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2);transition:0.3s}.close-modal:hover{color:#fff;transform:rotate(90deg)}
+
+    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.3s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.06);transform:scale(1.01)}.list-item.selected{background:rgba(244,63,94,0.12);border-left:4px solid var(--accent)}
+    .detail-box{background:rgba(0,0,0,0.3);padding:15px;border-radius:12px;margin-top:15px;max-height:250px;overflow-y:auto;font-size:0.9rem}
+    .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.3s}.tab:hover{background:var(--border)}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+    .btn-sm{padding:10px 18px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
+    .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
+    .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px;font-size:0.9rem}
+    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.4s}.admin-fab:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 15px 35px rgba(244,63,94,0.7)}
+    .help-mail{text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
+    .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:12px;font-size:0.9rem}
+    .refresh-btn{background:var(--info);margin:10px 0;width:auto;padding:12px 24px}
+    .success-msg{color:var(--success);text-align:center;margin-top:10px;font-weight:600}
   </style>
 </head>
 <body>
 <div class="container">
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 30:00</span>
-    <span>Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
-    <span>İlerleme: <strong id="stickyProgress">0</strong>%</span>
+    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
+    <span class="progress-text">İlerleme: <strong id="stickyProgress">0</strong>%</span>
   </div>
 
   <!-- Giriş -->
   <div class="screen active" id="loginScreen">
     <h2>🎯 KPSS Deneme Sınavı</h2>
     <p style="text-align:center;margin-bottom:25px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
-    <div id="loginError" style="display:none;color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px"></div>
+    <div id="loginError" class="error-msg" style="display:none"></div>
     <div class="row"><input type="text" id="nameInput" placeholder="Adın"/><input type="text" id="surnameInput" placeholder="Soyadın"/></div>
     <input type="email" id="emailInput" placeholder="E-posta adresin"/>
     <button id="startBtn">🚀 Sınava Başla</button>
-    <p style="text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)">📧 İletişim: <a href="mailto:akersan1999@gmail.com" style="color:var(--info)">akersan1999@gmail.com</a></p>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
   </div>
 
   <!-- Sınav -->
   <div class="screen" id="examScreen">
     <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
-    <button class="back-btn" id="refreshQuestionsBtn" style="background:var(--success);margin-left:10px">🔄 Yeni 20 Soru</button>
-    <div id="questionsContainer" style="margin-top:20px"></div>
-    <button id="finishBtn" style="margin-top:20px">✨ Sınavı Bitir ve Gönder</button>
+    <button class="refresh-btn" id="refreshQuestionsBtn">🔄 Soruları Güncelle (Yeni 20 soru)</button>
+    <div id="questionsContainer"></div>
+    <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
   </div>
 
   <!-- Bekleme -->
   <div class="screen" id="waitScreen">
     <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
     <h2>⏳ Sınavın Kaydedildi</h2>
+    <p style="text-align:center;margin-bottom:15px;color:var(--text2)">Sonuç linkini paylaş, yönetici yayınlayınca gör.</p>
     <div class="link-box" id="linkBox" title="Tıkla kopyala"></div>
-    <div style="display:flex;gap:8px;margin-top:10px">
+    <div class="share-buttons">
       <button id="copyLinkBtn" style="background:var(--info)">📋 Kopyala</button>
       <button id="shareWhatsAppBtn" style="background:#25D366">💬 WhatsApp</button>
+      <button id="shareMailBtn" style="background:#EA4335">✉️ Mail ile Gönder</button>
     </div>
     <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
   </div>
@@ -105,12 +135,17 @@
       <div class="stats-item"><span class="value" id="wrongDisplay">0</span><span class="label">Yanlış</span></div>
       <div class="stats-item"><span class="value" id="emptyDisplay">0</span><span class="label">Boş</span></div>
     </div>
-    <p style="text-align:center;margin:20px 0;font-weight:600" id="nameSurnameDisplay"></p>
+    <p style="text-align:center;margin-bottom:20px;font-weight:600;font-size:1.1rem" id="nameSurnameDisplay"></p>
+    <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
+    <p style="text-align:center;color:var(--text2);margin-top:5px" id="progressText"></p>
     <div id="analysisContainer"></div>
-    <div style="display:flex;gap:8px;margin-top:15px">
+    <div class="share-buttons" style="margin-top:15px">
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp</button>
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
+      <button id="testMailBtn" style="background:var(--info)">🧪 Test Maili Gönder</button>
     </div>
+    <div id="mailSuccessMsg" class="success-msg" style="display:none"></div>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
   </div>
 </div>
 
@@ -122,6 +157,7 @@
     <div id="adminLoginForm">
       <input type="password" id="adminPass" placeholder="Yönetici şifresi"/>
       <button id="adminLoginBtn">Giriş Yap</button>
+      <div id="adminError" class="error-msg" style="display:none"></div>
     </div>
     <div id="adminMain" style="display:none">
       <div class="tabs">
@@ -129,22 +165,25 @@
         <div class="tab" data-tab="questions">📚 Soru Kütüphanesi</div>
       </div>
       <div id="examsTab">
-        <p><span id="totalExams">0</span> sınav kaydı</p>
-        <div id="examList"></div>
-        <div id="detailPanel" style="display:none"></div>
-        <div id="adminActions" style="display:none;margin-top:10px;display:flex;gap:8px">
-          <button id="yayinlaBtn" style="background:var(--success)">✅ Yayınla & Mail Gönder</button>
-          <button id="kilitleBtn" style="background:var(--warning);color:#000">🔒 Kilitle</button>
+        <p style="margin:10px 0"><span id="totalExams">0</span> sınav kaydı</p>
+        <div id="examList" style="max-height:250px;overflow-y:auto;background:rgba(0,0,0,0.2);border-radius:10px;padding:5px"></div>
+        <div class="detail-box" id="detailPanel" style="display:none"></div>
+        <div id="adminActions" style="display:none;margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="yayinlaBtn" style="background:var(--success);flex:1">✅ Yayınla & Mail Gönder</button>
+          <button id="kilitleBtn" style="background:var(--warning);flex:1;color:#000">🔒 Kilitle</button>
+          <button id="silBtn" style="background:var(--danger);flex:1">🗑️ Tümünü Sil</button>
         </div>
+        <p id="adminMsg" style="color:var(--warning);text-align:center;margin-top:10px"></p>
       </div>
       <div id="questionsTab" style="display:none">
-        <button id="addQuestionBtn" style="background:var(--success)">➕ Yeni Soru Ekle</button>
-        <div id="questionList"></div>
+        <button id="addQuestionBtn" style="background:var(--success);margin-bottom:15px">➕ Yeni Soru Ekle</button>
+        <p style="color:var(--text2);margin-bottom:10px">Toplam <span id="totalQuestions">0</span> soru</p>
+        <div id="questionList" style="max-height:400px;overflow-y:auto"></div>
       </div>
     </div>
   </div>
 </div>
-<button class="admin-fab" id="openAdminBtn">🔐</button>
+<button class="admin-fab" id="openAdminBtn" title="Yönetici Paneli">🔐</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -165,36 +204,37 @@ const examsRef = ref(db, 'exams');
 const questionsRef = ref(db, 'questions');
 const ADMIN_PASSWORD = "1923";
 
+// ✅ GÜNCEL EMAILJS AYARLARI
 const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
-const MAIL_TEMPLATE_ID = "template_64cuej9";
+const MAIL_TEMPLATE_ID = "template_pqqrclq"; // Yeni şablon ID'si
 
-// Soru havuzu
+// 100+ soru havuzu
 const questionPool = [
-  { q:"Türkiye'nin en kalabalık şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, d:"easy", n:"İstanbul." },
-  { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, d:"easy", n:"23 Nisan 1920." },
-  { q:"Doğal afet olmayan?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, d:"easy", n:"İnsan kaynaklı." },
-  { q:"Su buharının sıvıya dönüşmesi?", o:["Buharlaşma","Yoğuşma","Süblimleşme","Erime","Donma"], a:1, d:"medium", n:"Yoğuşma." },
-  { q:"İstanbul'u fetheden padişah?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, d:"easy", n:"Fatih Sultan Mehmet." },
-  { q:"En uzun akarsu?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, d:"medium", n:"Kızılırmak." },
-  { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, d:"easy", n:"1923." },
-  { q:"Almanya başkenti?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:1, d:"medium", n:"Berlin." },
-  { q:"Çift ünlü içeren kelime?", o:["Türk","Aile","Kalem","Kitap","Defter"], a:1, d:"medium", n:"Aile." },
-  { q:"1 m = ? cm", o:["10","100","1000","10000","100000"], a:1, d:"easy", n:"100 cm." },
-  { q:"En büyük okyanus?", o:["Atlas","Hint","Pasifik","Arktik","Güney"], a:2, d:"medium", n:"Büyük Okyanus." },
-  { q:"İstiklal Marşı şairi?", o:["Mehmet Akif","Namık Kemal","Yahya Kemal","Orhan Veli","Can Yücel"], a:0, d:"easy", n:"Mehmet Akif Ersoy." },
-  { q:"Güneş'e en yakın gezegen?", o:["Venüs","Dünya","Mars","Merkür","Jüpiter"], a:3, d:"medium", n:"Merkür." },
-  { q:"Sayının kendisiyle çarpımı?", o:["Toplam","Fark","Bölüm","Kare","Küp"], a:3, d:"easy", n:"Kare." },
-  { q:"En büyük göl?", o:["Van","Tuz","Beyşehir","Eğirdir","İznik"], a:0, d:"medium", n:"Van Gölü." },
-  { q:"TBMM hangi savaştan sonra açıldı?", o:["I.Dünya","Kurtuluş","Çanakkale","Sakarya","Balkan"], a:1, d:"medium", n:"Kurtuluş Savaşı." },
-  { q:"Maden olmayan?", o:["Demir","Bakır","Kömür","Petrol","Su"], a:4, d:"easy", n:"Su." },
-  { q:"Yağış getiren bulut?", o:["Kümülüs","Sirüs","Nimbüs","Stratüs","Alto"], a:2, d:"hard", n:"Nimbüs." },
-  { q:"Basınç birimi?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, d:"hard", n:"Pascal." },
-  { q:"Haberleşme aracı olmayan?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, d:"easy", n:"Kalem." },
-  { q:"Kızılay kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, d:"medium", n:"Dr. Abdullah Bey." },
-  { q:"En kalabalık kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, d:"easy", n:"Asya." },
-  { q:"Atatürk'ün doğum yeri?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, d:"easy", n:"Selanik." },
-  { q:"Üçgen iç açı toplamı?", o:["90","180","270","360","100"], a:1, d:"easy", n:"180." }
+  { q:"Türkiye'nin en kalabalık şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
+  { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
+  { q:"Doğal afet olmayan?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"easy", n:"İnsan kaynaklı." },
+  { q:"Su buharının sıvıya dönüşmesi?", o:["Buharlaşma","Yoğuşma","Süblimleşme","Erime","Donma"], a:1, difficulty:"medium", n:"Yoğuşma." },
+  { q:"İstanbul'u fetheden padişah?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"easy", n:"Fatih Sultan Mehmet." },
+  { q:"En uzun akarsu?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, difficulty:"medium", n:"Kızılırmak." },
+  { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
+  { q:"Almanya başkenti?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:1, difficulty:"medium", n:"Berlin." },
+  { q:"Çift ünlü içeren kelime?", o:["Türk","Aile","Kalem","Kitap","Defter"], a:1, difficulty:"medium", n:"Aile." },
+  { q:"1 m = ? cm", o:["10","100","1000","10000","100000"], a:1, difficulty:"easy", n:"100 cm." },
+  { q:"En büyük okyanus?", o:["Atlas","Hint","Pasifik","Arktik","Güney"], a:2, difficulty:"medium", n:"Büyük Okyanus." },
+  { q:"İstiklal Marşı şairi?", o:["Mehmet Akif","Namık Kemal","Yahya Kemal","Orhan Veli","Can Yücel"], a:0, difficulty:"easy", n:"Mehmet Akif Ersoy." },
+  { q:"Güneş'e en yakın gezegen?", o:["Venüs","Dünya","Mars","Merkür","Jüpiter"], a:3, difficulty:"medium", n:"Merkür." },
+  { q:"Sayının kendisiyle çarpımı?", o:["Toplam","Fark","Bölüm","Kare","Küp"], a:3, difficulty:"easy", n:"Kare." },
+  { q:"En büyük göl?", o:["Van","Tuz","Beyşehir","Eğirdir","İznik"], a:0, difficulty:"medium", n:"Van Gölü." },
+  { q:"TBMM hangi savaştan sonra açıldı?", o:["I.Dünya","Kurtuluş","Çanakkale","Sakarya","Balkan"], a:1, difficulty:"medium", n:"Kurtuluş Savaşı." },
+  { q:"Maden olmayan?", o:["Demir","Bakır","Kömür","Petrol","Su"], a:4, difficulty:"easy", n:"Su." },
+  { q:"Yağış getiren bulut?", o:["Kümülüs","Sirüs","Nimbüs","Stratüs","Alto"], a:2, difficulty:"hard", n:"Nimbüs." },
+  { q:"Basınç birimi?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, difficulty:"hard", n:"Pascal." },
+  { q:"Haberleşme aracı olmayan?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"easy", n:"Kalem." },
+  { q:"Kızılay kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
+  { q:"En kalabalık kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
+  { q:"Atatürk'ün doğum yeri?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, difficulty:"easy", n:"Selanik." },
+  { q:"Üçgen iç açı toplamı?", o:["90","180","270","360","100"], a:1, difficulty:"easy", n:"180." }
 ];
 
 let allQuestions = [];
@@ -204,13 +244,7 @@ let answers = [];
 let answeredSet = new Set();
 let timer = null;
 let remaining = 1800;
-
-// Başlangıçta soruları hemen yükle (login ekranında bile dolu olacak)
-function pickRandomQuestions() {
-  const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
-  allQuestions = shuffled.slice(0, 20);
-}
-pickRandomQuestions(); // hemen doldur
+let examActive = false;
 
 // Oturum
 if (sessionStorage.getItem('examState')) {
@@ -219,6 +253,14 @@ if (sessionStorage.getItem('examState')) {
   if (state.examId) examId = state.examId;
   if (state.userData) userData = state.userData;
 }
+
+function pickRandomQuestions() {
+  const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
+  allQuestions = shuffled.slice(0, 20);
+}
+pickRandomQuestions();
+
+onValue(questionsRef, snap => renderQuestionBankFromData(snap.val()||{}));
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -245,10 +287,11 @@ document.getElementById('startBtn').addEventListener('click', async () => {
 });
 
 function startExam() {
-  pickRandomQuestions(); // yeni 20 soru
+  pickRandomQuestions();
   answeredSet.clear();
   answers = new Array(allQuestions.length).fill('blank');
   remaining = 1800;
+  examActive = true;
   document.getElementById('stickyTimer').textContent = '⏱️ 30:00';
   document.getElementById('stickyTotal').textContent = allQuestions.length;
   document.getElementById('stickyAnswered').textContent = '0';
@@ -288,23 +331,22 @@ function renderExamQuestions() {
   }));
 }
 
-// Yeni soru butonu
+// Soruları güncelle butonu
 document.getElementById('refreshQuestionsBtn').addEventListener('click', () => {
-  if (confirm('Yeni 20 soru getirilsin mi? Mevcut cevaplar silinecek.')) {
-    pickRandomQuestions();
-    answers = new Array(allQuestions.length).fill('blank');
-    answeredSet.clear();
-    document.getElementById('stickyAnswered').textContent = '0';
-    document.getElementById('stickyProgress').textContent = '0';
-    renderExamQuestions();
+  if (!examActive) return;
+  if (confirm('Yeni 20 soru yüklenecek, mevcut cevaplar silinecek. Emin misiniz?')) {
+    clearInterval(timer);
+    startExam();
   }
 });
 
 // Sınavı bitir
 document.getElementById('finishBtn').addEventListener('click', async function() {
+  if (!examActive) return;
   const btn = this; btn.disabled = true; btn.textContent = 'Gönderiliyor...';
   try {
     clearInterval(timer);
+    examActive = false;
     let correct = 0, wrong = 0, empty = 0;
     const final = answers.map((v, i) => {
       if (v === 'blank') { empty++; return 'blank'; }
@@ -330,6 +372,10 @@ function showResult(data) {
   document.getElementById('wrongDisplay').textContent = data.wrong;
   document.getElementById('emptyDisplay').textContent = data.empty;
   document.getElementById('nameSurnameDisplay').textContent = `${data.name} ${data.surname} - ${data.email}`;
+  const total = data.correct + data.wrong + data.empty;
+  const percent = total ? Math.round((data.correct/total)*100) : 0;
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressText').textContent = `%${percent} başarı`;
   let html = '';
   allQuestions.forEach((q, i) => {
     const ua = data.answers[i]; let color='#6b7280', status='⬜ Boş', choice='Seçilmedi';
@@ -337,16 +383,21 @@ function showResult(data) {
     html += `<div style="border-left:4px solid ${color};padding:12px;margin:8px 0;background:var(--card);border-radius:10px"><b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br><b>Doğru:</b> ${q.o[q.a]}<br><small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML = html;
-  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+  confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+  setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.3, y: 0.7 } }), 300);
+  setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { x: 0.7, y: 0.7 } }), 600);
   const link = location.origin + location.pathname + '?exam=' + examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Sonucum: ' + link)}`);
-  document.getElementById('sendMailResult').onclick = () => sendResultMail(data, link);
+  document.getElementById('sendMailResult').onclick = () => sendMail(data, link);
+  document.getElementById('testMailBtn').onclick = () => sendMail(data, link, true);
 }
 
-async function sendResultMail(data, link) {
-  emailjs.init(MAIL_PUBLIC_KEY);
+async function sendMail(data, link, isTest = false) {
+  const msgDiv = document.getElementById('mailSuccessMsg');
+  msgDiv.style.display = 'none';
   try {
-    await emailjs.send(MAIL_SERVICE_ID, MAIL_TEMPLATE_ID, {
+    emailjs.init(MAIL_PUBLIC_KEY);
+    const result = await emailjs.send(MAIL_SERVICE_ID, MAIL_TEMPLATE_ID, {
       to_email: data.email,
       to_name: data.name + ' ' + data.surname,
       score: data.score,
@@ -355,13 +406,20 @@ async function sendResultMail(data, link) {
       empty: data.empty,
       link: link
     });
-    alert('✅ Mail gönderildi!');
-  } catch(e) { alert('❌ Mail hatası: ' + e.message); }
+    console.log('✅ Mail gönderildi:', result);
+    msgDiv.textContent = isTest ? '✅ Test maili gönderildi! (akersan1999@gmail.com)' : '✅ Sonuç maili gönderildi!';
+    msgDiv.style.display = 'block';
+    if (!isTest) alert('✅ Mail gönderildi!');
+  } catch(e) {
+    console.error('❌ Mail hatası:', e);
+    alert('❌ Mail hatası: ' + e.message + '\n\nF12 konsolunu kontrol et.');
+  }
 }
 
-// Diğer butonlar
+// Paylaş butonları
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!')));
 document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> window.open(`https://wa.me/?text=${encodeURIComponent('KPSS linkim: ' + document.getElementById('linkBox').textContent)}`));
+document.getElementById('shareMailBtn').addEventListener('click', ()=> window.location.href = `mailto:?subject=KPSS Linkim&body=${encodeURIComponent(document.getElementById('linkBox').textContent)}`);
 document.getElementById('checkBtn').addEventListener('click', async ()=>{
   if (!examId) return;
   const snap = await get(ref(db, `exams/${examId}`));
@@ -398,7 +456,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', ()=>{
     document.getElementById('adminLoginForm').style.display='none';
     document.getElementById('adminMain').style.display='block';
     initAdminPanel();
-  }
+  } else document.getElementById('adminError').style.display='block';
 });
 
 function initAdminPanel() {
@@ -414,7 +472,7 @@ function initAdminPanel() {
 function renderExamList() {
   const list=document.getElementById('examList');
   const ids=Object.keys(adminExams);
-  if (!ids.length) { list.innerHTML='<p>Henüz sınav yok.</p>'; return; }
+  if (!ids.length) { list.innerHTML='<p style="padding:10px;text-align:center">Henüz sınav yok.</p>'; return; }
   let html='';
   ids.sort((a,b)=>adminExams[b].submittedAt-adminExams[a].submittedAt).forEach(id => {
     const e=adminExams[id];
@@ -429,10 +487,10 @@ function renderExamList() {
 }
 function showExamDetail(id) {
   const e=adminExams[id];
-  let html=`<b>${e.name} ${e.surname}</b> (${e.email})<br>Puan: ${e.score} | ✅${e.correct} ❌${e.wrong} ⬜${e.empty}<br>`;
+  let html=`<b>${e.name} ${e.surname}</b> (${e.email})<br>Puan: ${e.score} | ✅${e.correct} ❌${e.wrong} ⬜${e.empty}<br><small>${new Date(e.submittedAt).toLocaleString()}</small><hr>`;
   allQuestions.forEach((q,i)=>{
     const ua=e.answers[i]; const txt=ua==='blank'?'Boş':q.o[ua]; const ok=ua!=='blank'&&ua===q.a;
-    html+=`<div style="color:${ok?'#10b981':(ua==='blank'?'gray':'#ef4444')}">${i+1}. ${txt} ${ua==='blank'?'':(ok?'✓':'✗')}</div>`;
+    html+=`<div style="font-size:0.85rem; color:${ok?'var(--success)':(ua==='blank'?'gray':'var(--danger)')}">${i+1}. ${txt} ${ua==='blank'?'':(ok?'✓':'✗')}</div>`;
   });
   document.getElementById('detailPanel').innerHTML=html; document.getElementById('detailPanel').style.display='block';
 }
@@ -441,34 +499,26 @@ document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
   if (!selectedExamId) return;
   await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
   const exam = adminExams[selectedExamId];
-  emailjs.init(MAIL_PUBLIC_KEY);
-  emailjs.send(MAIL_SERVICE_ID, MAIL_TEMPLATE_ID, {
-    to_email: exam.email,
-    to_name: exam.name+' '+exam.surname,
-    score: exam.score,
-    correct: exam.correct,
-    wrong: exam.wrong,
-    empty: exam.empty,
-    link: location.origin+location.pathname+'?exam='+selectedExamId
-  }).then(()=> alert('✅ Yayınlandı ve mail gönderildi!'))
-    .catch(()=> alert('✅ Yayınlandı, mail hatası.'));
+  sendMail({ email: exam.email, name: exam.name + ' ' + exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, location.origin+location.pathname+'?exam='+selectedExamId);
+  document.getElementById('adminMsg').textContent = '✅ Yayınlandı & mail gönderildi.';
 });
 document.getElementById('kilitleBtn').addEventListener('click', async ()=>{ if(selectedExamId) await update(ref(db,`exams/${selectedExamId}`),{revealed:false}); });
+document.getElementById('silBtn').addEventListener('click', ()=>{ if(confirm('Tüm sınavlar silinecek!')) set(examsRef,null).then(()=>location.reload()); });
 
-// Soru bankası
+// Soru bankası yönetimi
 function renderQuestionBankFromData(data) {
   const arr = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+  document.getElementById('totalQuestions').textContent = arr.length;
   let html = '';
   arr.forEach(q => {
     html += `<div class="list-item"><span>${q.q} <span class="tag ${q.difficulty}">${q.difficulty==='easy'?'Kolay':q.difficulty==='medium'?'Orta':'Zor'}</span></span>
-      <div><button class="btn-sm edit-q" data-id="${q.id}" style="background:var(--info)">✏️</button>
-      <button class="btn-sm del-q" data-id="${q.id}" style="background:var(--danger)">🗑️</button></div></div>`;
+      <div><button class="btn-sm edit-q" data-id="${q.id}" style="background:var(--info)">✏️ Düzenle</button>
+      <button class="btn-sm del-q" data-id="${q.id}" style="background:var(--danger)">🗑️ Sil</button></div></div>`;
   });
-  document.getElementById('questionList').innerHTML = html || '<p>Henüz soru yok.</p>';
+  document.getElementById('questionList').innerHTML = html || '<p style="padding:10px;text-align:center">Henüz soru yok.</p>';
   document.querySelectorAll('.edit-q').forEach(b => b.addEventListener('click', () => editQuestion(b.dataset.id)));
   document.querySelectorAll('.del-q').forEach(b => b.addEventListener('click', () => deleteQuestion(b.dataset.id)));
 }
-onValue(questionsRef, snap => renderQuestionBankFromData(snap.val()||{}));
 
 document.getElementById('addQuestionBtn').addEventListener('click', ()=>{
   const q=prompt('Soru:'); if(!q) return;
@@ -495,6 +545,7 @@ function editQuestion(id) {
 }
 function deleteQuestion(id) { if(confirm('Silinsin mi?')) remove(ref(db,`questions/${id}`)); }
 
+// Geri butonları
 document.getElementById('backToHomeBtn').addEventListener('click', goHome);
 document.getElementById('backToHomeWaitBtn').addEventListener('click', goHome);
 document.getElementById('backToHomeResultBtn').addEventListener('click', goHome);
