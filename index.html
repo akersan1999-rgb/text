@@ -6,7 +6,6 @@
   <title>2026 KPSS Deneme Sınavı</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* ===== RESET & TEMA ===== */
     * {
       margin: 0;
       padding: 0;
@@ -24,31 +23,19 @@
                         radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%);
       background-attachment: fixed;
     }
-    .wrapper {
-      max-width: 720px;
-      width: 100%;
-    }
+    .wrapper { max-width: 720px; width: 100%; }
 
-    /* ===== MAİL GİRİŞ EKRANI ===== */
+    /* MAIL EKRANI */
     .mail-screen {
       background: linear-gradient(145deg, #131c2e, #18243e);
       border-radius: 28px;
       padding: 40px 30px;
       text-align: center;
       border: 1px solid #24324f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-    .mail-screen h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-    .mail-screen p {
-      color: #94a3b8;
-      font-size: 1rem;
-      margin-bottom: 20px;
-    }
+    .mail-screen h2 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .mail-screen p { color: #94a3b8; font-size: 1rem; margin-bottom: 20px; }
     .mail-screen input {
       width: 100%;
       padding: 16px 20px;
@@ -58,13 +45,9 @@
       color: #fff;
       font-size: 1rem;
       outline: none;
-      transition: 0.3s;
       margin-bottom: 16px;
     }
-    .mail-screen input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-    }
+    .mail-screen input:focus { border-color: #6366f1; }
     .mail-screen .btn-start {
       width: 100%;
       padding: 16px;
@@ -77,10 +60,7 @@
       cursor: pointer;
       transition: 0.3s;
     }
-    .mail-screen .btn-start:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(99, 102, 241, 0.3);
-    }
+    .mail-screen .btn-start:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(99,102,241,0.3); }
     .mail-screen .btn-result-link {
       background: transparent;
       border: none;
@@ -90,11 +70,9 @@
       margin-top: 16px;
       font-size: 0.95rem;
     }
-    .mail-screen .btn-result-link:hover {
-      text-decoration: underline;
-    }
+    .mail-screen .btn-result-link:hover { text-decoration: underline; }
 
-    /* ===== HEADER ===== */
+    /* HEADER */
     .header {
       display: none;
       text-align: center;
@@ -103,63 +81,20 @@
       border-radius: 28px;
       margin-bottom: 30px;
       border: 1px solid #24324f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-    .header h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .header p {
-      color: #94a3b8;
-      margin-top: 8px;
-      font-size: 1rem;
-    }
-    .header .user-mail {
-      color: #f59e0b;
-      font-weight: 600;
-      margin-top: 6px;
-      font-size: 0.9rem;
-    }
+    .header h1 { font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: #94a3b8; margin-top: 8px; font-size: 1rem; }
+    .header .user-mail { color: #f59e0b; font-weight: 600; margin-top: 6px; font-size: 0.9rem; }
 
-    /* ===== İLERLEME ===== */
-    .progress-wrap {
-      display: none;
-      background: #1e2942;
-      border-radius: 30px;
-      height: 10px;
-      margin-bottom: 25px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #6366f1, #f59e0b);
-      transition: width 0.6s ease;
-      border-radius: 30px;
-    }
-    .stats {
-      display: none;
-      justify-content: space-between;
-      background: #131c2e;
-      padding: 14px 22px;
-      border-radius: 16px;
-      border: 1px solid #24324f;
-      margin-bottom: 28px;
-    }
-    .stats span {
-      font-weight: 600;
-      color: #94a3b8;
-      font-size: 0.95rem;
-    }
-    .stats .count {
-      color: #f59e0b;
-      font-weight: 700;
-    }
+    /* İLERLEME */
+    .progress-wrap { display: none; background: #1e2942; border-radius: 30px; height: 10px; margin-bottom: 25px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #f59e0b); transition: width 0.6s ease; border-radius: 30px; }
+    .stats { display: none; justify-content: space-between; background: #131c2e; padding: 14px 22px; border-radius: 16px; border: 1px solid #24324f; margin-bottom: 28px; }
+    .stats span { font-weight: 600; color: #94a3b8; font-size: 0.95rem; }
+    .stats .count { color: #f59e0b; font-weight: 700; }
 
-    /* ===== SORU KARTLARI ===== */
+    /* SORU KARTLARI */
     .question-card {
       display: none;
       background: #131c2e;
@@ -167,105 +102,38 @@
       border-radius: 24px;
       padding: 26px;
       margin-bottom: 26px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
       transition: 0.3s;
     }
-    .question-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(99, 102, 241, 0.3);
-    }
-    .question-card .q-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-    .question-card .q-head .badge {
-      background: rgba(99, 102, 241, 0.2);
-      color: #818cf8;
-      padding: 6px 16px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-    .question-card .q-head .status {
-      color: #94a3b8;
-      font-size: 0.8rem;
-    }
-    .question-card .q-text {
-      font-size: 1.15rem;
-      font-weight: 600;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      color: #e2e8f0;
-    }
+    .question-card:hover { transform: translateY(-4px); border-color: rgba(99,102,241,0.3); }
+    .question-card .q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .question-card .q-head .badge { background: rgba(99,102,241,0.2); color: #818cf8; padding: 6px 16px; border-radius: 40px; font-size: 0.8rem; font-weight: 700; }
+    .question-card .q-head .status { color: #94a3b8; font-size: 0.8rem; }
+    .question-card .q-text { font-size: 1.15rem; font-weight: 600; line-height: 1.6; margin-bottom: 20px; color: #e2e8f0; }
 
-    /* ===== ŞIKLAR ===== */
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .options { display: flex; flex-direction: column; gap: 12px; }
     .option {
       display: flex;
       align-items: center;
       gap: 14px;
       padding: 14px 18px;
-      background: rgba(11, 15, 25, 0.5);
+      background: rgba(11,15,25,0.5);
       border: 2px solid #24324f;
       border-radius: 14px;
       cursor: pointer;
       transition: 0.25s;
     }
-    .option:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.02);
-      transform: translateX(4px);
-    }
-    .option input {
-      display: none;
-    }
-    .option .dot {
-      width: 22px;
-      height: 22px;
-      border: 2px solid #94a3b8;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: 0.25s;
-    }
-    .option .dot::after {
-      content: '';
-      width: 10px;
-      height: 10px;
-      background: #f59e0b;
-      border-radius: 50%;
-      transform: scale(0);
-      transition: 0.25s;
-    }
-    .option input:checked + .dot {
-      border-color: #f59e0b;
-    }
-    .option input:checked + .dot::after {
-      transform: scale(1);
-    }
-    .option input:checked ~ .option-text {
-      color: #fff;
-      font-weight: 600;
-    }
-    .option .option-text {
-      color: #cbd5e1;
-      font-size: 0.98rem;
-    }
-    .blank-option {
-      border-style: dashed;
-      color: #94a3b8;
-      font-style: italic;
-    }
+    .option:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); transform: translateX(4px); }
+    .option input { display: none; }
+    .option .dot { width: 22px; height: 22px; border: 2px solid #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.25s; }
+    .option .dot::after { content: ''; width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; transform: scale(0); transition: 0.25s; }
+    .option input:checked + .dot { border-color: #f59e0b; }
+    .option input:checked + .dot::after { transform: scale(1); }
+    .option input:checked ~ .option-text { color: #fff; font-weight: 600; }
+    .option .option-text { color: #cbd5e1; font-size: 0.98rem; }
+    .blank-option { border-style: dashed; color: #94a3b8; font-style: italic; }
 
-    /* ===== GÖNDER BUTONU ===== */
+    /* GÖNDER BUTONU */
     .btn-submit {
       display: none;
       width: 100%;
@@ -277,44 +145,19 @@
       font-weight: 800;
       color: #0b0f19;
       cursor: pointer;
-      box-shadow: 0 18px 40px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 18px 40px rgba(245,158,11,0.25);
       transition: 0.3s;
       margin-top: 16px;
     }
-    .btn-submit:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 24px 50px rgba(245, 158, 11, 0.4);
-    }
-    .btn-submit:active {
-      transform: scale(0.97);
-    }
-    .btn-submit:disabled {
-      opacity: 0.6;
-      transform: none;
-      pointer-events: none;
-    }
-    .btn-submit .spinner {
-      display: none;
-      width: 24px;
-      height: 24px;
-      border: 3px solid #0b0f19;
-      border-top: 3px solid transparent;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .btn-submit.loading .btn-text {
-      display: none;
-    }
-    .btn-submit.loading .spinner {
-      display: block;
-    }
+    .btn-submit:hover { transform: translateY(-5px); box-shadow: 0 24px 50px rgba(245,158,11,0.4); }
+    .btn-submit:active { transform: scale(0.97); }
+    .btn-submit:disabled { opacity: 0.6; transform: none; pointer-events: none; }
+    .btn-submit .spinner { display: none; width: 24px; height: 24px; border: 3px solid #0b0f19; border-top: 3px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .btn-submit.loading .btn-text { display: none; }
+    .btn-submit.loading .spinner { display: block; }
 
-    /* ===== BAŞARI EKRANI ===== */
+    /* BAŞARI EKRANI */
     .success-screen {
       display: none;
       text-align: center;
@@ -325,43 +168,14 @@
       margin-top: 20px;
       animation: fadeInUp 0.6s ease;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .success-screen .icon {
-      font-size: 4.8rem;
-      display: block;
-      margin-bottom: 12px;
-    }
-    .success-screen h2 {
-      color: #10b981;
-      font-size: 2.2rem;
-      font-weight: 800;
-    }
-    .success-screen p {
-      color: #94a3b8;
-      font-size: 1.1rem;
-      margin-top: 10px;
-      line-height: 1.6;
-    }
-    .success-screen .btn-result-link {
-      margin-top: 20px;
-      padding: 12px 30px;
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .success-screen .btn-result-link:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(99, 102, 241, 0.3);
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .success-screen .icon { font-size: 4.8rem; display: block; margin-bottom: 12px; }
+    .success-screen h2 { color: #10b981; font-size: 2.2rem; font-weight: 800; }
+    .success-screen p { color: #94a3b8; font-size: 1.1rem; margin-top: 10px; line-height: 1.6; }
+    .success-screen .btn-result-link { margin-top: 20px; padding: 12px 30px; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .success-screen .btn-result-link:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(99,102,241,0.3); }
 
-    /* ===== SONUÇ SORGULAMA EKRANI ===== */
+    /* SONUÇ EKRANI */
     .result-screen {
       display: none;
       background: linear-gradient(145deg, #131c2e, #18243e);
@@ -369,86 +183,21 @@
       padding: 40px 30px;
       text-align: center;
       border: 1px solid #24324f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
-    .result-screen h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-    .result-screen p {
-      color: #94a3b8;
-      font-size: 1rem;
-      margin-bottom: 20px;
-    }
-    .result-screen input {
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 2px solid #24324f;
-      background: #0b0f19;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      transition: 0.3s;
-      margin-bottom: 16px;
-    }
-    .result-screen input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-    }
-    .result-screen .btn-result {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border: none;
-      border-radius: 16px;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .result-screen .btn-result:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3);
-    }
-    .result-display {
-      display: none;
-      margin-top: 20px;
-      padding: 20px;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid #10b981;
-      border-radius: 16px;
-    }
-    .result-display .grade {
-      font-size: 3rem;
-      font-weight: 800;
-      color: #f59e0b;
-    }
-    .result-display .detail {
-      color: #94a3b8;
-      margin-top: 8px;
-    }
-    .result-display .not-found {
-      color: #ef4444;
-      font-size: 1.1rem;
-    }
-    .result-screen .btn-back {
-      background: transparent;
-      border: none;
-      color: #6366f1;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 16px;
-      font-size: 0.95rem;
-    }
-    .result-screen .btn-back:hover {
-      text-decoration: underline;
-    }
+    .result-screen h2 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .result-screen p { color: #94a3b8; font-size: 1rem; margin-bottom: 20px; }
+    .result-screen input { width: 100%; padding: 16px 20px; border-radius: 16px; border: 2px solid #24324f; background: #0b0f19; color: #fff; font-size: 1rem; outline: none; margin-bottom: 16px; }
+    .result-screen input:focus { border-color: #6366f1; }
+    .result-screen .btn-result { width: 100%; padding: 16px; background: linear-gradient(135deg, #10b981, #059669); border: none; border-radius: 16px; color: #fff; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .result-screen .btn-result:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(16,185,129,0.3); }
+    .result-display { display: none; margin-top: 20px; padding: 20px; background: rgba(16,185,129,0.08); border: 1px solid #10b981; border-radius: 16px; }
+    .result-display .grade { font-size: 3rem; font-weight: 800; color: #f59e0b; }
+    .result-display .detail { color: #94a3b8; margin-top: 8px; }
+    .result-display .not-found { color: #ef4444; font-size: 1.1rem; }
+    .result-screen .btn-back { background: transparent; border: none; color: #6366f1; cursor: pointer; font-weight: 600; margin-top: 16px; font-size: 0.95rem; }
+    .result-screen .btn-back:hover { text-decoration: underline; }
 
-    /* ===== TOAST ===== */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -460,37 +209,22 @@
       border-radius: 60px;
       font-weight: 700;
       font-size: 1rem;
-      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 12px 35px rgba(16,185,129,0.3);
       opacity: 0;
       transition: 0.5s;
       pointer-events: none;
       backdrop-filter: blur(6px);
       z-index: 999;
     }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    .toast.error {
-      background: #ef4444;
-      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.3);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 500px) {
-      .header h1 { font-size: 2rem; }
-      .question-card .q-text { font-size: 1rem; }
-      .option { padding: 12px 14px; }
-      .btn-submit { font-size: 1.2rem; padding: 18px; }
-      .mail-screen { padding: 30px 20px; }
-      .mail-screen h2 { font-size: 1.5rem; }
-    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.error { background: #ef4444; box-shadow: 0 12px 35px rgba(239,68,68,0.3); }
+    @media (max-width: 500px) { .header h1 { font-size: 2rem; } .question-card .q-text { font-size: 1rem; } .option { padding: 12px 14px; } .btn-submit { font-size: 1.2rem; padding: 18px; } .mail-screen { padding: 30px 20px; } .mail-screen h2 { font-size: 1.5rem; } }
   </style>
 </head>
 <body>
   <div class="wrapper">
 
-    <!-- ===== MAİL GİRİŞ EKRANI ===== -->
+    <!-- MAIL GİRİŞ EKRANI -->
     <div class="mail-screen" id="mailScreen">
       <h2>📧 Sınava Başlamak İçin</h2>
       <p>Sonuçlarınızın tarafıma ulaşması için mail adresinizi girin.</p>
@@ -499,32 +233,30 @@
       <button class="btn-result-link" onclick="showResultScreen()">📊 Sonuçlarımı Görmek İstiyorum</button>
     </div>
 
-    <!-- ===== HEADER ===== -->
+    <!-- HEADER -->
     <div class="header" id="examHeader">
       <h1>🎯 KPSS Özel Deneme</h1>
       <p>Soruları dikkatle oku, doğru şıkkı seç. Başarılar! 🍀</p>
       <div class="user-mail" id="displayMail"></div>
     </div>
 
-    <!-- ===== İLERLEME ===== -->
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <!-- İLERLEME -->
+    <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
     <div class="stats" id="statsBar">
       <span>📌 Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
       <span>📊 <span id="progressPercent">0</span>%</span>
     </div>
 
-    <!-- ===== SORULAR ===== -->
+    <!-- SORULAR -->
     <div id="quizArea"></div>
 
-    <!-- ===== GÖNDER BUTONU ===== -->
+    <!-- GÖNDER BUTONU -->
     <button class="btn-submit" id="submitBtn" onclick="submitExam()">
       <span class="btn-text">🚀 Sınavı Tamamla ve Gönder</span>
       <span class="spinner"></span>
     </button>
 
-    <!-- ===== BAŞARI EKRANI ===== -->
+    <!-- BAŞARI EKRANI -->
     <div class="success-screen" id="successScreen">
       <span class="icon">✅</span>
       <h2>Cevaplarınız İletildi!</h2>
@@ -532,40 +264,38 @@
       <button class="btn-result-link" onclick="showResultScreen()">📊 Sonuçlarımı Gör</button>
     </div>
 
-    <!-- ===== SONUÇ SORGULAMA EKRANI ===== -->
+    <!-- SONUÇ EKRANI -->
     <div class="result-screen" id="resultScreen">
       <h2>📊 Sınav Sonucunu Öğren</h2>
       <p>Sınav sonucunu öğrenmek için kayıt olduğun mail adresini gir.</p>
       <input type="email" id="resultEmail" placeholder="ornek@mail.com" />
       <button class="btn-result" onclick="checkResult()">🔍 Sonucumu Getir</button>
       <div class="result-display" id="resultDisplay">
-        <div class="grade" id="resultGrade">85</div>
-        <div class="detail" id="resultDetail">✅ Doğru: 17 | ❌ Yanlış: 2 | ⬜ Boş: 1</div>
+        <div class="grade" id="resultGrade"></div>
+        <div class="detail" id="resultDetail"></div>
       </div>
       <button class="btn-back" onclick="showMailScreen()">🏠 Ana Sayfaya Dön</button>
     </div>
 
   </div>
 
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
   <script>
     // ================================================================
-    // EMAILJS AYARLARI (REST API)
+    // ★★★ EMAILJS AYARLARI ★★★
     // ================================================================
     const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
     const SERVICE_ID = "service_qdab76q";
     const TEMPLATE_ID = "template_64cuej9";
 
     // ================================================================
-    // SONUÇLAR (MANUEL GİRİLECEK - ÖRNEK VERİLER)
-    // ★★★ BURAYA ÖĞRENCİLERİN SONUÇLARINI GİRECEKSİN ★★★
+    // ★★★ SONUÇLAR (MANUEL GİRECEKSİN) ★★★
     // ================================================================
     let results = [];
 
     // ================================================================
-    // 20 SORU
+    // ★★★ SORULAR (20 ADET) ★★★
     // ================================================================
     const questions = [
       { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
@@ -591,7 +321,7 @@
     ];
 
     // ================================================================
-    // DEĞİŞKENLER
+    // ★★★ DEĞİŞKENLER ★★★
     // ================================================================
     let userEmail = '';
     let answered = new Set();
@@ -599,43 +329,10 @@
     document.getElementById('totalQ').textContent = total;
 
     // ================================================================
-    // EKRAN GEÇİŞLERİ
+    // ★★★ FONKSİYONLAR (TAMAMEN ÇALIŞIR) ★★★
     // ================================================================
-    function showMailScreen() {
-      document.getElementById('mailScreen').style.display = 'block';
-      document.getElementById('examHeader').style.display = 'none';
-      document.getElementById('progressWrap').style.display = 'none';
-      document.getElementById('statsBar').style.display = 'none';
-      document.getElementById('quizArea').innerHTML = '';
-      document.getElementById('submitBtn').style.display = 'none';
-      document.getElementById('successScreen').style.display = 'none';
-      document.getElementById('resultScreen').style.display = 'none';
-      answered.clear();
-      document.getElementById('answeredCount').textContent = '0';
-      document.getElementById('progressPercent').textContent = '0';
-      document.getElementById('progressBar').style.width = '0%';
-    }
 
-    window.showMailScreen = showMailScreen;
-
-    function showResultScreen() {
-      document.getElementById('mailScreen').style.display = 'none';
-      document.getElementById('examHeader').style.display = 'none';
-      document.getElementById('progressWrap').style.display = 'none';
-      document.getElementById('statsBar').style.display = 'none';
-      document.getElementById('quizArea').innerHTML = '';
-      document.getElementById('submitBtn').style.display = 'none';
-      document.getElementById('successScreen').style.display = 'none';
-      document.getElementById('resultScreen').style.display = 'block';
-      document.getElementById('resultDisplay').style.display = 'none';
-      document.getElementById('resultEmail').value = '';
-    }
-
-    window.showResultScreen = showResultScreen;
-
-    // ================================================================
-    // SINAV BAŞLAT
-    // ================================================================
+    // 1. Sınav Başlat
     function startExam() {
       const emailInput = document.getElementById('userEmail');
       const email = emailInput.value.trim();
@@ -651,13 +348,10 @@
       document.getElementById('statsBar').style.display = 'block';
       document.getElementById('submitBtn').style.display = 'block';
       renderQuestions();
+      showToast('✅ Sınav başladı, başarılar!');
     }
 
-    window.startExam = startExam;
-
-    // ================================================================
-    // SORULARI BAS
-    // ================================================================
+    // 2. Soruları Göster
     function renderQuestions() {
       const area = document.getElementById('quizArea');
       let html = '';
@@ -692,9 +386,7 @@
       area.innerHTML = html;
     }
 
-    // ================================================================
-    // SEÇİM
-    // ================================================================
+    // 3. Seçim
     function selectOption(qIdx, optIdx) {
       const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
       if (radio) {
@@ -706,15 +398,11 @@
       updateStatus(qIdx);
     }
 
-    window.selectOption = selectOption;
-
     function selectBlank(qIdx) {
       const radio = document.querySelector(`input[name="q${qIdx}"][value="blank"]`);
       if (radio) radio.checked = true;
       updateStatus(qIdx);
     }
-
-    window.selectBlank = selectBlank;
 
     function updateStatus(qIdx) {
       const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
@@ -740,9 +428,7 @@
       document.getElementById('progressBar').style.width = percent + '%';
     }
 
-    // ================================================================
-    // SINAVI GÖNDER
-    // ================================================================
+    // 4. Sınavı Gönder
     function submitExam() {
       const btn = document.getElementById('submitBtn');
       btn.disabled = true;
@@ -802,3 +488,80 @@
         btn.classList.remove('loading');
       });
     }
+
+    // 5. Sonuç Sorgula
+    function checkResult() {
+      const email = document.getElementById('resultEmail').value.trim();
+      if (!email || !email.includes('@')) {
+        showToast('❌ Lütfen geçerli bir mail adresi girin!', true);
+        return;
+      }
+      const result = results.find(r => r.email === email);
+      const display = document.getElementById('resultDisplay');
+      if (result) {
+        display.style.display = 'block';
+        document.getElementById('resultGrade').textContent = result.grade + ' Puan';
+        document.getElementById('resultDetail').textContent =
+          `✅ Doğru: ${result.correct}  ❌ Yanlış: ${result.wrong}  ⬜ Boş: ${result.empty}`;
+        showToast('✅ Sonucunuz bulundu!');
+      } else {
+        display.style.display = 'block';
+        document.getElementById('resultGrade').textContent = '';
+        document.getElementById('resultDetail').innerHTML = '<span class="not-found">❌ Bu maile ait sonuç bulunamadı.</span>';
+        showToast('❌ Sonuç bulunamadı', true);
+      }
+    }
+
+    // 6. Ekran Geçişleri
+    function showMailScreen() {
+      document.getElementById('mailScreen').style.display = 'block';
+      document.getElementById('examHeader').style.display = 'none';
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('statsBar').style.display = 'none';
+      document.getElementById('quizArea').innerHTML = '';
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'none';
+      document.getElementById('resultScreen').style.display = 'none';
+      answered.clear();
+      document.getElementById('answeredCount').textContent = '0';
+      document.getElementById('progressPercent').textContent = '0';
+      document.getElementById('progressBar').style.width = '0%';
+    }
+
+    function showResultScreen() {
+      document.getElementById('mailScreen').style.display = 'none';
+      document.getElementById('examHeader').style.display = 'none';
+      document.getElementById('progressWrap').style.display = 'none';
+      document.getElementById('statsBar').style.display = 'none';
+      document.getElementById('quizArea').innerHTML = '';
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'none';
+      document.getElementById('resultScreen').style.display = 'block';
+      document.getElementById('resultDisplay').style.display = 'none';
+      document.getElementById('resultEmail').value = '';
+    }
+
+    // 7. Toast Mesajı
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast';
+      if (isError) t.classList.add('error');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 5000);
+    }
+
+    // ================================================================
+    // ★★★ FONKSİYONLARI GLOBAL YAP ★★★
+    // ================================================================
+    window.startExam = startExam;
+    window.selectOption = selectOption;
+    window.selectBlank = selectBlank;
+    window.submitExam = submitExam;
+    window.checkResult = checkResult;
+    window.showMailScreen = showMailScreen;
+    window.showResultScreen = showResultScreen;
+    window.showToast = showToast;
+  </script>
+</body>
+</html>
