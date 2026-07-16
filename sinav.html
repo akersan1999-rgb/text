@@ -11,24 +11,26 @@
         body { background:#0f0b19; color:#f1f5f9; min-height:100vh; display:flex; justify-content:center; padding:20px; }
         .container { max-width:750px; width:100% }
 
-        .screen { display:none; background:linear-gradient(145deg,#19132e,#22183e); border-radius:28px; padding:35px 25px; border:1px solid #3c244f; margin-bottom:20px }
-        .screen.active { display:block }
+        .screen { display:none; background:linear-gradient(145deg,#19132e,#22183e); border-radius:28px; padding:35px 25px; border:1px solid #3c244f; margin-bottom:20px; box-shadow:0 15px 35px rgba(0,0,0,0.4) }
+        .screen.active { display:block; animation:fadeIn 0.3s ease }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
         h2 { color:#fff; margin-bottom:20px; text-align:center; font-weight:800; font-size:1.8rem }
-        input, button { width:100%; padding:14px; border-radius:12px; margin-bottom:12px; border:2px solid #3c244f; background:#0f0b19; color:#fff; font-size:1rem; outline:none }
+        input, button { width:100%; padding:14px; border-radius:12px; margin-bottom:12px; border:2px solid #3c244f; background:#0f0b19; color:#fff; font-size:1rem; outline:none; transition:0.2s }
+        input:focus { border-color:#f43f5e }
         button { background:linear-gradient(135deg,#f43f5e,#ec4899); border:none; font-weight:700; cursor:pointer; font-size:1.1rem }
-        button:hover { opacity:0.9 }
-        button:disabled { opacity:0.5; cursor:not-allowed }
+        button:hover { opacity:0.9; transform:translateY(-1px) }
+        button:disabled { opacity:0.5; cursor:not-allowed; transform:none }
 
         .row { display:flex; gap:10px }
         .row>* { flex:1 }
 
-        .timer { background:rgba(244,63,94,0.15); padding:15px; border-radius:14px; text-align:center; margin-bottom:20px; font-weight:700; font-size:1.3rem }
+        .timer { background:rgba(244,63,94,0.15); border:1px solid rgba(244,63,94,0.3); padding:15px; border-radius:14px; text-align:center; margin-bottom:20px; font-weight:700; font-size:1.3rem }
         .stats-grid { display:flex; justify-content:space-around; background:rgba(0,0,0,0.3); padding:15px; border-radius:14px; margin-bottom:20px; text-align:center }
         .stats-item span { display:block; font-size:2rem; font-weight:800; color:#f43f5e }
 
-        .opt { padding:12px; border:2px solid #3c244f; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:10px; margin-bottom:8px; background:rgba(15,11,25,0.4) }
-        .opt:hover { border-color:#f43f5e }
+        .opt { padding:12px; border:2px solid #3c244f; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:10px; margin-bottom:8px; background:rgba(15,11,25,0.4); transition:0.2s }
+        .opt:hover { border-color:#f43f5e; background:rgba(244,63,94,0.05) }
         .opt.chosen { border-color:#f43f5e; background:rgba(244,63,94,0.12) }
         .opt.chosen::before { content:'✓'; color:#f43f5e; font-weight:bold; font-size:1.2rem }
         .blank-opt { border-style:dashed }
@@ -40,19 +42,24 @@
         .modal.active { display:flex }
         .modal-content { background:#1e1635; padding:30px; border-radius:20px; width:90%; max-width:500px; border:1px solid #f43f5e; max-height:80vh; overflow-y:auto }
         .close-modal { float:right; font-size:1.5rem; cursor:pointer; color:#cbd5e1 }
-        .list-item { padding:12px; border-bottom:1px solid #3c244f; cursor:pointer; display:flex; justify-content:space-between }
+        .list-item { padding:12px; border-bottom:1px solid #3c244f; cursor:pointer; display:flex; justify-content:space-between; transition:0.2s }
         .list-item:hover { background:rgba(244,63,94,0.08) }
         .list-item.selected { background:rgba(244,63,94,0.15); border-left:4px solid #f43f5e }
         .detail-box { background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; margin-top:15px; max-height:200px; overflow-y:auto }
         .tabs { display:flex; gap:5px; margin-bottom:15px }
-        .tab { padding:8px 16px; background:#19132e; border-radius:10px; cursor:pointer; color:#cbd5e1; border:1px solid #3c244f; font-size:0.9rem }
+        .tab { padding:8px 16px; background:#19132e; border-radius:10px; cursor:pointer; color:#cbd5e1; border:1px solid #3c244f; font-size:0.9rem; transition:0.2s }
         .tab.active { background:#f43f5e; color:#fff; border-color:#f43f5e }
         .btn-sm { padding:8px 15px; font-size:0.85rem; width:auto }
         .tag { display:inline-block; padding:3px 8px; border-radius:20px; font-size:0.7rem; font-weight:600 }
         .easy { background:#10b98133; color:#10b981 } .medium { background:#f59e0b33; color:#f59e0b } .hard { background:#ef444433; color:#ef4444 }
 
         .error-msg { color:#f43f5e; text-align:center; margin-bottom:10px; background:rgba(244,63,94,0.1); padding:10px; border-radius:8px }
-        .admin-btn { position:fixed; bottom:20px; right:20px; width:50px; height:50px; border-radius:50%; background:#f43f5e; color:#fff; border:none; font-size:1.5rem; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.5); z-index:99 }
+        .admin-btn { position:fixed; bottom:25px; right:25px; width:55px; height:55px; border-radius:50%; background:linear-gradient(135deg,#f43f5e,#ec4899); color:#fff; border:none; font-size:1.5rem; cursor:pointer; box-shadow:0 8px 20px rgba(244,63,94,0.4); z-index:99; display:flex; align-items:center; justify-content:center; transition:0.3s }
+        .admin-btn:hover { transform:scale(1.1); box-shadow:0 12px 25px rgba(244,63,94,0.6) }
+
+        .help-mail { text-align:center; margin-top:25px; font-size:0.85rem; color:#6b7280 }
+        .help-mail a { color:#a5b4fc; text-decoration:none }
+        .help-mail a:hover { text-decoration:underline }
     </style>
 </head>
 <body>
@@ -68,6 +75,7 @@
         </div>
         <input type="email" id="emailInput" placeholder="E-posta adresin" />
         <button id="startBtn">Sınava Başla 🚀</button>
+        <div class="help-mail">Yardım ve bilgi için: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
     </div>
 
     <!-- Sınav Ekranı -->
@@ -99,7 +107,10 @@
         </div>
         <p style="text-align:center; margin-bottom:20px" id="nameSurnameDisplay"></p>
         <div id="analysisContainer"></div>
-        <button id="pdfDownloadBtn" style="background:#6366f1; margin-top:15px">📥 PDF İndir</button>
+        <div class="row" style="margin-top:15px">
+            <button id="pdfDownloadBtn" style="background:#6366f1">📥 Profesyonel PDF İndir</button>
+        </div>
+        <div class="help-mail">Yardım ve bilgi için: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
     </div>
 </div>
 
@@ -122,10 +133,11 @@
                 <p style="margin:10px 0"><span id="totalExams">0</span> sınav kaydı</p>
                 <div id="examList" style="max-height:250px; overflow-y:auto; background:rgba(0,0,0,0.2); border-radius:10px; padding:5px"></div>
                 <div class="detail-box" id="detailPanel" style="display:none"></div>
-                <div id="adminActions" style="display:none; margin-top:10px; display:flex; gap:10px">
-                    <button id="yayinlaBtn" style="background:#10b981">✅ Yayınla</button>
-                    <button id="kilitleBtn" style="background:#f59e0b">🔒 Kilitle</button>
-                    <button id="silBtn" style="background:#ef4444">🗑️ Tümünü Sil</button>
+                <div id="adminActions" style="display:none; margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+                    <button id="yayinlaBtn" style="background:#10b981; flex:1">✅ Yayınla</button>
+                    <button id="kilitleBtn" style="background:#f59e0b; flex:1">🔒 Kilitle</button>
+                    <button id="silBtn" style="background:#ef4444; flex:1">🗑️ Tümünü Sil</button>
+                    <button id="adminPdfBtn" style="background:#6366f1; flex:1">📥 PDF İndir</button>
                 </div>
                 <p id="adminMsg" style="color:#fbbf24; text-align:center; margin-top:10px"></p>
             </div>
@@ -137,8 +149,7 @@
     </div>
 </div>
 
-<!-- Yönetici butonu (sadece giriş ekranında görünür) -->
-<button class="admin-btn" id="openAdminBtn" title="Yönetici Paneli">⚙️</button>
+<button class="admin-btn" id="openAdminBtn" title="Yönetici Paneli">🔐</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -388,6 +399,135 @@ function showResult(data) {
     document.getElementById('analysisContainer').innerHTML = html;
 }
 
+// ========== PROFESYONEL PDF OLUŞTURMA ==========
+function generatePDF(data, title = "KPSS Deneme Sınavı Sonucu") {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    // Üst başlık bandı
+    doc.setFillColor(244, 63, 94);
+    doc.rect(0, 0, pageWidth, 35, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(255, 255, 255);
+    doc.text(title, pageWidth/2, 22, { align: 'center' });
+
+    // Aday bilgileri
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Aday: ${data.name} ${data.surname}`, 20, 50);
+    doc.text(`E-posta: ${data.email}`, 20, 60);
+    doc.text(`Tarih: ${new Date(data.submittedAt).toLocaleString('tr-TR')}`, 20, 70);
+
+    // Başarı çizgisi
+    doc.setDrawColor(244, 63, 94);
+    doc.setLineWidth(1);
+    doc.line(20, 75, pageWidth-20, 75);
+
+    // Puan ve istatistik kutusu
+    doc.setFillColor(248, 248, 248);
+    doc.setDrawColor(200, 200, 200);
+    doc.roundedRect(20, 82, pageWidth-40, 30, 4, 4, 'FD');
+    doc.setFontSize(14);
+    doc.setTextColor(244, 63, 94);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Puan: ${data.score} / 100`, pageWidth/2, 92, { align: 'center' });
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Doğru: ${data.correct}  |  Yanlış: ${data.wrong}  |  Boş: ${data.empty}`, pageWidth/2, 102, { align: 'center' });
+
+    // Performans çubuğu
+    const barX = 25, barY = 118, barW = pageWidth-50, barH = 10;
+    doc.setFillColor(230, 230, 230);
+    doc.rect(barX, barY, barW, barH, 'F');
+    doc.setFillColor(16, 185, 129);
+    doc.rect(barX, barY, barW * (data.correct / allQuestions.length), barH, 'F');
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Başarı Yüzdesi: %${Math.round(data.correct/allQuestions.length*100)}`, barX, barY-3);
+
+    // Soru detayları
+    let y = 140;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(244, 63, 94);
+    doc.text('Soru Detayları', 20, y);
+    y += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+
+    allQuestions.forEach((q, i) => {
+        const ua = data.answers[i];
+        let cevapText = 'Boş';
+        let durum = '⬜ Boş';
+        let renk = [100, 100, 100];
+
+        if (ua !== 'blank') {
+            cevapText = q.o[ua];
+            if (ua === q.a) {
+                durum = '✅ Doğru';
+                renk = [16, 185, 129];
+            } else {
+                durum = '❌ Yanlış';
+                renk = [239, 68, 68];
+            }
+        }
+
+        // Sayfa taşması kontrolü
+        if (y > pageHeight - 30) {
+            doc.addPage();
+            y = 20;
+        }
+
+        doc.setTextColor(renk[0], renk[1], renk[2]);
+        doc.text(`${i+1}. ${q.q}`, 20, y);
+        y += 6;
+        doc.setTextColor(80, 80, 80);
+        doc.text(`   Cevap: ${cevapText} (${durum}) | Doğru: ${q.o[q.a]}`, 20, y);
+        y += 6;
+        if (q.n) {
+            doc.setTextColor(150, 150, 150);
+            doc.setFontSize(9);
+            doc.text(`   Not: ${q.n}`, 20, y);
+            doc.setFontSize(10);
+            y += 5;
+        }
+        y += 6;
+    });
+
+    // Alt bilgi
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, y, pageWidth-20, y);
+    y += 10;
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Bu belge KPSS Deneme Sınavı sistemi tarafından oluşturulmuştur.', pageWidth/2, y, { align: 'center' });
+    y += 5;
+    doc.text('İletişim: akersan1999@gmail.com', pageWidth/2, y, { align: 'center' });
+
+    return doc;
+}
+
+// PDF indirme butonu (aday)
+document.getElementById('pdfDownloadBtn').addEventListener('click', () => {
+    const doc = generatePDF({
+        name: userData.name,
+        surname: userData.surname,
+        email: userData.email,
+        score: parseInt(document.getElementById('scoreDisplay').textContent),
+        correct: parseInt(document.getElementById('correctDisplay').textContent),
+        wrong: parseInt(document.getElementById('wrongDisplay').textContent),
+        empty: parseInt(document.getElementById('emptyDisplay').textContent),
+        answers: answers,
+        submittedAt: Date.now()
+    });
+    doc.save('kpss_sonuc_' + userData.name.toLowerCase() + '.pdf');
+});
+
 // URL'den sonuç
 const urlParams = new URLSearchParams(location.search);
 const urlExamId = urlParams.get('exam');
@@ -416,20 +556,6 @@ onValue(ref(db, `exams/${examId}`), snap => {
     if (d && d.revealed && document.getElementById('waitScreen').classList.contains('active')) {
         showResult(d);
     }
-});
-
-// PDF indirme
-document.getElementById('pdfDownloadBtn').addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('KPSS Deneme Sınavı Sonucu', 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Ad Soyad: ${userData.name} ${userData.surname}`, 20, 35);
-    doc.text(`E-posta: ${userData.email}`, 20, 45);
-    doc.text(`Puan: ${document.getElementById('scoreDisplay').textContent}`, 20, 55);
-    doc.text(`Doğru: ${document.getElementById('correctDisplay').textContent} | Yanlış: ${document.getElementById('wrongDisplay').textContent} | Boş: ${document.getElementById('emptyDisplay').textContent}`, 20, 65);
-    doc.save('sinav_sonucu.pdf');
 });
 
 // ========== YÖNETİCİ PANELİ (MODAL) ==========
@@ -464,7 +590,6 @@ document.getElementById('adminLoginBtn').addEventListener('click', () => {
 });
 
 function initAdminPanel() {
-    // Sekme geçişleri
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', function() {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -536,6 +661,14 @@ document.getElementById('silBtn').addEventListener('click', () => {
             setTimeout(() => location.reload(), 1500);
         });
     }
+});
+
+// Yönetici PDF butonu
+document.getElementById('adminPdfBtn').addEventListener('click', () => {
+    if (!selectedExamId) return;
+    const data = adminExams[selectedExamId];
+    const doc = generatePDF(data, `Sınav Sonucu - ${data.name} ${data.surname}`);
+    doc.save('sinav_' + data.name.toLowerCase() + '.pdf');
 });
 
 // ========== SORU BANKASI YÖNETİMİ ==========
