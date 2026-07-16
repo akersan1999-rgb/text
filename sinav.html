@@ -26,7 +26,7 @@
         .wrapper {
             max-width: 720px;
             width: 100%;
-            margin-bottom: 200px;
+            margin-bottom: 220px;
         }
 
         /* EKRANLAR */
@@ -92,6 +92,10 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* SINAV */
@@ -214,44 +218,28 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
         .option:hover {
             border-color: #f43f5e;
             background: rgba(244, 63, 94, 0.08);
         }
-        .option input {
-            display: none;
-        }
-        .dot {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
-        .dot::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #f43f5e;
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.2s ease;
+        .option::before {
+            content: '✓';
+            font-size: 1.2rem;
+            color: #f43f5e;
+            width: 24px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-weight: bold;
         }
         .option.selected-opt {
             border-color: #f43f5e;
             background: rgba(244, 63, 94, 0.1);
         }
-        .option.selected-opt .dot {
-            border-color: #f43f5e;
-            background: rgba(244, 63, 94, 0.2);
-        }
-        .option.selected-opt .dot::after {
-            transform: scale(1);
+        .option.selected-opt::before {
+            opacity: 1;
         }
         .blank-option {
             border-style: dashed;
@@ -271,7 +259,7 @@
             transition: 0.3s;
         }
         .btn-submit:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
@@ -386,7 +374,8 @@
             padding: 15px 20px;
             z-index: 999;
             box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.6);
-            transition: transform 0.3s;
+            max-height: 50vh;
+            overflow-y: auto;
         }
         .admin-toggle {
             background: #f43f5e;
@@ -454,13 +443,19 @@
             background: #ef4444;
             color: #fff;
         }
-        .admin-info {
-            background: rgba(255, 255, 255, 0.05);
+        .exam-list {
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
-            padding: 12px;
-            font-size: 0.9rem;
-            color: #cbd5e1;
-            line-height: 1.6;
+            padding: 10px;
+            font-size: 0.85rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .exam-item {
+            padding: 6px;
+            border-bottom: 1px solid #3c244f;
+            display: flex;
+            justify-content: space-between;
         }
         .admin-msg {
             font-size: 0.85rem;
@@ -549,14 +544,14 @@
         <button class="admin-toggle" id="adminToggle">⚙️ Yönetici Panelini Aç / Kapat</button>
         <div class="admin-content" id="adminContent" style="display: none;">
             <div class="admin-row">
-                <input type="password" id="adminPassInput" placeholder="Şifre (1923)" />
+                <input type="password" id="adminPassInput" placeholder="Yönetici şifresi" />
                 <button class="admin-btn btn-giris" id="adminGirisBtn">Giriş</button>
             </div>
-            <div class="admin-info" id="adminInfo" style="display: none;"></div>
+            <div class="exam-list" id="examList" style="display: none;"></div>
             <div class="admin-buttons" id="adminButtons" style="display: none;">
-                <button class="admin-btn btn-yayinla" id="yayinlaBtn">✅ Yayınla</button>
-                <button class="admin-btn btn-kilitle" id="kilitleBtn">🔒 Kilitle</button>
-                <button class="admin-btn btn-sifirla" id="sifirlaBtn">🧹 Sıfırla</button>
+                <button class="admin-btn btn-yayinla" id="yayinlaBtn">✅ Seçili Sınavı Yayınla</button>
+                <button class="admin-btn btn-kilitle" id="kilitleBtn">🔒 Seçili Sınavı Kilitle</button>
+                <button class="admin-btn btn-sifirla" id="sifirlaBtn">🧹 Tüm Sınavları Sil</button>
             </div>
             <div class="admin-msg" id="adminMsg"></div>
         </div>
@@ -566,7 +561,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, update, get, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // ★★★ YÖNETİCİ ŞİFRENİ BURAYA YAZ ★★★
+        const ADMIN_PASSWORD = "1923"; // ← Bu şifreyi değiştir, sadece sen bil
 
         const firebaseConfig = {
             apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
@@ -581,7 +579,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const examRef = ref(db, 'kpss_exam');
+        const examsRef = ref(db, 'exams'); // çoklu sınavlar için ana düğüm
 
         const questions = [
             { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
@@ -612,6 +610,7 @@
         let tempAnswers = {};
         let timerInterval = null;
         let secondsRemaining = 1800;
+        let currentExamId = null; // adayın kendi sınav idsi
 
         document.getElementById('totalQ').textContent = total;
 
@@ -657,17 +656,15 @@
                 `;
                 q.opts.forEach((opt, oi) => {
                     html += `
-                        <label class="option" data-q="${idx}" data-o="${oi}">
-                            <span class="dot"></span>
+                        <div class="option" data-q="${idx}" data-o="${oi}">
                             <span>${opt}</span>
-                        </label>
+                        </div>
                     `;
                 });
                 html += `
-                        <label class="option blank-option" data-q="${idx}" data-o="blank">
-                            <span class="dot"></span>
+                        <div class="option blank-option" data-q="${idx}" data-o="blank">
                             <span>Boş bırak</span>
-                        </label>
+                        </div>
                     </div>
                 </div>`;
             });
@@ -677,25 +674,25 @@
                 el.addEventListener('click', function() {
                     const qIdx = parseInt(this.dataset.q);
                     const val = this.dataset.o;
-                    if (val === 'blank') selectBlank(qIdx);
-                    else selectOption(qIdx, parseInt(val));
+                    if (val === 'blank') selectBlank(qIdx, this);
+                    else selectOption(qIdx, parseInt(val), this);
                 });
             });
         }
 
-        function selectOption(qIdx, optIdx) {
+        function selectOption(qIdx, optIdx, element) {
             tempAnswers[qIdx] = optIdx;
             document.getElementById(`q-${qIdx}`).classList.add('active-q');
             document.querySelectorAll(`#q-${qIdx} .option`).forEach(l => l.classList.remove('selected-opt'));
-            document.querySelector(`#q-${qIdx} .option[data-o="${optIdx}"]`).classList.add('selected-opt');
+            element.classList.add('selected-opt');
             updateStatus(qIdx);
         }
 
-        function selectBlank(qIdx) {
+        function selectBlank(qIdx, element) {
             tempAnswers[qIdx] = 'blank';
             document.getElementById(`q-${qIdx}`).classList.remove('active-q');
             document.querySelectorAll(`#q-${qIdx} .option`).forEach(l => l.classList.remove('selected-opt'));
-            document.querySelector(`#q-${qIdx} .option[data-o="blank"]`).classList.add('selected-opt');
+            element.classList.add('selected-opt');
             updateStatus(qIdx);
         }
 
@@ -721,6 +718,7 @@
 
         async function submitExam() {
             const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn.disabled) return; // zaten gönderiliyor
             submitBtn.disabled = true;
             submitBtn.textContent = 'Gönderiliyor...';
 
@@ -738,7 +736,10 @@
                 const score = Math.round((correct / total) * 100);
                 const now = Date.now();
 
-                await set(examRef, {
+                // Yeni bir sınav kaydı oluştur (benzersiz ID)
+                const newExamRef = push(examsRef);
+                currentExamId = newExamRef.key;
+                await set(newExamRef, {
                     email: userEmail,
                     score,
                     correct,
@@ -753,7 +754,7 @@
                 document.getElementById('examScreen').style.display = 'none';
                 document.getElementById('waitingScreen').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                showToast('✨ Sınav kaydedildi! Yönetici onayı bekleniyor.');
+                showToast('✨ Sınav kaydedildi! Sonuçlar yönetici onayından sonra görünecek.');
             } catch (error) {
                 console.error('Gönderme hatası:', error);
                 showToast('❌ Sınav gönderilemedi: ' + error.message, true);
@@ -801,8 +802,10 @@
         // ----- YÖNETİCİ PANELİ İŞLEMLERİ -----
         const adminContent = document.getElementById('adminContent');
         const adminButtons = document.getElementById('adminButtons');
-        const adminInfo = document.getElementById('adminInfo');
+        const examListDiv = document.getElementById('examList');
         const adminMsg = document.getElementById('adminMsg');
+        let allExams = {};
+        let selectedExamId = null;
 
         document.getElementById('adminToggle').addEventListener('click', () => {
             if (adminContent.style.display === 'none' || adminContent.style.display === '') {
@@ -812,64 +815,99 @@
             }
         });
 
+        // Sınav listesini canlı dinle
+        onValue(examsRef, (snapshot) => {
+            allExams = snapshot.val() || {};
+            renderExamList();
+        });
+
+        function renderExamList() {
+            const ids = Object.keys(allExams);
+            if (ids.length === 0) {
+                examListDiv.innerHTML = '<div style="padding:10px;">Henüz sınav yok.</div>';
+                examListDiv.style.display = 'block';
+                return;
+            }
+            let html = '';
+            ids.forEach(id => {
+                const ex = allExams[id];
+                const tarih = new Date(ex.submittedAt).toLocaleString('tr-TR');
+                html += `
+                <div class="exam-item ${selectedExamId === id ? 'selected' : ''}" data-id="${id}">
+                    <span>${ex.email} - ${ex.score}p</span>
+                    <span style="color:${ex.revealed ? '#10b981' : '#f59e0b'}">${ex.revealed ? 'Yayında' : 'Kilitli'}</span>
+                </div>`;
+            });
+            examListDiv.innerHTML = html;
+            examListDiv.style.display = 'block';
+
+            // Seçim olayı
+            document.querySelectorAll('.exam-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.exam-item').forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedExamId = this.dataset.id;
+                    adminMsg.textContent = `Seçili sınav: ${allExams[selectedExamId].email}`;
+                    adminButtons.style.display = 'flex';
+                });
+            });
+        }
+
         document.getElementById('adminGirisBtn').addEventListener('click', () => {
             const pass = document.getElementById('adminPassInput').value.trim();
-            if (pass === '1923') {
-                adminButtons.style.display = 'flex';
-                adminInfo.style.display = 'block';
-                adminMsg.textContent = '✅ Giriş başarılı. Güncel sınav bilgisi:';
-                // Canlı veriyi dinle
-                onValue(examRef, (snap) => {
-                    const d = snap.val();
-                    if (d) {
-                        const tarih = new Date(d.submittedAt).toLocaleString('tr-TR');
-                        adminInfo.innerHTML = `
-                            <div><strong>👤 Aday:</strong> ${d.email}</div>
-                            <div><strong>📊 Puan:</strong> ${d.score} / 100</div>
-                            <div><strong>✅ Doğru:</strong> ${d.correct} | ❌ Yanlış: ${d.wrong} | ⬜ Boş: ${d.empty}</div>
-                            <div><strong>🕒 Gönderim:</strong> ${tarih}</div>
-                            <div><strong>Durum:</strong> ${d.revealed ? 'Yayında ✅' : 'Kilitli 🔒'}</div>
-                        `;
-                    } else {
-                        adminInfo.innerHTML = '<div>Henüz sınav verisi yok.</div>';
-                    }
-                });
+            if (pass === ADMIN_PASSWORD) {
+                adminMsg.textContent = '✅ Giriş başarılı. Aşağıdan bir sınav seçin.';
+                document.getElementById('adminPassInput').disabled = true;
+                document.getElementById('adminGirisBtn').disabled = true;
+                // Listeyi göster (zaten onValue ile canlı)
             } else {
-                adminMsg.textContent = '❌ Yanlış şifre! (1923)';
+                adminMsg.textContent = '❌ Yanlış şifre!';
             }
         });
 
         document.getElementById('yayinlaBtn').addEventListener('click', async () => {
+            if (!selectedExamId) {
+                adminMsg.textContent = 'Lütfen bir sınav seçin.';
+                return;
+            }
             try {
-                await update(examRef, { revealed: true });
-                adminMsg.textContent = '✅ Sonuçlar yayınlandı!';
+                await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
+                adminMsg.textContent = '✅ Seçili sınav yayınlandı.';
             } catch (e) {
                 adminMsg.textContent = '❌ ' + e.message;
             }
         });
 
         document.getElementById('kilitleBtn').addEventListener('click', async () => {
+            if (!selectedExamId) {
+                adminMsg.textContent = 'Lütfen bir sınav seçin.';
+                return;
+            }
             try {
-                await update(examRef, { revealed: false });
-                adminMsg.textContent = '🔒 Sonuçlar kilitlendi.';
+                await update(ref(db, `exams/${selectedExamId}`), { revealed: false });
+                adminMsg.textContent = '🔒 Seçili sınav kilitlendi.';
             } catch (e) {
                 adminMsg.textContent = '❌ ' + e.message;
             }
         });
 
         document.getElementById('sifirlaBtn').addEventListener('click', () => {
-            if (confirm('Tüm veri silinecek! Emin misin?')) {
-                set(examRef, null).then(() => {
-                    adminMsg.textContent = '🧹 Sıfırlandı, sayfa yenileniyor...';
+            if (confirm('TÜM SINAVLAR SİLİNECEK! Emin misin?')) {
+                set(examsRef, null).then(() => {
+                    adminMsg.textContent = '🧹 Tüm sınavlar silindi, sayfa yenileniyor...';
                     setTimeout(() => location.reload(), 1500);
                 });
             }
         });
 
-        // Aday için sonuç kontrol butonu
+        // Aday sonuç görme (kendi sınavı)
         document.getElementById('checkResultBtn').addEventListener('click', async () => {
+            if (!currentExamId) {
+                showToast('Sınav ID bulunamadı.', true);
+                return;
+            }
             try {
-                const snap = await get(examRef);
+                const snap = await get(ref(db, `exams/${currentExamId}`));
                 const d = snap.val();
                 if (d && d.revealed) {
                     showResults(d);
@@ -881,8 +919,8 @@
             }
         });
 
-        // Otomatik sonuç açma (aday bekleme ekranındayken yayınlanırsa)
-        onValue(examRef, (snap) => {
+        // Otomatik sonuç gösterme (aday ekranı beklemedeyken yayınlanırsa)
+        onValue(ref(db, `exams/${currentExamId}`), (snap) => {
             const d = snap.val();
             if (d && d.revealed && document.getElementById('waitingScreen').style.display === 'block') {
                 showResults(d);
@@ -900,7 +938,7 @@
         document.getElementById('startExamBtn').addEventListener('click', startExam);
         document.getElementById('submitBtn').addEventListener('click', submitExam);
 
-        console.log('✅ Sistem hazır. Yönetici şifresi: 1923');
+        console.log('✅ Sistem hazır. Yönetici şifresi: ' + ADMIN_PASSWORD);
     </script>
 </body>
 </html>
