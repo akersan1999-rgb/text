@@ -5,35 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 KPSS Kişisel Deneme Sınavı 🎯</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  
-  <!-- Firebase SDK (Gerçek zamanlı bağlantı için) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-    // Kendi Firebase Config Bilgilerini Buraya Yerleştirdim 🚀
-    const firebaseConfig = {
-      apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
-      authDomain: "test-bala3.firebaseapp.com",
-      databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/", 
-      projectId: "test-bala3",
-      storageBucket: "test-bala3.firebasestorage.app",
-      messagingSenderId: "413174140566",
-      appId: "1:413174140566:web:f7eefa4717579784b3bcb7",
-      measurementId: "G-1K995EJ7WR"
-    };
-
-    // Firebase Başlat
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    window.db = db;
-    window.dbRef = ref;
-    window.dbSet = set;
-    
-    // Gelişmiş Yönetici Paneli Hatalarını Çözen Tanımlamalar 🛠️
-    window.dbOnValue = onValue;
-    window.dbUpdate = update;
-  </script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -167,10 +138,29 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- TÜM JAVASCRIPT ARTIK TEK BİR MODULE İÇİNDE GÜVENLİ VE SENKRONİZE ÇALIŞIYOR 🚀 -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  // Firebase Yapılandırması
+  const firebaseConfig = {
+    apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
+    authDomain: "test-bala3.firebaseapp.com",
+    databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/", 
+    projectId: "test-bala3",
+    storageBucket: "test-bala3.firebasestorage.app",
+    messagingSenderId: "413174140566",
+    appId: "1:413174140566:web:f7eefa4717579784b3bcb7",
+    measurementId: "G-1K995EJ7WR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
   const ADMIN_PIN = "1923"; 
 
-  // ★★★ SORULAR VE CEVAPLARI ★★★
+  // Sorular listesi
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
     { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan meclisimizin açılış günüdür bitanem! 🌸" },
@@ -202,25 +192,19 @@
 
   document.getElementById('totalQ').textContent = total;
 
-  // GERÇEK ZAMANLI EKRAN DURUMU TAKİBİ
-  window.addEventListener('load', () => {
-    // Firebase yüklendikten sonra çalışması için 1 saniye bekletiyoruz
-    setTimeout(() => {
-      if (!window.db) return;
-      const examRef = window.dbRef(window.db, 'kpss_exam');
-      window.dbOnValue(examRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data && data.status === 'completed') {
-          if (data.revealed === true) {
-            showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
-          } else {
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('examScreen').style.display = 'none';
-            document.getElementById('waitingScreen').style.display = 'block';
-          }
-        }
-      });
-    }, 1200);
+  // Veritabanı dinleyicisi doğrudan modülün içinden çalışıyor
+  const examRef = ref(db, 'kpss_exam');
+  onValue(examRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data && data.status === 'completed') {
+      if (data.revealed === true) {
+        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+      } else {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('examScreen').style.display = 'none';
+        document.getElementById('waitingScreen').style.display = 'block';
+      }
+    }
   });
 
   function startTimer() {
@@ -319,7 +303,6 @@
     document.getElementById('progressBar').style.width = percent + '%';
   }
 
-  // ★★★ SINAVI VERİTABANINA GÖNDERME ★★★
   function submitExam() {
     clearInterval(timerInterval);
     let correctCount = 0; let wrongCount = 0; let emptyCount = 0;
@@ -335,29 +318,24 @@
 
     const totalScore = Math.round((correctCount / total) * 100);
 
-    // Firebase Realtime Database'e kaydet
-    if (window.db) {
-      const examRef = window.dbRef(window.db, 'kpss_exam');
-      window.dbSet(examRef, {
-        email: userEmail,
-        score: totalScore,
-        correct: correctCount,
-        wrong: wrongCount,
-        empty: emptyCount,
-        answers: userAnswers,
-        status: 'completed',
-        revealed: false // Başlangıçta kilitli
-      }).then(() => {
-        document.getElementById('examScreen').style.display = 'none';
-        document.getElementById('waitingScreen').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        showToast('✨ Sınav başarıyla kaydedildi! Sevgilin onayladığında sonuçlar açılacak.', false);
-      }).catch(err => {
-        showToast('❌ Veritabanı Hatası: ' + err, true);
-      });
-    } else {
-      showToast('❌ Veritabanı bağlantısı kurulamadı!', true);
-    }
+    const examRef = ref(db, 'kpss_exam');
+    set(examRef, {
+      email: userEmail,
+      score: totalScore,
+      correct: correctCount,
+      wrong: wrongCount,
+      empty: emptyCount,
+      answers: userAnswers,
+      status: 'completed',
+      revealed: false
+    }).then(() => {
+      document.getElementById('examScreen').style.display = 'none';
+      document.getElementById('waitingScreen').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('✨ Sınav başarıyla kaydedildi! Sevgilin onayladığında sonuçlar açılacak.', false);
+    }).catch(err => {
+      showToast('❌ Veritabanı Hatası: ' + err, true);
+    });
   }
 
   function showResults(score, correct, wrong, empty, answers) {
@@ -403,10 +381,8 @@
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
 
-    if (!window.db) { showToast("❌ Veritabanına ulaşılamıyor!", true); return; }
-
-    const examRef = window.dbRef(window.db, 'kpss_exam');
-    window.dbOnValue(examRef, (snapshot) => {
+    const examRef = ref(db, 'kpss_exam');
+    onValue(examRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
         alert("Henüz çözülmüş bir sınav verisi bulunamadı!");
@@ -428,16 +404,16 @@
       );
 
       if (action === "1") {
-        window.dbUpdate(examRef, { revealed: true }).then(() => {
+        update(examRef, { revealed: true }).then(() => {
           showToast("🔓 Sonuçlar başarıyla yayınlandı! Onun ekranında anında açıldı.", false);
         });
       } else if (action === "2") {
-        window.dbUpdate(examRef, { revealed: false }).then(() => {
+        update(examRef, { revealed: false }).then(() => {
           showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
         });
       } else if (action === "3") {
         if(confirm("Sınavı tamamen silmek ve sıfırlamak istediğine emin misin?")) {
-          window.dbSet(examRef, null).then(() => {
+          set(examRef, null).then(() => {
             showToast("🧹 Tüm veriler sıfırlandı! Sayfa yenileniyor...", false);
             setTimeout(() => location.reload(), 1500);
           });
@@ -453,6 +429,13 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 4000);
   }
+
+  // HTML Üzerinden Çağırılan Fonksiyonları Pencereye (window) Bağımlı Yapıyoruz
+  window.startExam = startExam;
+  window.selectOption = selectOption;
+  window.selectBlank = selectBlank;
+  window.submitExam = submitExam;
+  window.openAdminPanel = openAdminPanel;
 </script>
 </body>
 </html>
