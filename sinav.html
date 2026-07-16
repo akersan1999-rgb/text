@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 KPSS Kişisel Deneme Sınavı 🎯</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
     body {
@@ -73,6 +72,9 @@
     .analysis-item.empty-card { border-left: 5px solid #6b7280; }
     .analysis-note { font-size: 0.92rem; color: #f43f5e; font-style: italic; font-weight: 600; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(244, 63, 94, 0.2); }
 
+    .btn-check-result { margin-top: 20px; padding: 12px 30px; background: linear-gradient(135deg, #6366f1, #4f46e5); border: none; border-radius: 14px; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .btn-check-result:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3); }
+
     /* TOAST */
     .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #ec4899; color: #fff; padding: 14px 28px; border-radius: 50px; font-weight: 700; opacity: 0; transition: 0.4s; z-index: 999; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -119,6 +121,7 @@
     <h2>Sınavın Başarıyla Kaydedildi!</h2>
     <p style="margin-top: 15px;">Cevapların sevgiline ulaştı bile. ❤️</p>
     <p style="font-size: 0.95rem; color: #a5b4fc; margin-top: 10px;">Şimdi sevgilinin sınav sonuçlarını açıklamasını bekle...</p>
+    <button class="btn-check-result" id="checkResultBtn">📊 Sonuçlarımı Gör</button>
   </div>
 
   <!-- SONUÇ EKRANI -->
@@ -192,18 +195,32 @@
   document.getElementById('totalQ').textContent = total;
   const examRef = ref(db, 'kpss_exam');
   
-  // EKRAN DURUMU DİNLEYİCİSİ
+  // EKRAN DURUMU DİNLEYİCİSİ (Otomatik sonuç gösterimi)
   onValue(examRef, (snapshot) => {
     const data = snapshot.val();
-    if (data && data.status === 'completed') {
-      if (data.revealed === true) {
-        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
-      } else {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('examScreen').style.display = 'none';
-        document.getElementById('waitingScreen').style.display = 'block';
-      }
+    if (data && data.status === 'completed' && data.revealed === true) {
+      // Eğer sonuçlar yayınlanmışsa direkt göster
+      showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+    } else if (data && data.status === 'completed' && data.revealed === false) {
+      // Kilitli durumda bekleme ekranını göster (eğer sınav bitmişse)
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('examScreen').style.display = 'none';
+      document.getElementById('waitingScreen').style.display = 'block';
     }
+  });
+
+  // BEKLEME EKRANINDAKİ "Sonuçlarımı Gör" butonu için manuel kontrol
+  document.getElementById('checkResultBtn').addEventListener('click', () => {
+    get(examRef).then((snapshot) => {
+      const data = snapshot.val();
+      if (data && data.status === 'completed' && data.revealed === true) {
+        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+      } else if (data && data.status === 'completed' && data.revealed === false) {
+        showToast('⏳ Sonuçların henüz onaylanmadı. Lütfen bekle.', true);
+      } else {
+        showToast('❌ Henüz bir sınav kaydı yok.', true);
+      }
+    });
   });
 
   function startTimer() {
