@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bitaneme Özel 2026 KPSS Deneme Sınavı ❤️</title>
+  <title>2026 KPSS Kişisel Deneme Sınavı 🎯</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
@@ -13,396 +13,201 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     body {
-      background: #0f0b19; /* Tatlı bir mor tonu */
+      background: #0f0b19;
       color: #f1f5f9;
       padding: 20px 10px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      background-image: radial-gradient(circle at 20% 30%, rgba(244, 63, 94, 0.12) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      background-image: radial-gradient(circle at 20% 30%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
       background-attachment: fixed;
-      position: relative;
-      overflow-x: hidden;
     }
-    .wrapper { max-width: 720px; width: 100%; position: relative; z-index: 10; }
+    .wrapper { max-width: 720px; width: 100%; }
 
-    /* KALPLER ARKA PLANI */
-    .heart-bg {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
+    /* Ekran Kontrolleri */
+    .start-screen, .exam-screen, .result-screen { display: none; }
 
-    /* Tüm ekranlar başlangıçta gizli */
-    .mail-screen, .result-screen, .admin-screen, .success-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .pending-screen {
-      display: none;
-    }
-
-    /* MAIL GİRİŞ EKRANI */
-    .mail-screen {
+    /* GİRİŞ EKRANI */
+    .start-screen {
       display: block;
       background: linear-gradient(145deg, #19132e, #22183e);
-      border-radius: 28px;
-      padding: 40px 30px;
+      border-radius: 24px;
+      padding: 45px 30px;
       text-align: center;
       border: 1px solid #3c244f;
-      box-shadow: 0 15px 40px rgba(244, 63, 94, 0.15);
-      animation: fadeUp 0.6s ease;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      animation: fadeUp 0.5s ease;
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .mail-screen h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-    .mail-screen p { color: #cbd5e1; font-size: 1rem; margin-bottom: 20px; }
-    .mail-screen input {
+    .start-screen h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .start-screen p { color: #cbd5e1; font-size: 1.05rem; margin-bottom: 24px; line-height: 1.6; }
+    .start-screen .warning-box {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px dashed #f43f5e;
+      padding: 12px;
+      border-radius: 12px;
+      color: #f43f5e;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .start-screen input {
       width: 100%;
       padding: 16px 20px;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 2px solid #3c244f;
       background: #0f0b19;
       color: #fff;
       font-size: 1rem;
       outline: none;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       transition: 0.3s;
     }
-    .mail-screen input:focus { border-color: #f43f5e; box-shadow: 0 0 25px rgba(244, 63, 94, 0.2); }
-    .mail-screen .btn-start {
+    .start-screen input:focus { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.15); }
+    .btn-primary {
       width: 100%;
       padding: 16px;
       background: linear-gradient(135deg, #f43f5e, #ec4899);
       border: none;
-      border-radius: 16px;
+      border-radius: 14px;
       color: #fff;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
       transition: 0.3s;
     }
-    .mail-screen .btn-start:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(244, 63, 94, 0.4); }
-    .mail-screen .btn-result-link {
-      background: transparent;
-      border: none;
-      color: #f43f5e;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 16px;
-      font-size: 0.95rem;
-      transition: 0.3s;
-    }
-    .mail-screen .btn-result-link:hover { text-decoration: underline; color: #f43f5e; }
-    .mail-screen .admin-link {
-      background: transparent;
-      border: none;
-      color: #a5b4fc;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      display: block;
-      transition: 0.3s;
-    }
-    .mail-screen .admin-link:hover { text-decoration: underline; color: #cbd5e1; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3); }
 
-    /* HEADER */
+    /* SINAV BAŞLIK VE DİNAMİK MESAJ */
     .header {
       text-align: center;
-      padding: 30px 20px;
+      padding: 25px;
       background: linear-gradient(145deg, #19132e, #22183e);
-      border-radius: 28px;
-      margin-bottom: 30px;
+      border-radius: 24px;
+      margin-bottom: 20px;
       border: 1px solid #3c244f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-      animation: fadeUp 0.6s ease;
+      position: relative;
     }
-    .header h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #fff, #f43f5e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .header p { color: #cbd5e1; margin-top: 8px; font-size: 1rem; }
-    .header .user-mail { color: #f43f5e; font-weight: 600; margin-top: 6px; font-size: 0.9rem; }
+    .header h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #f43f5e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: #cbd5e1; margin-top: 6px; font-size: 0.95rem; }
+    .dynamic-bubble {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid #6366f1;
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #a5b4fc;
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
 
-    /* İLERLEME SAYAÇLARI */
-    .progress-wrap { background: #22183e; border-radius: 30px; height: 10px; margin-bottom: 25px; overflow: hidden; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #f43f5e, #a5b4fc); transition: width 0.6s ease; border-radius: 30px; box-shadow: 0 0 20px rgba(244, 63, 94, 0.3); }
-    .stats { display: flex; justify-content: space-between; background: #19132e; padding: 14px 22px; border-radius: 16px; border: 1px solid #3c244f; margin-bottom: 28px; }
-    .stats span { font-weight: 600; color: #cbd5e1; font-size: 0.95rem; }
+    /* İLERLEME */
+    .progress-wrap { background: #22183e; border-radius: 30px; height: 8px; margin-bottom: 20px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #f43f5e, #a5b4fc); transition: width 0.4s ease; }
+    .stats { display: flex; justify-content: space-between; background: #19132e; padding: 12px 20px; border-radius: 14px; border: 1px solid #3c244f; margin-bottom: 24px; font-size: 0.9rem; color: #cbd5e1; }
     .stats .count { color: #f43f5e; font-weight: 700; }
 
     /* SORU KARTLARI */
     .question-card {
       background: #19132e;
       border: 1px solid #3c244f;
-      border-radius: 24px;
-      padding: 26px;
-      margin-bottom: 26px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       transition: 0.3s;
-      animation: fadeUp 0.5s ease;
     }
-    .question-card:hover { transform: translateY(-4px); border-color: rgba(244, 63, 94, 0.3); }
-    .question-card .q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .question-card .q-head .badge { background: rgba(244, 63, 94, 0.15); color: #f43f5e; padding: 6px 16px; border-radius: 40px; font-size: 0.8rem; font-weight: 700; }
+    .question-card.active-q { border-color: rgba(244, 63, 94, 0.4); }
+    .question-card .q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .question-card .q-head .badge { background: rgba(244, 63, 94, 0.12); color: #f43f5e; padding: 5px 14px; border-radius: 40px; font-size: 0.8rem; font-weight: 700; }
     .question-card .q-head .status { color: #cbd5e1; font-size: 0.8rem; }
-    .question-card .q-text { font-size: 1.1rem; font-weight: 600; line-height: 1.6; margin-bottom: 20px; color: #e2e8f0; }
+    .question-card .q-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 18px; color: #e2e8f0; }
 
-    .options { display: flex; flex-direction: column; gap: 12px; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
     .option {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       padding: 14px 18px;
-      background: rgba(15, 11, 25, 0.5);
+      background: rgba(15, 11, 25, 0.4);
       border: 2px solid #3c244f;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: 0.25s;
-      user-select: none;
+      transition: all 0.2s ease;
     }
-    .option:hover { border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.02); transform: translateX(4px); }
+    .option:hover { border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.02); transform: translateX(3px); }
     .option input { display: none; }
-    .option .dot { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.25s; }
-    .option .dot::after { content: ''; width: 10px; height: 10px; background: #f43f5e; border-radius: 50%; transform: scale(0); transition: 0.25s; }
-    .option input:checked + .dot { border-color: #f43f5e; }
+    .option .dot { width: 20px; height: 20px; border: 2px solid #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; }
+    .option .dot::after { content: ''; width: 8px; height: 8px; background: #f43f5e; border-radius: 50%; transform: scale(0); transition: 0.2s; }
+    .option input:checked + .dot { border-color: #f43f5e; background: rgba(244, 63, 94, 0.1); }
     .option input:checked + .dot::after { transform: scale(1); }
-    .option input:checked ~ .option-text { color: #fff; font-weight: 600; }
-    .option .option-text { color: #cbd5e1; font-size: 0.98rem; }
-    .blank-option { border-style: dashed; color: #cbd5e1; font-style: italic; }
+    .option.selected-opt { border-color: #f43f5e; background: rgba(244, 63, 94, 0.05); }
+    .option .option-text { color: #cbd5e1; font-size: 0.95rem; }
+    .blank-option { border-style: dashed; color: #cbd5e1; }
+    .blank-option.selected-opt { border-color: #6b7280; background: rgba(255,255,255,0.02); }
+    .blank-option .dot::after { background: #6b7280 !important; }
 
     /* GÖNDER BUTONU */
     .btn-submit {
       width: 100%;
-      padding: 22px;
+      padding: 20px;
       background: linear-gradient(135deg, #f43f5e, #ec4899);
       border: none;
-      border-radius: 28px;
-      font-size: 1.4rem;
+      border-radius: 20px;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 18px 40px rgba(244, 63, 94, 0.3);
+      box-shadow: 0 12px 30px rgba(244, 63, 94, 0.25);
       transition: 0.3s;
-      margin-top: 16px;
+      margin-top: 10px;
     }
-    .btn-submit:hover { transform: translateY(-5px); box-shadow: 0 24px 50px rgba(244, 63, 94, 0.5); }
-    .btn-submit:active { transform: scale(0.97); }
-    .btn-submit:disabled { opacity: 0.6; transform: none; pointer-events: none; }
-    .btn-submit .spinner { display: none; width: 24px; height: 24px; border: 3px solid #fff; border-top: 3px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+    .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(244, 63, 94, 0.4); }
+    .btn-submit:disabled { opacity: 0.6; pointer-events: none; }
+    .btn-submit .spinner { display: none; width: 20px; height: 20px; border: 3px solid #fff; border-top: 3px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
     @keyframes spin { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
     .btn-submit.loading .btn-text { display: none; }
     .btn-submit.loading .spinner { display: block; }
 
-    /* BEKLEME EKRANI (Öğrenci cevapları gönderdikten sonra) */
-    .pending-screen {
-      text-align: center;
-      padding: 60px 30px;
-      background: #19132e;
-      border: 2px solid #f43f5e;
-      border-radius: 28px;
-      margin-top: 20px;
-      animation: pulseGlow 2s infinite alternate;
-    }
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.15); }
-      100% { box-shadow: 0 0 50px rgba(244, 63, 94, 0.35); }
-    }
-    .pending-screen .icon {
-      font-size: 5rem;
-      display: block;
-      margin-bottom: 15px;
-      animation: heartbeat 1.5s infinite;
-    }
-    @keyframes heartbeat {
-      0% { transform: scale(1); }
-      14% { transform: scale(1.15); }
-      28% { transform: scale(1); }
-      42% { transform: scale(1.15); }
-      70% { transform: scale(1); }
-    }
-    .pending-screen h2 {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #f43f5e;
-      margin-bottom: 10px;
-    }
-    .pending-screen p {
-      color: #cbd5e1;
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-    .pending-screen .btn-result-link {
-      margin-top: 25px;
-      padding: 12px 30px;
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .pending-screen .btn-result-link:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(99, 102, 241, 0.3); }
-
-    /* SONUÇ SORGULAMA */
+    /* SONUÇ EKRANI */
     .result-screen {
       background: linear-gradient(145deg, #19132e, #22183e);
-      border-radius: 28px;
-      padding: 40px 30px;
-      text-align: center;
+      border-radius: 24px;
+      padding: 35px 25px;
       border: 1px solid #3c244f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-      animation: fadeUp 0.6s ease;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      animation: fadeUp 0.5s ease;
     }
-    .result-screen h2 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
-    .result-screen p { color: #cbd5e1; font-size: 1rem; margin-bottom: 20px; }
-    .result-screen input {
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 2px solid #3c244f;
-      background: #0f0b19;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      margin-bottom: 16px;
-      transition: 0.3s;
-    }
-    .result-screen input:focus { border-color: #f43f5e; box-shadow: 0 0 25px rgba(244, 63, 94, 0.15); }
-    .result-screen .btn-result {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border: none;
-      border-radius: 16px;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .result-screen .btn-result:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3); }
+    .result-header { text-align: center; margin-bottom: 25px; }
+    .result-header h2 { font-size: 1.8rem; color: #fff; margin-bottom: 6px; }
+    .result-header p { color: #cbd5e1; font-size: 0.95rem; }
+    .grade-container { text-align: center; margin-bottom: 25px; position: relative; }
+    .grade { font-size: 4rem; font-weight: 850; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.3); }
+    .grade-comment { font-size: 1.2rem; color: #fff; font-weight: 700; margin-top: 10px; padding: 0 15px; line-height: 1.5; }
+    .detail-stats { color: #cbd5e1; margin-top: 15px; text-align: center; font-size: 1rem; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; display: inline-block; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
     
-    /* Detaylı Sonuç Görünümü */
-    .result-display { display: none; margin-top: 25px; padding: 25px; background: rgba(244, 63, 94, 0.05); border: 2px solid #f43f5e; border-radius: 20px; animation: fadeUp 0.5s ease; text-align: left; }
-    .result-display .grade-container { text-align: center; margin-bottom: 20px; }
-    .result-display .grade { font-size: 3.5rem; font-weight: 800; color: #f43f5e; animation: heartbeat 2s infinite; }
-    .result-display .grade-comment { font-size: 1.2rem; color: #fff; font-weight: 700; margin-top: 8px; text-shadow: 0 0 10px rgba(244, 63, 94, 0.3); text-align: center; }
-    .result-display .detail { color: #cbd5e1; margin-top: 8px; text-align: center; font-size: 1.1rem; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
-    .result-display .not-found { color: #ef4444; font-size: 1.1rem; text-align: center; }
-    .result-display .pending-msg { color: #fbbf24; font-size: 1.1rem; text-align: center; display: block; line-height: 1.6; }
-    
-    /* SORU ANALİZ LİSTESİ */
+    /* DETAYLI ANALİZ */
     .analysis-container { margin-top: 30px; }
-    .analysis-title { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 15px; border-bottom: 1px solid #3c244f; padding-bottom: 8px; }
-    .analysis-item { background: rgba(15, 11, 25, 0.8); border: 1px solid #3c244f; padding: 18px; border-radius: 16px; margin-bottom: 15px; }
-    .analysis-item.correct-card { border-left: 6px solid #10b981; }
-    .analysis-item.wrong-card { border-left: 6px solid #ef4444; }
-    .analysis-item.empty-card { border-left: 6px solid #6b7280; }
+    .analysis-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 15px; border-bottom: 1px solid #3c244f; padding-bottom: 8px; }
+    .analysis-item { background: rgba(15, 11, 25, 0.6); border: 1px solid #3c244f; padding: 18px; border-radius: 14px; margin-bottom: 12px; }
+    .analysis-item.correct-card { border-left: 5px solid #10b981; }
+    .analysis-item.wrong-card { border-left: 5px solid #ef4444; }
+    .analysis-item.empty-card { border-left: 5px solid #6b7280; }
     .analysis-q { font-size: 1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 10px; }
-    .analysis-ans { font-size: 0.95rem; margin-bottom: 6px; }
-    .analysis-ans.user-ans { color: #e2e8f0; }
+    .analysis-ans { font-size: 0.9rem; margin-bottom: 5px; }
+    .analysis-ans.user-ans { color: #cbd5e1; }
     .analysis-ans.correct-ans { color: #10b981; font-weight: 600; }
-    .analysis-note { font-size: 0.95rem; color: #ec4899; font-style: italic; font-weight: 600; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(244, 63, 94, 0.2); }
-
-    .result-screen .btn-back {
-      background: transparent;
-      border: none;
-      color: #a5b4fc;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 20px;
-      font-size: 0.95rem;
-      transition: 0.3s;
-    }
-    .result-screen .btn-back:hover { text-decoration: underline; color: #fff; }
-
-    /* YÖNETİCİ PANELİ */
-    .admin-screen {
-      background: linear-gradient(145deg, #19132e, #22183e);
-      border-radius: 28px;
-      padding: 40px 30px;
-      border: 1px solid #3c244f;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-      animation: fadeUp 0.6s ease;
-    }
-    .admin-screen h2 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 10px; text-align: center; }
-    .admin-screen p { color: #cbd5e1; font-size: 1rem; margin-bottom: 20px; text-align: center; }
-    .admin-screen input {
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 2px solid #3c244f;
-      background: #0f0b19;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      margin-bottom: 16px;
-      transition: 0.3s;
-    }
-    .admin-screen input:focus { border-color: #f43f5e; box-shadow: 0 0 25px rgba(244, 63, 94, 0.15); }
-    .admin-screen .btn-admin-login {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #f43f5e, #ec4899);
-      border: none;
-      border-radius: 16px;
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .admin-screen .btn-admin-login:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(244, 63, 94, 0.3); }
-    
-    .admin-panel { display: none; margin-top: 20px; }
-    .admin-panel .btn-back {
-      background: transparent;
-      border: none;
-      color: #a5b4fc;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 16px;
-      font-size: 0.95rem;
-      transition: 0.3s;
-    }
-    .admin-panel .btn-back:hover { text-decoration: underline; }
-    .admin-panel .result-list { margin-top: 20px; max-height: 400px; overflow-y: auto; }
-    .admin-panel .result-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 14px;
-      margin-bottom: 12px;
-      border: 1px solid #3c244f;
-    }
-    .admin-panel .result-row { display: flex; justify-content: space-between; align-items: center; }
-    .admin-panel .result-item .mail { color: #a5b4fc; font-weight: 700; font-size: 1rem; }
-    .admin-panel .result-item .grade { color: #f43f5e; font-weight: 800; font-size: 1.1rem; }
-    .admin-panel .result-item .stats-info { font-size: 0.85rem; color: #cbd5e1; margin-top: 4px; }
-    .admin-panel .result-item .status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .admin-panel .result-item .status-badge.approved { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-    .admin-panel .result-item .status-badge.pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-    .admin-panel .btn-action-approve {
-      padding: 8px 16px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border: none;
-      color: white;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .admin-panel .btn-action-approve:hover { transform: scale(1.05); }
-    .admin-panel .delete-btn { background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 700; transition: 0.3s; font-size: 1.1rem; }
-    .admin-panel .delete-btn:hover { transform: scale(1.2); }
+    .analysis-note { font-size: 0.92rem; color: #f43f5e; font-style: italic; font-weight: 600; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(244, 63, 94, 0.2); line-height: 1.4; }
 
     /* TOAST SİSTEMİ */
     .toast {
@@ -412,110 +217,76 @@
       transform: translateX(-50%) translateY(100px);
       background: #ec4899;
       color: #fff;
-      padding: 16px 32px;
-      border-radius: 60px;
+      padding: 14px 28px;
+      border-radius: 50px;
       font-weight: 700;
-      font-size: 1rem;
-      box-shadow: 0 12px 35px rgba(236, 72, 153, 0.3);
+      font-size: 0.95rem;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
       opacity: 0;
-      transition: 0.5s;
-      pointer-events: none;
-      backdrop-filter: blur(6px);
+      transition: 0.4s;
       z-index: 999;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast.error { background: #ef4444; box-shadow: 0 12px 35px rgba(239, 68, 68, 0.3); }
+    .toast.error { background: #ef4444; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3); }
 
     @media (max-width: 500px) {
-      .header h1 { font-size: 1.8rem; }
-      .question-card .q-text { font-size: 1rem; }
+      .header h1 { font-size: 1.5rem; }
+      .question-card .q-text { font-size: 0.95rem; }
       .option { padding: 12px 14px; }
-      .btn-submit { font-size: 1.2rem; padding: 18px; }
-      .mail-screen, .result-screen, .admin-screen { padding: 30px 20px; }
-      .mail-screen h2, .result-screen h2, .admin-screen h2 { font-size: 1.4rem; }
-      .pending-screen h2 { font-size: 1.6rem; }
+      .btn-submit { font-size: 1.1rem; padding: 16px; }
+      .start-screen, .result-screen { padding: 30px 20px; }
     }
   </style>
 </head>
 <body>
 
-<div class="heart-bg" id="heartBg"></div>
-
 <div class="wrapper">
 
-  <!-- MAIL GİRİŞ EKRANI -->
-  <div class="mail-screen" id="mailScreen">
-    <h2>💖 Bitaneme Özel Sınav Paneli</h2>
-    <p>Sonuçlarının bana ulaşması ve sana özel değerlendirmem için mail adresini gir sevgilim. 💕</p>
-    <input type="email" id="userEmail" placeholder="ornek@mail.com" />
-    <button class="btn-start" onclick="startExam()">🚀 Sınava Başla Bitanem</button>
-    <button class="btn-result-link" onclick="showResultScreen()">📊 Sonuçlarımı Görmek İstiyorum</button>
-    <button class="admin-link" onclick="showAdminScreen()">🔑 Yönetici Girişi</button>
+  <!-- GİRİŞ EKRANI -->
+  <div class="start-screen" id="startScreen">
+    <h2>🎯 2026 KPSS Özel Denemesi</h2>
+    <p>Senin için hazırlanmış çok özel bir deneme sınavı. Hazır olduğunda başla düğmesine basarak testi başlatabilirsin.</p>
+    <div class="warning-box">⚠️ Dikkat: Bu sınava sadece TEK BİR giriş hakkın vardır. Yarım bırakırsan veya sayfayı yenilersen sınav sonlanır!</div>
+    <input type="email" id="userEmail" placeholder="E-posta adresini girerek başla..." />
+    <button class="btn-primary" onclick="startExam()">Sınava Başla 🚀</button>
   </div>
 
-  <!-- SINAV BAŞLIK -->
-  <div class="header" id="examHeader">
-    <h1>🎯 KPSS Özel Sınavı</h1>
-    <p>Sen her şeyin en iyisini yaparsın, kendine inan sevgilim! Seni çok seviyorum. 🍀❤️</p>
-    <div class="user-mail" id="displayMail"></div>
+  <!-- SINAV EKRANI -->
+  <div class="exam-screen" id="examScreen">
+    <div class="header">
+      <h1>🎯 KPSS Deneme Sınavı</h1>
+      <p>Başarılar dilerim bitanem, odaklan ve en iyisini yap! 🍀</p>
+      <div class="dynamic-bubble" id="moralBubble">Yolun başındayız, harika gidiyorsun! ❤️</div>
+    </div>
+
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="stats">
+      <span>Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
+      <span><span id="progressPercent">0</span>%</span>
+    </div>
+
+    <div id="quizArea"></div>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitExam()">
+      <span class="btn-text">Sınavı Bitir ve Sonuçları Gönder ✨</span>
+      <span class="spinner"></span>
+    </button>
   </div>
 
-  <!-- İLERLEME SÜRECİ -->
-  <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-  <div class="stats" id="statsBar">
-    <span>📌 Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
-    <span>📊 <span id="progressPercent">0</span>%</span>
-  </div>
-
-  <!-- SORULAR -->
-  <div id="quizArea"></div>
-
-  <!-- GÖNDER BUTONU -->
-  <button class="btn-submit" id="submitBtn" onclick="submitExam()">
-    <span class="btn-text">🚀 Sınavı Bitir ve Sevgilime Gönder ❤️</span>
-    <span class="spinner"></span>
-  </button>
-
-  <!-- BEKLEME EKRANI (Cevaplar gönderildikten sonra) -->
-  <div class="pending-screen" id="pendingScreen">
-    <span class="icon">💖</span>
-    <h2>Cevapların Bana Ulaştı Sevgilim!</h2>
-    <p>Harika bir iş çıkardın.<br />Cevaplarını aldım. Şimdi senin için kontrol edeceğim ve onaylayacağım. Çok az sonra sonuçlarını sorgulayabilirsin! 🥰</p>
-    <button class="btn-result-link" onclick="showResultScreenFromPending()">📊 Sonuçlarımı Gör</button>
-  </div>
-
-  <!-- SONUÇ SORGULAMA EKRANI -->
+  <!-- SONUÇ EKRANI -->
   <div class="result-screen" id="resultScreen">
-    <h2>📊 Sınav Sonucunu Öğren</h2>
-    <p>Sonucunu ve sana özel açıklamalarımı görmek için mail adresini yaz aşkım.</p>
-    <input type="email" id="resultEmail" placeholder="ornek@mail.com" />
-    <button class="btn-result" onclick="checkResult()">🔍 Sonucumu Getir 💖</button>
-    
-    <div class="result-display" id="resultDisplay">
-      <div class="grade-container">
-        <div class="grade" id="resultGrade"></div>
-        <div class="grade-comment" id="gradeComment"></div>
-      </div>
-      <div class="detail" id="resultDetail"></div>
-      
-      <!-- DETAYLI SORU ANALİZ ALANI -->
-      <div class="analysis-container" id="analysisArea"></div>
+    <div class="result-header">
+      <h2>📊 Sınavın Tamamlandı!</h2>
+      <p>Tüm soruların cevap analizini ve özel notlarımı aşağıda bulabilirsin.</p>
     </div>
-    <button class="btn-back" onclick="showMailScreen()">🏠 Ana Sayfaya Dön</button>
-  </div>
-
-  <!-- YÖNETİCİ PANELİ -->
-  <div class="admin-screen" id="adminScreen">
-    <h2>🔑 Yönetici Paneli</h2>
-    <p>Sonuçları açıklamak ve onaylamak için şifreyi gir.</p>
-    <input type="password" id="adminPassword" placeholder="Şifre" />
-    <button class="btn-admin-login" onclick="adminLogin()">Giriş Yap</button>
     
-    <div class="admin-panel" id="adminPanel">
-      <h3 style="color:#fff; margin-bottom: 15px; text-align: center;">Gelen Sınav Sonuçları</h3>
-      <div class="result-list" id="resultList"></div>
-      <button class="btn-back" onclick="showMailScreen()">🏠 Ana Sayfaya Dön</button>
+    <div class="grade-container">
+      <div class="grade" id="resultGrade">0 Puan</div>
+      <div class="grade-comment" id="gradeComment"></div>
+      <div class="detail-stats" id="resultDetail"></div>
     </div>
+    
+    <div class="analysis-container" id="analysisArea"></div>
   </div>
 
 </div>
@@ -523,18 +294,15 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ★★★ EMAILJS KONFİGÜRASYONU ★★★
+  // ★★★ EMAILJS YAPILANDIRMASI ★★★
   const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
   const SERVICE_ID = "service_qdab76q";
   const TEMPLATE_ID = "template_64cuej9";
 
-  // ★★★ SONUÇLAR (localStorage) ★★★
-  let results = JSON.parse(localStorage.getItem('examResults')) || [];
-
   // ★★★ SORULAR VE CEVAPLARI ★★★
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim, ülkemizde değil. ❤️" },
-    { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan Uluset Egemenlik ve Çocuk Bayramı meclisimizin açılış günüdür bitanem! 🌸" },
+    { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan Ulusal Egemenlik ve Çocuk Bayramı meclisimizin açılış günüdür bitanem! 🌸" },
     { q: "Aşağıdakilerden hangisi ısı alışverişi türü değildir?", opts: ["Konveksiyon", "Radyasyon", "Kondüksiyon", "Adveksiyon", "Süblimleşme"], ans: 4, note: "Süblimleşme bir hal değişimidir tatlım (katıdan doğrudan gaza geçme). Isı alışveriş türü değildir. ✨" },
     { q: "Türk Dil Kurumu hangi amaçla kurulmuştur?", opts: ["Türkçeyi arındırmak", "Doğru kullanım sağlamak", "Geliştirmek", "Hepsi", "Hiçbiri"], ans: 3, note: "Hepsi TDK'nın asil ve güzel amaçlarındandır güzel gözlüm. 📚" },
     { q: "Kurtuluş Savaşı'nda Batı Cephesi'nde yapılmayan savaş?", opts: ["I. İnönü", "II. İnönü", "Kütahya-Eskişehir", "Sakarya", "Çanakkale"], ans: 4, note: "Çanakkale Savaşı I. Dünya Savaşı cephesidir sevgilim, Kurtuluş Savaşı Batı Cephesi değil. 🇹🇷" },
@@ -558,79 +326,45 @@
   let userEmail = '';
   let answered = new Set();
   const total = questions.length;
+
+  // Moral verici dinamik durum mesajları
+  const moralMessages = {
+    0: "Yolun başındayız, harika gidiyorsun sevgilim! ❤️",
+    5: "Harika başladık, sorular senden korksun canımın içi! 🔥",
+    10: "Yarısına geldik bile! Kendine güveniyorsun değil mi? 🌟",
+    15: "Son viraja girdik bitanem, odaklanmaya devam et! 💪",
+    19: "Ve son soru! Bitirip sonucumuzu görelim... 🚀"
+  };
+
   document.getElementById('totalQ').textContent = total;
 
-  // ROMANTİK ARKA PLAN KALP SÜSÜ
-  function createHearts() {
-    const bg = document.getElementById('heartBg');
-    for (let i = 0; i < 15; i++) {
-      const heart = document.createElement('div');
-      heart.innerHTML = '❤️';
-      heart.style.position = 'absolute';
-      heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.top = Math.random() * 100 + '%';
-      heart.style.opacity = Math.random() * 0.15 + 0.05;
-      heart.style.transform = `rotate(${Math.random() * 360}deg)`;
-      bg.appendChild(heart);
+  // Sayfa yüklendiğinde kilit durumunu kontrol et
+  window.addEventListener('DOMContentLoaded', () => {
+    const isLocked = localStorage.getItem('kpss_exam_completed');
+    if (isLocked) {
+      const savedData = JSON.parse(localStorage.getItem('kpss_exam_data'));
+      showResults(savedData.score, savedData.correct, savedData.wrong, savedData.empty, savedData.answers);
+      showToast('⚠️ Bu sınava daha önce giriş yapılmış. Sonuçların kilitlendi!', true);
     }
-  }
-  createHearts();
-
-  // ★★★ EKRAN GEÇİŞLERİ ★★★
-  function showMailScreen() {
-    document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
-    document.getElementById('mailScreen').style.display = 'block';
-    document.getElementById('quizArea').innerHTML = '';
-    answered.clear();
-    updateProgress();
-  }
-  function showResultScreen() {
-    document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
-    document.getElementById('resultScreen').style.display = 'block';
-    document.getElementById('resultDisplay').style.display = 'none';
-    document.getElementById('resultEmail').value = '';
-  }
-  function showResultScreenFromPending() {
-    document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
-    document.getElementById('resultScreen').style.display = 'block';
-    document.getElementById('resultDisplay').style.display = 'none';
-    // Kullanıcının başta girdiği mail adresini otomatik doldur
-    document.getElementById('resultEmail').value = userEmail;
-  }
-  function showAdminScreen() {
-    document.querySelectorAll('.mail-screen, .header, .progress-wrap, .stats, .question-card, .btn-submit, .success-screen, .result-screen, .admin-screen, .pending-screen').forEach(el => el.style.display = 'none');
-    document.getElementById('adminScreen').style.display = 'block';
-    document.getElementById('adminPanel').style.display = 'none';
-    document.getElementById('adminPassword').value = '';
-  }
-  window.showMailScreen = showMailScreen;
-  window.showResultScreen = showResultScreen;
-  window.showResultScreenFromPending = showResultScreenFromPending;
-  window.showAdminScreen = showAdminScreen;
+  });
 
   // ★★★ SINAV BAŞLAT ★★★
   function startExam() {
     const email = document.getElementById('userEmail').value.trim();
-    if (!email || !email.includes('@')) { showToast('❌ Geçerli bir mail girmelisin sevgilim!', true); return; }
+    if (!email || !email.includes('@')) { showToast('❌ Lütfen geçerli bir e-posta adresi girin!', true); return; }
     userEmail = email;
-    document.getElementById('displayMail').textContent = '📧 ' + userEmail;
-    document.getElementById('mailScreen').style.display = 'none';
-    document.getElementById('examHeader').style.display = 'block';
-    document.getElementById('progressWrap').style.display = 'block';
-    document.getElementById('statsBar').style.display = 'flex';
-    document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('examScreen').style.display = 'block';
     renderQuestions();
   }
-  window.startExam = startExam;
 
-  // ★★★ SORULARI YAZDIR ★★★
+  // ★★★ SORULARI EKLE ★★★
   function renderQuestions() {
     const area = document.getElementById('quizArea');
     let html = '';
     questions.forEach((q, idx) => {
       html += `
-        <div class="question-card" id="q-${idx}" style="display:block;">
+        <div class="question-card" id="q-${idx}">
           <div class="q-head">
             <span class="badge">Soru ${idx + 1}</span>
             <span class="status" id="status-${idx}">Boş</span>
@@ -640,7 +374,7 @@
       `;
       q.opts.forEach((opt, oi) => {
         html += `
-          <label class="option" onclick="selectOption(${idx}, ${oi})">
+          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx}, ${oi})">
             <input type="radio" name="q${idx}" value="${oi}" />
             <span class="dot"></span>
             <span class="option-text">${opt}</span>
@@ -648,10 +382,10 @@
         `;
       });
       html += `
-          <label class="option blank-option" onclick="selectBlank(${idx})">
+          <label class="option blank-option" id="opt-label-${idx}-blank" onclick="selectBlank(${idx})">
             <input type="radio" name="q${idx}" value="blank" checked />
             <span class="dot"></span>
-            <span class="option-text">Bu soruyu boş bırakmak istiyorum</span>
+            <span class="option-text">Boş bırak</span>
           </label>
         </div>
       </div>`;
@@ -659,7 +393,6 @@
     area.innerHTML = html;
   }
 
-  // ★★★ SEÇİM SÜREÇLERİ ★★★
   function selectOption(qIdx, optIdx) {
     const radio = document.querySelector(`input[name="q${qIdx}"][value="${optIdx}"]`);
     if (radio) { 
@@ -668,11 +401,23 @@
         if (r.value !== String(optIdx)) r.checked = false; 
       }); 
     }
+    
+    // Aktif kart rengi ve kenarlık stilleri
+    document.getElementById(`q-${qIdx}`).classList.add('active-q');
+    document.querySelectorAll(`#q-${qIdx} .option`).forEach(label => label.classList.remove('selected-opt'));
+    document.getElementById(`opt-label-${qIdx}-${optIdx}`).classList.add('selected-opt');
+
     updateStatus(qIdx);
   }
+
   function selectBlank(qIdx) {
     const radio = document.querySelector(`input[name="q${qIdx}"][value="blank"]`);
     if (radio) radio.checked = true;
+
+    document.getElementById(`q-${qIdx}`).classList.remove('active-q');
+    document.querySelectorAll(`#q-${qIdx} .option`).forEach(label => label.classList.remove('selected-opt'));
+    document.getElementById(`opt-label-${qIdx}-blank`).classList.add('selected-opt');
+
     updateStatus(qIdx);
   }
   window.selectOption = selectOption;
@@ -700,9 +445,16 @@
     document.getElementById('answeredCount').textContent = count;
     document.getElementById('progressPercent').textContent = percent;
     document.getElementById('progressBar').style.width = percent + '%';
+
+    // Dinamik moral mesajı baloncuğunu tetikle
+    const bubble = document.getElementById('moralBubble');
+    if (moralMessages[count]) {
+      bubble.textContent = moralMessages[count];
+      bubble.style.display = 'inline-block';
+    }
   }
 
-  // ★★★ SINAVI TAMAMLA VE SİSTEMSEL HESAPLA ★★★
+  // ★★★ BİTİR VE DEĞERLENDİR ★★★
   function submitExam() {
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
@@ -734,30 +486,10 @@
       list.push(`Soru ${idx+1}: ${harf}`);
     });
 
-    // Dinamik Puanlama Formülü (Soru sayısı değişse bile 100 üzerinden hesaplar)
     const totalScore = Math.round((correctCount / total) * 100);
+    const reportMessage = `📝 KPSS Tek Girişlik Sonuç Raporu\n👤 E-posta: ${userEmail}\n\n🏆 SKOR ANALİZİ:\n--------------------------------------\n⭐ Toplam Puan: ${totalScore} / 100\n✅ Doğru: ${correctCount}\n❌ Yanlış: ${wrongCount}\n⬜ Boş: ${emptyCount}\n--------------------------------------\n\nCEVAP DETAYLARI:\n${list.join('\n')}`;
 
-    const mesaj = `📝 2026 Sevgilime Özel KPSS Sonuç Raporu\n👤 Sevgilimin Maili: ${userEmail}\n\n🏆 OTOMATİK SKOR ANALİZİ:\n--------------------------------------\n⭐ Toplam Puan: ${totalScore} / 100\n✅ Doğru Sayısı: ${correctCount}\n❌ Yanlış Sayısı: ${wrongCount}\n⬜ Boş Sayısı: ${emptyCount}\n--------------------------------------\n\nCEVAP DETAYLARI:\n${list.join('\n')}`;
-
-    const existingIndex = results.findIndex(r => r.email === userEmail);
-    const examData = {
-      email: userEmail,
-      grade: totalScore,
-      correct: correctCount,
-      wrong: wrongCount,
-      empty: emptyCount,
-      answers: userAnswers,
-      onaylandi: false 
-    };
-
-    if (existingIndex !== -1) {
-      results[existingIndex] = examData;
-    } else {
-      results.push(examData);
-    }
-    localStorage.setItem('examResults', JSON.stringify(results));
-
-    // E-postayı Gönder
+    // E-postayı Arka Planda Gönder
     fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -766,23 +498,25 @@
         template_id: TEMPLATE_ID, 
         user_id: PUBLIC_KEY, 
         template_params: { 
-          subject: 'Sevgilim KPSS Denemesini Tamamladı! ❤️ - ' + userEmail, 
-          message: mesaj 
+          subject: 'Kişisel KPSS Deneme Sonucu Alındı! 🎯 - ' + userEmail, 
+          message: reportMessage 
         } 
       })
     })
     .then(res => {
       if (res.ok) {
-        document.getElementById('quizArea').innerHTML = '';
-        document.getElementById('submitBtn').style.display = 'none';
-        document.getElementById('statsBar').style.display = 'none';
-        document.getElementById('progressWrap').style.display = 'none';
-        document.getElementById('examHeader').style.display = 'none';
-        
-        // Bekleme Ekranını Göster
-        document.getElementById('pendingScreen').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        showToast('💖 Cevapların sevgiyle bana ulaştırıldı bitanem!');
+        // BAŞARILI: Tarayıcı hafızasına kilitle
+        const examData = {
+          score: totalScore,
+          correct: correctCount,
+          wrong: wrongCount,
+          empty: emptyCount,
+          answers: userAnswers
+        };
+        localStorage.setItem('kpss_exam_completed', 'true');
+        localStorage.setItem('kpss_exam_data', JSON.stringify(examData));
+
+        showResults(totalScore, correctCount, wrongCount, emptyCount, userAnswers);
       } else {
         res.text().then(text => showToast('❌ Gönderme hatası: ' + text, true));
         btn.disabled = false;
@@ -790,170 +524,74 @@
       }
     })
     .catch(err => {
-      showToast('❌ Ağ hatası oluştu aşkım: ' + err, true);
+      showToast('❌ Ağ hatası oluştu: ' + err, true);
       btn.disabled = false;
       btn.classList.remove('loading');
     });
   }
   window.submitExam = submitExam;
 
-  // ★★★ DETAYLI SONUÇ SORGULAMA ★★★
-  function checkResult() {
-    const email = document.getElementById('resultEmail').value.trim();
-    if (!email || !email.includes('@')) { showToast('❌ Geçerli mail adresini girmelisin aşkım!', true); return; }
+  // ★★★ SONUÇLARI GÖSTER ★★★
+  function showResults(score, correct, wrong, empty, answers) {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('examScreen').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    document.getElementById('resultGrade').textContent = score + ' Puan';
     
-    const result = results.find(r => r.email === email);
-    const display = document.getElementById('resultDisplay');
-    const analysisArea = document.getElementById('analysisArea');
+    let comment = "";
+    if (score >= 85) {
+      comment = "İnanılmazsın! 🏆 Bu puan tam bir şampiyon işi sevgilim. Sınav günü de bu netleri havada karada göreceğiz, sana çok güveniyorum! ❤️✨";
+    } else if (score >= 60) {
+      comment = "Çok güzel bir sonuç sevgilim! Eksikleri hemen yakalayıp cebimize koyuyoruz. Sene sonunda o kadro bizim olacak inşallah! 💪🌸";
+    } else {
+      comment = "Canın sağ olsun sevgilim, bu sadece bir antrenmandı. Eksikleri birlikte kapatacağız, moral bozmak yok, yanındayım! 🧸💛";
+    }
+    document.getElementById('gradeComment').innerHTML = comment;
+    document.getElementById('resultDetail').textContent = `✅ Doğru: ${correct}  |  ❌ Yanlış: ${wrong}  |  ⬜ Boş: ${empty}`;
     
-    if (result) {
-      display.style.display = 'block';
-      if (result.onaylandi) {
-        document.getElementById('resultGrade').textContent = result.grade + ' Puan';
-        
-        let comment = "";
-        if (result.grade >= 85) {
-          comment = "Sen benim dahi sevgilimsin! Geleceğin memuru şimdiden hazır! 🏆👑❤️";
-        } else if (result.grade >= 60) {
-          comment = "Harika bir sonuç biriciğim! Çok az bir gayretle zirvedeyiz! Sene sonunda o kadro senin! 💪💕";
+    let analysisHtml = '<div class="analysis-title">🔍 Soru Analizleri ve Özel Notlarım:</div>';
+    
+    questions.forEach((q, idx) => {
+      const uAns = answers[idx];
+      let statusClass = 'empty-card';
+      let statusText = '⬜ Boş Bıraktın';
+      let userChoiceText = 'Seçilmedi';
+
+      if (uAns !== 'blank') {
+        const uIdx = parseInt(uAns);
+        userChoiceText = q.opts[uIdx];
+        if (uIdx === q.ans) {
+          statusClass = 'correct-card';
+          statusText = '✅ Doğru';
         } else {
-          comment = "Canın sağ olsun aşkım, bu sadece bir deneme. Ben senin her zaman en büyük destekçinim, birlikte halledeceğiz! 🧸🌸✨";
+          statusClass = 'wrong-card';
+          statusText = '❌ Yanlış';
         }
-        document.getElementById('gradeComment').innerHTML = comment;
-        document.getElementById('resultDetail').textContent = `✅ Doğru: ${result.correct}  |  ❌ Yanlış: ${result.wrong}  |  ⬜ Boş: ${result.empty}`;
-        
-        let analysisHtml = '<div class="analysis-title">✨ Soru Soru Detaylı Değerlendirmen:</div>';
-        
-        questions.forEach((q, idx) => {
-          const uAns = result.answers ? result.answers[idx] : 'blank';
-          let statusClass = 'empty-card';
-          let statusText = '⬜ Boş Bıraktın sevgilim';
-          let userChoiceText = 'Seçilmedi';
-
-          if (uAns !== 'blank') {
-            const uIdx = parseInt(uAns);
-            userChoiceText = q.opts[uIdx];
-            if (uIdx === q.ans) {
-              statusClass = 'correct-card';
-              statusText = '✅ Doğru Yapmışsın Aşkım!';
-            } else {
-              statusClass = 'wrong-card';
-              statusText = '❌ Yanlış İşaretlemişsin Bitanem';
-            }
-          }
-
-          const correctChoiceText = q.opts[q.ans];
-
-          analysisHtml += `
-            <div class="analysis-item ${statusClass}">
-              <div class="analysis-q">Soru ${idx + 1}: ${q.q}</div>
-              <div class="analysis-ans user-ans"><b>Senin Cevabın:</b> ${userChoiceText} (${statusText})</div>
-              <div class="analysis-ans correct-ans"><b>Doğru Cevap:</b> ${correctChoiceText}</div>
-              <div class="analysis-note">💡 <b>Benim Notum:</b> ${q.note}</div>
-            </div>
-          `;
-        });
-        
-        analysisArea.innerHTML = analysisHtml;
-        showToast('✅ Sonuçların başarıyla getirildi sevgilim!');
-      } else {
-        document.getElementById('resultGrade').textContent = '⏳';
-        document.getElementById('gradeComment').textContent = "";
-        document.getElementById('resultDetail').innerHTML = '<span class="pending-msg">📌 Sonuçların şu an sevgilin (ben) tarafından inceleniyor. Çok kısa süre içinde onaylayacağım sevgilim, lütfen biraz sonra tekrar sorgula! 🥰</span>';
-        analysisArea.innerHTML = "";
-        showToast('⏳ Sonuçların henüz onaylanmadı aşkım...');
       }
-    } else {
-      display.style.display = 'block';
-      document.getElementById('resultGrade').textContent = '';
-      document.getElementById('gradeComment').textContent = "";
-      document.getElementById('resultDetail').innerHTML = '<span class="not-found">❌ Bu maile ait bir sınav kaydı bulamadım sevgilim. Girişte doğru mail yazdığından emin ol.</span>';
-      analysisArea.innerHTML = "";
-      showToast('❌ Kayıt bulunamadı', true);
-    }
-  }
-  window.checkResult = checkResult;
 
-  // ★★★ YÖNETİCİ GİRİŞ SÜRECİ ★★★
-  function adminLogin() {
-    const pass = document.getElementById('adminPassword').value;
-    if (pass === '1907') {
-      document.getElementById('adminPanel').style.display = 'block';
-      document.querySelector('.btn-admin-login').style.display = 'none';
-      document.querySelector('#adminScreen p').style.display = 'none';
-      document.querySelector('#adminScreen input[type="password"]').style.display = 'none';
-      renderResultList();
-      showToast('✅ Giriş başarılı şef!');
-    } else {
-      showToast('❌ Yanlış şifre!', true);
-    }
-  }
-  window.adminLogin = adminLogin;
-
-  // Şifre alanında Enter'a basınca otomatik giriş yapsın
-  document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      adminLogin();
-    }
-  });
-
-  // ★★★ SİSTEMSEL ONAY SÜRECİ ★★★
-  function approveResultDirectly(index) {
-    results[index].onaylandi = true;
-    localStorage.setItem('examResults', JSON.stringify(results));
-    renderResultList();
-    showToast('✅ Sonuç başarıyla açıklandı! Sevgilin artık detayları görebilir.');
-  }
-  window.approveResultDirectly = approveResultDirectly;
-
-  // ★★★ YÖNETİCİ SONUÇ LİSTELEME ★★★
-  function renderResultList() {
-    const list = document.getElementById('resultList');
-    if (results.length === 0) {
-      list.innerHTML = '<p style="color:#cbd5e1;text-align:center;">Henüz çözülmüş bir sınav yok.</p>';
-      return;
-    }
-    let html = '';
-    results.forEach((r, i) => {
-      html += `
-        <div class="result-item">
-          <div class="result-row">
-            <span class="mail">${r.email}</span>
-            <button class="delete-btn" onclick="deleteResult(${i})">✕</button>
-          </div>
-          <div class="result-row" style="margin-top: 8px;">
-            <div>
-              <span class="grade">${r.grade} Puan</span>
-              <div class="stats-info">Doğru: ${r.correct} | Yanlış: ${r.wrong} | Boş: ${r.empty}</div>
-            </div>
-            <div>
-              ${!r.onaylandi ? `<button class="btn-action-approve" onclick="approveResultDirectly(${i})">Onayla & Yayınla</button>` : `<span class="status-badge approved">Yayında</span>`}
-            </div>
-          </div>
+      analysisHtml += `
+        <div class="analysis-item ${statusClass}">
+          <div class="analysis-q">Soru ${idx + 1}: ${q.q}</div>
+          <div class="analysis-ans user-ans"><b>Senin Cevabın:</b> ${userChoiceText} (${statusText})</div>
+          <div class="analysis-ans correct-ans"><b>Doğru Cevap:</b> ${q.opts[q.ans]}</div>
+          <div class="analysis-note">💡 <b>Çözüm Notum:</b> ${q.note}</div>
         </div>
       `;
     });
-    list.innerHTML = html;
+    
+    document.getElementById('analysisArea').innerHTML = analysisHtml;
   }
 
-  function deleteResult(index) {
-    results.splice(index, 1);
-    localStorage.setItem('examResults', JSON.stringify(results));
-    renderResultList();
-    showToast('✅ Sonuç başarıyla silindi!');
-  }
-  window.deleteResult = deleteResult;
-
-  // ★★★ BİLGİLENDİRME BALONU (TOAST) ★★★
   function showToast(msg, isError = false) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.className = 'toast';
     if (isError) t.classList.add('error');
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 5000);
+    setTimeout(() => t.classList.remove('show'), 4000);
   }
-  window.showToast = showToast;
 </script>
 </body>
 </html>
