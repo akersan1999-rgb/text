@@ -17,16 +17,10 @@
     body{
       background:linear-gradient(135deg, #0b0914 0%, #1a1030 50%, #0b0914 100%);
       background-size:400% 400%;animation:bgMove 15s ease infinite;
-      color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;
+      color:var(--text);min-height:100vh;overflow-x:hidden;
     }
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
-    /* Parçacıklar */
-    .particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-    .particle{position:absolute;background:var(--accent);border-radius:50%;animation:floatUp 6s linear infinite;opacity:0.3}
-    @keyframes floatUp{0%{transform:translateY(100vh) scale(0)}100%{transform:translateY(-10vh) scale(1)}}
-
-    .container{max-width:800px;margin:0 auto;padding:20px;position:relative;z-index:1}
+    .container{max-width:800px;margin:0 auto;padding:20px}
 
     .sticky-bar{
       position:sticky;top:0;z-index:100;background:var(--surface);border:1px solid var(--border);
@@ -34,33 +28,24 @@
       display:none;justify-content:space-between;align-items:center;
       box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
     }
-    .sticky-bar .timer{font-weight:700;font-size:1.2rem;color:var(--accent)}
-    .sticky-bar .progress-text{font-size:0.9rem;color:var(--text2)}
 
     .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s ease}
     .screen.active{display:block}
     @keyframes screenIn{from{opacity:0;transform:translateY(30px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem;text-shadow:0 0 20px rgba(244,63,94,0.4)}
-    h3{color:var(--accent);margin-bottom:12px;font-weight:700}
-    input,button{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;transition:0.3s}
-    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(244,63,94,0.2)}
-    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s;position:relative;overflow:hidden}
+    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem}
+    input,button{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none}
+    input:focus{border-color:var(--accent)}
+    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s}
     button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(244,63,94,0.4)}
-    button:active{transform:scale(0.96)}
     .row{display:flex;gap:10px}.row>*{flex:1}
-    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px}
 
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
-    .stats-item{flex:1;animation:popIn 0.6s ease backwards}
-    @keyframes popIn{from{opacity:0;transform:scale(0.3) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
     .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent)}
-    .stats-item .label{font-size:0.9rem;color:var(--text2)}
 
     .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s}
-    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(4px)}
-    .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06)}.opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
 
     .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer}
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex}
@@ -68,37 +53,31 @@
     .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
     .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}.list-item:hover{background:rgba(244,63,94,0.06)}
     .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border)}.tab.active{background:var(--accent);color:#fff}
-    .btn-sm{padding:8px 16px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
+    .btn-sm{padding:8px 16px;font-size:0.85rem;width:auto;border-radius:10px}
     .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center}
     .difficulty-buttons{display:flex;flex-direction:column;gap:15px;margin:20px 0}
     .difficulty-btn{background:var(--card);border:2px solid var(--border);color:var(--text);padding:20px;border-radius:16px;font-size:1.3rem;font-weight:700;cursor:pointer;transition:0.4s;text-align:center}
-    .difficulty-btn:hover{transform:scale(1.02);border-color:var(--accent)}
-    .difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
-    .success-msg{color:var(--success);text-align:center;margin-top:10px;font-weight:600}
-    .help-mail{text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info)}
+    .difficulty-btn:hover{border-color:var(--accent)}.difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
   </style>
 </head>
 <body>
-<div class="particles" id="particlesContainer"></div>
 <div class="container">
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 30:00</span>
-    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
-    <span class="progress-text">İlerleme: <strong id="stickyProgress">0</strong>%</span>
+    <span>Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
+    <span>İlerleme: <strong id="stickyProgress">0</strong>%</span>
   </div>
 
-  <!-- Giriş -->
   <div class="screen active" id="loginScreen">
     <h2>🎯 KPSS Deneme Sınavı</h2>
     <p style="text-align:center;margin-bottom:25px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
-    <div id="loginError" class="error-msg" style="display:none"></div>
+    <div id="loginError" class="error-msg" style="display:none;color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px"></div>
     <div class="row"><input type="text" id="nameInput" placeholder="Adın"/><input type="text" id="surnameInput" placeholder="Soyadın"/></div>
     <input type="email" id="emailInput" placeholder="E-posta adresin"/>
     <button id="startBtn">🚀 Devam Et</button>
-    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <div class="help-mail" style="text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)">📧 İletişim: <a href="mailto:akersan1999@gmail.com" style="color:var(--info)">akersan1999@gmail.com</a></div>
   </div>
 
-  <!-- Zorluk Seçimi -->
   <div class="screen" id="difficultyScreen">
     <button class="back-btn" id="backToLoginBtn">⬅️ Geri</button>
     <h2>🎚️ Zorluk Seviyesini Seç</h2>
@@ -111,14 +90,12 @@
     <button id="startExamAfterDiff">✨ Sınava Başla</button>
   </div>
 
-  <!-- Sınav -->
   <div class="screen" id="examScreen">
     <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
     <div id="questionsContainer"></div>
     <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
   </div>
 
-  <!-- Bekleme -->
   <div class="screen" id="waitScreen">
     <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
     <h2>⏳ Sınavın Kaydedildi</h2>
@@ -130,7 +107,6 @@
     <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
   </div>
 
-  <!-- Sonuç -->
   <div class="screen" id="resultScreen">
     <button class="back-btn" id="backToHomeResultBtn">⬅️ Ana Sayfa</button>
     <div class="stats-grid">
@@ -145,12 +121,10 @@
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp</button>
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
     </div>
-    <div id="mailSuccessMsg" class="success-msg" style="display:none"></div>
-    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <div id="mailSuccessMsg" style="color:var(--success);text-align:center;margin-top:10px;font-weight:600;display:none"></div>
   </div>
 </div>
 
-<!-- Yönetici Modal -->
 <div class="modal" id="adminModal">
   <div class="modal-content">
     <span class="close-modal" id="closeAdminModal">&times;</span>
@@ -163,19 +137,27 @@
       <div class="tabs">
         <div class="tab active" data-tab="exams">📋 Sınavlar</div>
         <div class="tab" data-tab="questions">📚 Soru Kütüphanesi</div>
+        <div class="tab" data-tab="progress">📈 Gelişim</div>
       </div>
       <div id="examsTab">
         <p><span id="totalExams">0</span> sınav kaydı</p>
-        <div id="examList"></div>
-        <div id="detailPanel" style="display:none"></div>
+        <div id="examList" style="max-height:300px;overflow-y:auto"></div>
+        <div id="detailPanel" style="display:none;background:rgba(0,0,0,0.3);padding:15px;border-radius:12px;margin-top:15px;max-height:250px;overflow-y:auto;font-size:0.9rem"></div>
         <div id="adminActions" style="display:none;margin-top:10px;display:flex;gap:8px">
           <button id="yayinlaBtn" style="background:var(--success)">✅ Yayınla & Mail</button>
           <button id="kilitleBtn" style="background:var(--warning);color:#000">🔒 Kilitle</button>
         </div>
       </div>
       <div id="questionsTab" style="display:none">
-        <button id="addQuestionBtn" style="background:var(--success)">➕ Yeni Soru Ekle</button>
-        <div id="questionList"></div>
+        <button id="addQuestionBtn" style="background:var(--success);margin-bottom:15px">➕ Yeni Soru Ekle</button>
+        <p style="color:var(--text2);margin-bottom:10px">Toplam <span id="totalQuestions">0</span> soru</p>
+        <div id="questionList" style="max-height:400px;overflow-y:auto"></div>
+      </div>
+      <div id="progressTab" style="display:none">
+        <h4>📈 Öğrenci Gelişim Takibi</h4>
+        <p>E‑posta adresine tıklayarak o kişinin sınav geçmişini ve puan grafiğini görebilirsin.</p>
+        <div id="studentList"></div>
+        <div id="studentDetail" style="margin-top:15px"></div>
       </div>
     </div>
   </div>
@@ -205,210 +187,60 @@ const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
 const MAIL_TEMPLATE_ID = "template_pqqrclq";
 
-// ========== 200+ SORU HAVUZU (KOLAY, ORTA, ZOR) ==========
 const questionPool = [
-  // KOLAY (70 soru)
-  { q:"Türkiye'nin başkenti neresidir?", o:["İstanbul","Ankara","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"Ankara." },
-  { q:"TBMM ne zaman açıldı?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
-  { q:"Türkiye'nin en kalabalık şehri hangisidir?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
-  { q:"Cumhuriyet hangi yıl ilan edildi?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
-  { q:"İstiklal Marşı'nın yazarı kimdir?", o:["Mehmet Akif Ersoy","Namık Kemal","Yahya Kemal","Orhan Veli","Can Yücel"], a:0, difficulty:"easy", n:"Mehmet Akif Ersoy." },
-  { q:"Türk bayrağının rengi nedir?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
-  { q:"Bir yıl kaç gündür?", o:["300","365","366","350","400"], a:1, difficulty:"easy", n:"365." },
-  { q:"1 metre kaç santimetredir?", o:["10","100","1000","10000","100000"], a:1, difficulty:"easy", n:"100 cm." },
-  { q:"Dünyanın en büyük kıtası hangisidir?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
+  { q:"Türkiye'nin başkenti?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:0, difficulty:"easy", n:"Ankara." },
+  { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
+  { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
+  { q:"İstiklal Marşı yazarı?", o:["Mehmet Akif","Namık Kemal","Yahya Kemal","Orhan Veli","Can Yücel"], a:0, difficulty:"easy", n:"Mehmet Akif Ersoy." },
+  { q:"En büyük gezegen?", o:["Dünya","Mars","Jüpiter","Satürn","Uranüs"], a:2, difficulty:"easy", n:"Jüpiter." },
+  { q:"Su kaynama noktası?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
+  { q:"1 m = ? cm", o:["10","100","1000","10000","100000"], a:1, difficulty:"easy", n:"100 cm." },
+  { q:"En kalabalık kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
   { q:"Atatürk nerede doğdu?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, difficulty:"easy", n:"Selanik." },
-  { q:"Türk lirasının simgesi nedir?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
-  { q:"İngiltere'nin para birimi nedir?", o:["Euro","Dolar","Sterlin","Frank","Mark"], a:2, difficulty:"easy", n:"Sterlin." },
-  { q:"Futbol sahası kaç kişiyle oynanır?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
-  { q:"En büyük gezegen hangisidir?", o:["Dünya","Mars","Jüpiter","Satürn","Uranüs"], a:2, difficulty:"easy", n:"Jüpiter." },
-  { q:"Su kaç derecede kaynar?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
-  { q:"İnsan vücudunda kaç kemik vardır?", o:["186","206","226","256","286"], a:1, difficulty:"easy", n:"206." },
-  { q:"Aşağıdakilerden hangisi bir içecek değildir?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
-  { q:"En hızlı kara hayvanı hangisidir?", o:["Aslan","Çita","Tavşan","At","Kurt"], a:1, difficulty:"easy", n:"Çita." },
-  { q:"Türk milli içeceği nedir?", o:["Çay","Ayran","Rakı","Boza","Şalgam"], a:1, difficulty:"easy", n:"Ayran." },
-  { q:"Bir düzine kaç adettir?", o:["6","10","12","20","24"], a:2, difficulty:"easy", n:"12." },
-  { q:"Hangi ülkenin başkenti Berlin'dir?", o:["Fransa","Almanya","İtalya","İspanya","Hollanda"], a:1, difficulty:"easy", n:"Almanya." },
-  { q:"Aşağıdakilerden hangisi bir meyve değildir?", o:["Elma","Armut","Domates","Patates","Portakal"], a:3, difficulty:"easy", n:"Patates." },
-  { q:"İlk bilgisayarın adı nedir?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"easy", n:"ENIAC." },
-  { q:"Yer çekimi yasasını kim buldu?", o:["Einstein","Newton","Galileo","Darwin","Tesla"], a:1, difficulty:"easy", n:"Newton." },
-  { q:"En soğuk kıta hangisidir?", o:["Asya","Avrupa","Antarktika","Kuzey Amerika","Güney Amerika"], a:2, difficulty:"easy", n:"Antarktika." },
-  { q:"Bir kilo kaç gramdır?", o:["10","100","500","1000","10000"], a:3, difficulty:"easy", n:"1000." },
-  { q:"Aşağıdakilerden hangisi bir müzik aleti değildir?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
-  { q:"En küçük ülke neresidir?", o:["Monako","Vatikan","San Marino","Liechtenstein","Andorra"], a:1, difficulty:"easy", n:"Vatikan." },
-  { q:"Atatürk'ün annesinin adı nedir?", o:["Zübeyde Hanım","Makbule Hanım","Latife Hanım","Fikriye Hanım","Halide Edip"], a:0, difficulty:"easy", n:"Zübeyde Hanım." },
-  { q:"Türkiye'nin en büyük gölü hangisidir?", o:["Van","Tuz","Beyşehir","Eğirdir","İznik"], a:0, difficulty:"easy", n:"Van Gölü." },
-  { q:"Aşağıdakilerden hangisi bir renk değildir?", o:["Kırmızı","Mavi","Yeşil","Sıcak","Sarı"], a:3, difficulty:"easy", n:"Sıcak." },
-  { q:"İstiklal Marşı'nın bestecisi kimdir?", o:["Osman Zeki Üngör","Mehmet Akif","Mozart","Beethoven","Bach"], a:0, difficulty:"easy", n:"Osman Zeki Üngör." },
-  { q:"Aşağıdakilerden hangisi bir doğal sayıdır?", o:["-1","0","1.5","-5","2/3"], a:1, difficulty:"easy", n:"0." },
-  { q:"Türkiye'nin en yüksek dağı hangisidir?", o:["Erciyes","Ağrı","Süphan","Kaçkar","Uludağ"], a:1, difficulty:"easy", n:"Ağrı Dağı." },
-  { q:"Aşağıdakilerden hangisi bir mevsim değildir?", o:["İlkbahar","Yaz","Sonbahar","Kış","Hava"], a:4, difficulty:"easy", n:"Hava." },
-  { q:"En büyük okyanus hangisidir?", o:["Atlas","Hint","Pasifik","Arktik","Güney"], a:2, difficulty:"easy", n:"Büyük Okyanus." },
-  { q:"Hangi gezegen halkalıdır?", o:["Mars","Jüpiter","Satürn","Venüs","Merkür"], a:2, difficulty:"easy", n:"Satürn." },
-  { q:"Aşağıdakilerden hangisi bir sayıdır?", o:["Elma","Armut","3","Masa","Sandalye"], a:2, difficulty:"easy", n:"3." },
-  { q:"Türk Hava Yolları'nın kodu nedir?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"easy", n:"TK." },
-  { q:"Aşağıdakilerden hangisi bir hayvan değildir?", o:["Kedi","Köpek","Kuş","Masa","Balık"], a:3, difficulty:"easy", n:"Masa." },
-  { q:"En kalabalık ülke hangisidir?", o:["ABD","Çin","Hindistan","Rusya","Endonezya"], a:2, difficulty:"easy", n:"Hindistan." },
-  { q:"Aşağıdakilerden hangisi bir gezegendir?", o:["Güneş","Ay","Mars","Bulut","Yıldız"], a:2, difficulty:"easy", n:"Mars." },
-  { q:"Türkiye'nin en uzun akarsuyu hangisidir?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, difficulty:"easy", n:"Kızılırmak." },
-  { q:"Aşağıdakilerden hangisi bir iç organ değildir?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"easy", n:"Deri (organdır ama bu soruda dış organ kastedilmiş)." },
-  { q:"Bilgisayarın beyni olarak adlandırılan parça hangisidir?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"easy", n:"CPU." },
-  { q:"Aşağıdakilerden hangisi bir programlama dili değildir?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"easy", n:"HTML." },
-  { q:"İlk uçak ne zaman uçtu?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"easy", n:"1903 (Wright Kardeşler)." },
-  { q:"Aşağıdakilerden hangisi bir sürüngen değildir?", o:["Yılan","Kertenkele","Kurbağa","Timsah","Kaplumbağa"], a:2, difficulty:"easy", n:"Kurbağa." },
-  { q:"En hızlı balık hangisidir?", o:["Ton","Yelken","Köpekbalığı","Som","Alabalık"], a:1, difficulty:"easy", n:"Yelken balığı." },
-  { q:"Aşağıdakilerden hangisi bir vitamin değildir?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"easy", n:"Kalsiyum (mineral)." },
-  { q:"Türkiye'nin en doğusundaki il hangisidir?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"easy", n:"Iğdır." },
-  { q:"Aşağıdakilerden hangisi bir doğal afet değildir?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"easy", n:"Trafik kazası." },
-  { q:"İngiltere'nin başkenti neresidir?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:2, difficulty:"easy", n:"Londra." },
-  { q:"Aşağıdakilerden hangisi bir element değildir?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"easy", n:"Su (bileşik)." },
-  { q:"Türk bayrağındaki ay ve yıldız neyi temsil eder?", o:["Bağımsızlık","Gökyüzü","Devlet","Millet","Vatan"], a:0, difficulty:"easy", n:"Bağımsızlık." },
-  { q:"Aşağıdakilerden hangisi bir kıta değildir?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"easy", n:"Grönland (ada)." },
-  { q:"En büyük kemik hangisidir?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"easy", n:"Uyluk (femur)." },
-  { q:"Aşağıdakilerden hangisi bir haberleşme aracı değildir?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"easy", n:"Kalem." },
-  { q:"İlk kadın savaş pilotu kimdir?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"easy", n:"Sabiha Gökçen." },
-  { q:"Aşağıdakilerden hangisi bir çiçek türü değildir?", o:["Gül","Lale","Papatya","Elma","Orkide"], a:3, difficulty:"easy", n:"Elma (meyve)." },
-  { q:"En küçük kemik nerededir?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"easy", n:"Kulak (üzengi)." },
-  { q:"Aşağıdakilerden hangisi bir oyun değildir?", o:["Satranç","Tavla","Futbol","Uyku","Basketbol"], a:3, difficulty:"easy", n:"Uyku." },
-  { q:"Türkiye'nin en büyük ili (yüzölçüm) hangisidir?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"easy", n:"Konya." },
-  { q:"Aşağıdakilerden hangisi bir taşıt türü değildir?", o:["Araba","Otobüs","Uçak","Bisiklet","Ev"], a:4, difficulty:"easy", n:"Ev." },
-  { q:"En uzun yaşayan hayvan hangisidir?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
-  { q:"Aşağıdakilerden hangisi bir şekil değildir?", o:["Üçgen","Kare","Daire","Dikdörtgen","Renk"], a:4, difficulty:"easy", n:"Renk." },
-  { q:"İlk telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
-  { q:"Aşağıdakilerden hangisi bir kuş türü değildir?", o:["Serçe","Kartal","Penguen","Yarasa","Güvercin"], a:3, difficulty:"easy", n:"Yarasa (memeli)." },
-  { q:"En pahalı baharat hangisidir?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"easy", n:"Safran." },
-
-  // ORTA (70 soru)
-  { q:"Türkiye'de görülen iklim tiplerinden biri değildir?", o:["Akdeniz","Karasal","Muson","Karadeniz","Marmara"], a:2, difficulty:"medium", n:"Muson." },
-  { q:"Su buharının sıvı hale geçmesine ne denir?", o:["Buharlaşma","Yoğuşma","Süblimleşme","Erime","Donma"], a:1, difficulty:"medium", n:"Yoğuşma." },
-  { q:"İstanbul'u fetheden padişah kimdir?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"medium", n:"Fatih Sultan Mehmet." },
-  { q:"Tanzimat Fermanı hangi padişah döneminde ilan edildi?", o:["II.Mahmud","Abdülmecid","Abdülaziz","V.Murad","II.Abdülhamid"], a:1, difficulty:"medium", n:"Abdülmecid." },
-  { q:"Kızılay'ın kurucusu kimdir?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
-  { q:"Türkiye'nin en yüksek barajı hangisidir?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"medium", n:"Yusufeli." },
-  { q:"Hangisi bir doğal afet değildir?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"medium", n:"Trafik kazası." },
-  { q:"TBMM hangi savaştan sonra açılmıştır?", o:["I.Dünya","Kurtuluş","Çanakkale","Sakarya","Balkan"], a:1, difficulty:"medium", n:"Kurtuluş Savaşı." },
-  { q:"Aşağıdakilerden hangisi bir asal sayıdır?", o:["4","6","9","11","15"], a:3, difficulty:"medium", n:"11." },
-  { q:"En uzun nehir hangisidir?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:1, difficulty:"medium", n:"Nil." },
-  { q:"Hangisi yenilenebilir enerji değildir?", o:["Güneş","Rüzgar","Doğalgaz","Hidroelektrik","Jeotermal"], a:2, difficulty:"medium", n:"Doğalgaz." },
-  { q:"Türkiye'nin en kalabalık şehri hangisidir?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"medium", n:"İstanbul." },
-  { q:"Kan grubunu belirleyen sistem hangisidir?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"medium", n:"ABO." },
-  { q:"En çok dil konuşulan ülke hangisidir?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"medium", n:"Papua Yeni Gine." },
-  { q:"Hangisi Nobel ödülü kategorisi değildir?", o:["Fizik","Kimya","Matematik","Tıp","Edebiyat"], a:2, difficulty:"medium", n:"Matematik." },
-  { q:"Üçgenin iç açıları toplamı kaç derecedir?", o:["90","180","270","360","100"], a:1, difficulty:"medium", n:"180." },
-  { q:"Hangisi bir sürüngen değildir?", o:["Yılan","Kertenkele","Kaplumbağa","Kurbağa","Timsah"], a:3, difficulty:"medium", n:"Kurbağa (amfibi)." },
-  { q:"Türk Hava Yolları'nın kodu nedir?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"medium", n:"TK." },
-  { q:"En derin göl hangisidir?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"medium", n:"Baykal." },
-  { q:"Hangisi bir programlama dili değildir?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
-  { q:"Ebru sanatı hangi kültüre aittir?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"medium", n:"Türk." },
-  { q:"Yılın en kısa günü hangisidir?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
-  { q:"Hangisi bir gezegen değildir?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton (cüce gezegen)." },
-  { q:"En çok kullanılan sosyal medya platformu hangisidir?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
-  { q:"İnsan vücudundaki en büyük organ hangisidir?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
-  { q:"Hangisi bir vitamin değildir?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"medium", n:"Kalsiyum." },
-  { q:"Türkiye'nin en doğusundaki il hangisidir?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
-  { q:"Hangisi bir element değildir?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." },
-  { q:"En büyük çöl hangisidir?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"medium", n:"Antarktika (soğuk çöl)." },
-  { q:"Hangisi bir müzik aleti değildir?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"medium", n:"Fırça." },
-  { q:"İlk uçuş hangi yıl yapıldı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"medium", n:"1903." },
-  { q:"Hangisi bir kıta değildir?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"medium", n:"Grönland." },
-  { q:"En kalabalık Afrika ülkesi hangisidir?", o:["Mısır","Etiyopya","Nijerya","Güney Afrika","Kenya"], a:2, difficulty:"medium", n:"Nijerya." },
-  { q:"Hangisi bir doğal sayı değildir?", o:["0","1","2","-1","3"], a:3, difficulty:"medium", n:"-1." },
-  { q:"Basınç birimi nedir?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, difficulty:"medium", n:"Pascal." },
-  { q:"Hangisi bir haberleşme aracı değildir?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"medium", n:"Kalem." },
-  { q:"En büyük kemik hangisidir?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
-  { q:"Hangisi bir iç organ değildir?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
-  { q:"Türkiye'nin en büyük ili (yüzölçüm) hangisidir?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
-  { q:"Hangisi bir taşıt türü değildir?", o:["Araba","Otobüs","Uçak","Bisiklet","Ev"], a:4, difficulty:"medium", n:"Ev." },
-  { q:"En uzun yaşayan hayvan hangisidir?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"medium", n:"Kaplumbağa." },
-  { q:"Hangisi bir şekil değildir?", o:["Üçgen","Kare","Daire","Dikdörtgen","Renk"], a:4, difficulty:"medium", n:"Renk." },
-  { q:"İlk telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"medium", n:"Bell." },
-  { q:"Hangisi bir kuş türü değildir?", o:["Serçe","Kartal","Penguen","Yarasa","Güvercin"], a:3, difficulty:"medium", n:"Yarasa." },
-  { q:"En pahalı baharat hangisidir?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"medium", n:"Safran." },
-  { q:"Hangisi bir çiçek türü değildir?", o:["Gül","Lale","Papatya","Elma","Orkide"], a:3, difficulty:"medium", n:"Elma." },
-  { q:"En küçük kemik nerededir?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"medium", n:"Kulak." },
-  { q:"Hangisi bir oyun değildir?", o:["Satranç","Tavla","Futbol","Uyku","Basketbol"], a:3, difficulty:"medium", n:"Uyku." },
-  { q:"Türkiye'nin en yüksek dağı hangisidir?", o:["Erciyes","Ağrı","Süphan","Kaçkar","Uludağ"], a:1, difficulty:"medium", n:"Ağrı Dağı." },
-  { q:"Hangisi bir mevsim değildir?", o:["İlkbahar","Yaz","Sonbahar","Kış","Hava"], a:4, difficulty:"medium", n:"Hava." },
-  { q:"En büyük okyanus hangisidir?", o:["Atlas","Hint","Pasifik","Arktik","Güney"], a:2, difficulty:"medium", n:"Büyük Okyanus." },
-  { q:"Hangi gezegen halkalıdır?", o:["Mars","Jüpiter","Satürn","Venüs","Merkür"], a:2, difficulty:"medium", n:"Satürn." },
-  { q:"Hangisi bir sayıdır?", o:["Elma","Armut","3","Masa","Sandalye"], a:2, difficulty:"medium", n:"3." },
-  { q:"Türk Hava Yolları'nın kodu nedir?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"medium", n:"TK." },
-  { q:"Hangisi bir hayvan değildir?", o:["Kedi","Köpek","Kuş","Masa","Balık"], a:3, difficulty:"medium", n:"Masa." },
-  { q:"En kalabalık ülke hangisidir?", o:["ABD","Çin","Hindistan","Rusya","Endonezya"], a:2, difficulty:"medium", n:"Hindistan." },
-  { q:"Hangisi bir gezegendir?", o:["Güneş","Ay","Mars","Bulut","Yıldız"], a:2, difficulty:"medium", n:"Mars." },
-  { q:"Türkiye'nin en uzun akarsuyu hangisidir?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, difficulty:"medium", n:"Kızılırmak." },
-  { q:"Hangisi bir iç organ değildir?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
-  { q:"Bilgisayarın beyni olarak adlandırılan parça hangisidir?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"medium", n:"CPU." },
-  { q:"Hangisi bir programlama dili değildir?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
-  { q:"İlk uçak ne zaman uçtu?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"medium", n:"1903." },
-  { q:"Hangisi bir sürüngen değildir?", o:["Yılan","Kertenkele","Kurbağa","Timsah","Kaplumbağa"], a:2, difficulty:"medium", n:"Kurbağa." },
-  { q:"En hızlı balık hangisidir?", o:["Ton","Yelken","Köpekbalığı","Som","Alabalık"], a:1, difficulty:"medium", n:"Yelken balığı." },
-  { q:"Hangisi bir vitamin değildir?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"medium", n:"Kalsiyum." },
-  { q:"Türkiye'nin en doğusundaki il hangisidir?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
-  { q:"Hangisi bir doğal afet değildir?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"medium", n:"Trafik kazası." },
-  { q:"İngiltere'nin başkenti neresidir?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:2, difficulty:"medium", n:"Londra." },
-  { q:"Hangisi bir element değildir?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." },
-  { q:"Türk bayrağındaki ay ve yıldız neyi temsil eder?", o:["Bağımsızlık","Gökyüzü","Devlet","Millet","Vatan"], a:0, difficulty:"medium", n:"Bağımsızlık." },
-  { q:"Hangisi bir kıta değildir?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"medium", n:"Grönland." },
-
-  // ZOR (60 soru)
-  { q:"Yağış getiren bulut türü hangisidir?", o:["Kümülüs","Sirüs","Nimbüs","Stratüs","Alto"], a:2, difficulty:"hard", n:"Nimbüs." },
-  { q:"Basınç birimi nedir?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, difficulty:"hard", n:"Pascal." },
-  { q:"İlk Türk devleti hangisidir?", o:["Hun","Göktürk","Uygur","Selçuklu","Osmanlı"], a:0, difficulty:"hard", n:"Asya Hun." },
-  { q:"Lale Devri hangi padişah döneminde yaşanmıştır?", o:["III. Ahmet","I. Mahmut","II. Osman","IV. Mehmet","III. Selim"], a:0, difficulty:"hard", n:"III. Ahmet." },
-  { q:"En derin göl hangisidir?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"hard", n:"Baykal." },
-  { q:"İlk insanlı uzay aracı hangisidir?", o:["Apollo 11","Sputnik","Vostok 1","Mercury","Gemini"], a:2, difficulty:"hard", n:"Vostok 1 (Gagarin)." },
-  { q:"En büyük çöl hangisidir?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"hard", n:"Antarktika." },
-  { q:"Hangi ülkenin başkenti yoktur?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"En çok Oscar alan film hangisidir?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur (11 Oscar)." },
-  { q:"İlk Türk İslam devleti hangisidir?", o:["Karahanlılar","Gazneliler","Selçuklular","Osmanlılar","Büyük Selçuklu"], a:0, difficulty:"hard", n:"Karahanlılar." },
-  { q:"En yüksek şelale hangisidir?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel (Venezuela)." },
-  { q:"Dünyanın en uzun kara sınırı hangi iki ülke arasındadır?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
-  { q:"En küçük kemik hangi organda bulunur?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"hard", n:"Kulak (üzengi)." },
-  { q:"Hangi ülkenin bayrağında ejderha vardır?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Türkiye'nin en eski şehri hangisidir?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep (antik Zeugma)." },
-  { q:"En pahalı baharat hangisidir?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
-  { q:"İlk bilgisayarın adı nedir?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
-  { q:"Hangi gezegen cüce gezegen olarak sınıflandırılır?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"hard", n:"Plüton." },
-  { q:"En çok dil konuşulan ülke hangisidir?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
-  { q:"Türkiye'nin en yüksek barajı hangisidir?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"hard", n:"Yusufeli." },
-  { q:"Ebru sanatı hangi kültüre aittir?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"hard", n:"Türk." },
-  { q:"Kan grubunu belirleyen sistem hangisidir?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"hard", n:"ABO." },
-  { q:"İlk uçuş hangi yıl yapıldı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"hard", n:"1903." },
-  { q:"En büyük çöl hangisidir?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"hard", n:"Antarktika." },
-  { q:"Hangi ülkenin başkenti yoktur?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"En çok Oscar alan film hangisidir?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur." },
-  { q:"İlk Türk İslam devleti hangisidir?", o:["Karahanlılar","Gazneliler","Selçuklular","Osmanlılar","Büyük Selçuklu"], a:0, difficulty:"hard", n:"Karahanlılar." },
-  { q:"En yüksek şelale hangisidir?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel." },
-  { q:"Dünyanın en uzun kara sınırı hangi iki ülke arasındadır?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
-  { q:"En küçük kemik hangi organda bulunur?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"hard", n:"Kulak." },
-  { q:"Hangi ülkenin bayrağında ejderha vardır?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Türkiye'nin en eski şehri hangisidir?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." },
-  { q:"En pahalı baharat hangisidir?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
-  { q:"İlk bilgisayarın adı nedir?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
-  { q:"Hangi gezegen cüce gezegen olarak sınıflandırılır?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"hard", n:"Plüton." },
-  { q:"En çok dil konuşulan ülke hangisidir?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
-  { q:"Türkiye'nin en yüksek barajı hangisidir?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"hard", n:"Yusufeli." },
-  { q:"Ebru sanatı hangi kültüre aittir?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"hard", n:"Türk." },
-  { q:"Kan grubunu belirleyen sistem hangisidir?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"hard", n:"ABO." },
-  { q:"İlk uçuş hangi yıl yapıldı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"hard", n:"1903." },
-  { q:"En büyük çöl hangisidir?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"hard", n:"Antarktika." },
-  { q:"Hangi ülkenin başkenti yoktur?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"En çok Oscar alan film hangisidir?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur." },
-  { q:"İlk Türk İslam devleti hangisidir?", o:["Karahanlılar","Gazneliler","Selçuklular","Osmanlılar","Büyük Selçuklu"], a:0, difficulty:"hard", n:"Karahanlılar." },
-  { q:"En yüksek şelale hangisidir?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel." },
-  { q:"Dünyanın en uzun kara sınırı hangi iki ülke arasındadır?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
-  { q:"En küçük kemik hangi organda bulunur?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"hard", n:"Kulak." },
-  { q:"Hangi ülkenin bayrağında ejderha vardır?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Türkiye'nin en eski şehri hangisidir?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." },
-  { q:"En pahalı baharat hangisidir?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
-  { q:"İlk bilgisayarın adı nedir?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
-  { q:"Hangi gezegen cüce gezegen olarak sınıflandırılır?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"hard", n:"Plüton." },
-  { q:"En çok dil konuşulan ülke hangisidir?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
-  { q:"Türkiye'nin en yüksek barajı hangisidir?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"hard", n:"Yusufeli." },
-  { q:"Ebru sanatı hangi kültüre aittir?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"hard", n:"Türk." },
-  { q:"Kan grubunu belirleyen sistem hangisidir?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"hard", n:"ABO." },
-  { q:"İlk uçuş hangi yıl yapıldı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"hard", n:"1903." }
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"Bir yıl kaç gün?", o:["300","365","366","350","400"], a:1, difficulty:"easy", n:"365." },
+  { q:"İnsanda kaç kemik var?", o:["186","206","226","256","286"], a:1, difficulty:"easy", n:"206." },
+  { q:"En hızlı kara hayvanı?", o:["Aslan","Çita","Tavşan","At","Kurt"], a:1, difficulty:"easy", n:"Çita." },
+  { q:"Türk lirası simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"En soğuk kıta?", o:["Asya","Avrupa","Antarktika","K.Amerika","G.Amerika"], a:2, difficulty:"easy", n:"Antarktika." },
+  { q:"En küçük ülke?", o:["Monako","Vatikan","San Marino","Liechtenstein","Andorra"], a:1, difficulty:"easy", n:"Vatikan." },
+  { q:"Atatürk'ün annesi?", o:["Zübeyde","Makbule","Latife","Fikriye","Halide"], a:0, difficulty:"easy", n:"Zübeyde Hanım." },
+  { q:"İngiltere para birimi?", o:["Euro","Dolar","Sterlin","Frank","Mark"], a:2, difficulty:"easy", n:"Sterlin." },
+  { q:"Bir düzine kaç adet?", o:["6","10","12","20","24"], a:2, difficulty:"easy", n:"12." },
+  { q:"Su buharının sıvıya dönüşmesi?", o:["Buharlaşma","Yoğuşma","Süblimleşme","Erime","Donma"], a:1, difficulty:"medium", n:"Yoğuşma." },
+  { q:"İstanbul'u fetheden padişah?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"medium", n:"Fatih Sultan Mehmet." },
+  { q:"Tanzimat Fermanı padişahı?", o:["II.Mahmud","Abdülmecid","Abdülaziz","V.Murad","II.Abdülhamid"], a:1, difficulty:"medium", n:"Abdülmecid." },
+  { q:"Kızılay kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
+  { q:"En uzun nehir?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:1, difficulty:"medium", n:"Nil." },
+  { q:"Asal sayı?", o:["4","6","9","11","15"], a:3, difficulty:"medium", n:"11." },
+  { q:"Üçgen iç açı toplamı?", o:["90","180","270","360","100"], a:1, difficulty:"medium", n:"180." },
+  { q:"En derin göl?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"medium", n:"Baykal." },
+  { q:"TBMM hangi savaştan sonra?", o:["I.Dünya","Kurtuluş","Çanakkale","Sakarya","Balkan"], a:1, difficulty:"medium", n:"Kurtuluş Savaşı." },
+  { q:"Halkalı gezegen?", o:["Mars","Jüpiter","Satürn","Venüs","Merkür"], a:2, difficulty:"medium", n:"Satürn." },
+  { q:"Yenilenemez enerji?", o:["Güneş","Rüzgar","Doğalgaz","Hidroelektrik","Jeotermal"], a:2, difficulty:"medium", n:"Doğalgaz." },
+  { q:"Ebru sanatı kime ait?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"medium", n:"Türk." },
+  { q:"Nobel'de olmayan?", o:["Fizik","Kimya","Matematik","Tıp","Edebiyat"], a:2, difficulty:"medium", n:"Matematik." },
+  { q:"En kalabalık ülke?", o:["ABD","Çin","Hindistan","Rusya","Endonezya"], a:2, difficulty:"medium", n:"Hindistan." },
+  { q:"Kan grubu sistemi?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"medium", n:"ABO." },
+  { q:"Basınç birimi?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, difficulty:"medium", n:"Pascal." },
+  { q:"En büyük çöl?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"medium", n:"Antarktika." },
+  { q:"İlk uçuş yılı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"medium", n:"1903." },
+  { q:"Türkiye'nin en yüksek dağı?", o:["Erciyes","Ağrı","Süphan","Kaçkar","Uludağ"], a:1, difficulty:"medium", n:"Ağrı Dağı." },
+  { q:"En büyük okyanus?", o:["Atlas","Hint","Pasifik","Arktik","Güney"], a:2, difficulty:"medium", n:"Büyük Okyanus." },
+  { q:"Yağış getiren bulut?", o:["Kümülüs","Sirüs","Nimbüs","Stratüs","Alto"], a:2, difficulty:"hard", n:"Nimbüs." },
+  { q:"İlk Türk devleti?", o:["Hun","Göktürk","Uygur","Selçuklu","Osmanlı"], a:0, difficulty:"hard", n:"Asya Hun." },
+  { q:"Lale Devri padişahı?", o:["III. Ahmet","I. Mahmut","II. Osman","IV. Mehmet","III. Selim"], a:0, difficulty:"hard", n:"III. Ahmet." },
+  { q:"En yüksek şelale?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel." },
+  { q:"İlk insanlı uzay aracı?", o:["Apollo 11","Sputnik","Vostok 1","Mercury","Gemini"], a:2, difficulty:"hard", n:"Vostok 1." },
+  { q:"En çok Oscar alan film?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur." },
+  { q:"En pahalı baharat?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
+  { q:"İlk bilgisayar?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
+  { q:"Hangi ülkenin başkenti yok?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
+  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
+  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"Dünyanın en uzun kara sınırı?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." }
 ];
 
 let allQuestions = [];
@@ -420,23 +252,6 @@ let timer = null;
 let remaining = 1800;
 let selectedDifficulty = 'all';
 
-// Parçacık efekti
-function createParticles() {
-  const container = document.getElementById('particlesContainer');
-  for (let i=0; i<30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random()*100+'%';
-    p.style.width = Math.random()*4+2+'px';
-    p.style.height = p.style.width;
-    p.style.animationDelay = Math.random()*5+'s';
-    p.style.animationDuration = Math.random()*5+5+'s';
-    container.appendChild(p);
-  }
-}
-createParticles();
-
-// Oturum
 if (sessionStorage.getItem('examState')) {
   const state = JSON.parse(sessionStorage.getItem('examState'));
   if (state.screen) showScreen(state.screen);
@@ -446,11 +261,8 @@ if (sessionStorage.getItem('examState')) {
 
 function pickRandomQuestions(difficulty) {
   let filtered = questionPool;
-  if (difficulty !== 'all') {
-    filtered = questionPool.filter(q => q.difficulty === difficulty);
-  }
-  const shuffled = filtered.sort(() => Math.random() - 0.5);
-  allQuestions = shuffled.slice(0, 20);
+  if (difficulty !== 'all') filtered = questionPool.filter(q => q.difficulty === difficulty);
+  allQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 20);
 }
 
 onValue(questionsRef, snap => renderQuestionBankFromData(snap.val()||{}));
@@ -462,7 +274,6 @@ function showScreen(id) {
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 
-// Zorluk seçimi
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('selected'));
@@ -515,10 +326,7 @@ function startTimer() {
   }, 1000);
 }
 function renderExamQuestions() {
-  if (!allQuestions.length) {
-    document.getElementById('questionsContainer').innerHTML = '<p style="color:var(--danger)">Bu zorlukta yeterli soru yok.</p>';
-    return;
-  }
+  if (!allQuestions.length) { document.getElementById('questionsContainer').innerHTML = '<p>Yeterli soru yok.</p>'; return; }
   let html = '';
   allQuestions.forEach((q, i) => {
     html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px"><strong>Soru ${i+1}:</strong> ${q.q}<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">`;
@@ -550,7 +358,16 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
     const score = Math.round(correct / allQuestions.length * 100);
     const newRef = push(examsRef);
     examId = newRef.key;
-    await set(newRef, { ...userData, score, correct, wrong, empty, answers: final, status: 'completed', revealed: false, submittedAt: Date.now() });
+    // Sınav verisine soruları da ekle (açıklamalarıyla birlikte)
+    await set(newRef, {
+      ...userData,
+      score, correct, wrong, empty,
+      answers: final,
+      questions: allQuestions.map(q => ({ q: q.q, o: q.o, a: q.a, n: q.n })),
+      status: 'completed',
+      revealed: false,
+      submittedAt: Date.now()
+    });
     showScreen('waitScreen');
     const link = location.origin + location.pathname + '?exam=' + examId;
     document.getElementById('linkBox').textContent = link;
@@ -566,11 +383,22 @@ function showResult(data) {
   document.getElementById('wrongDisplay').textContent = data.wrong;
   document.getElementById('emptyDisplay').textContent = data.empty;
   document.getElementById('nameSurnameDisplay').textContent = `${data.name} ${data.surname} - ${data.email}`;
+  // Kayıtlı soruları kullan
+  const questions = data.questions || allQuestions;
   let html = '';
-  allQuestions.forEach((q, i) => {
-    const ua = data.answers[i]; let color='#6b7280', status='⬜ Boş', choice='Seçilmedi';
-    if (ua !== 'blank') { choice = q.o[ua]; color = ua === q.a ? '#10b981' : '#ef4444'; status = ua === q.a ? '✅ Doğru' : '❌ Yanlış'; }
-    html += `<div style="border-left:4px solid ${color};padding:12px;margin:8px 0;background:var(--card);border-radius:10px"><b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br><b>Doğru:</b> ${q.o[q.a]}<br><small>💡 ${q.n||''}</small></div>`;
+  questions.forEach((q, i) => {
+    const ua = data.answers[i];
+    let color = '#6b7280', status = '⬜ Boş', choice = 'Seçilmedi';
+    if (ua !== 'blank') {
+      choice = q.o[ua];
+      color = ua === q.a ? '#10b981' : '#ef4444';
+      status = ua === q.a ? '✅ Doğru' : '❌ Yanlış';
+    }
+    html += `<div style="border-left:4px solid ${color};padding:12px;margin:8px 0;background:var(--card);border-radius:10px">
+      <b>Soru ${i+1}:</b> ${q.q}<br>
+      <b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br>
+      <b>Doğru:</b> ${q.o[q.a]}<br>
+      <small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML = html;
   confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
@@ -580,8 +408,6 @@ function showResult(data) {
 }
 
 async function sendMail(data, link) {
-  const msgDiv = document.getElementById('mailSuccessMsg');
-  msgDiv.style.display = 'none';
   try {
     emailjs.init(MAIL_PUBLIC_KEY);
     await emailjs.send(MAIL_SERVICE_ID, MAIL_TEMPLATE_ID, {
@@ -593,15 +419,11 @@ async function sendMail(data, link) {
       empty: data.empty,
       link: link
     });
-    msgDiv.textContent = '✅ Sonuç maili gönderildi!';
-    msgDiv.style.display = 'block';
-  } catch(e) {
-    console.error('Mail hatası:', e);
-    alert('❌ Mail hatası: ' + e.message);
-  }
+    document.getElementById('mailSuccessMsg').textContent = '✅ Sonuç maili gönderildi!';
+    document.getElementById('mailSuccessMsg').style.display = 'block';
+  } catch(e) { alert('Mail hatası: ' + e.message); }
 }
 
-// Diğer butonlar
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!')));
 document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> window.open(`https://wa.me/?text=${encodeURIComponent('KPSS linkim: ' + document.getElementById('linkBox').textContent)}`));
 document.getElementById('checkBtn').addEventListener('click', async ()=>{
@@ -624,7 +446,7 @@ if (urlParams.get('exam')) {
   });
 }
 
-// Yönetici modal
+// Yönetici
 const adminModal = document.getElementById('adminModal');
 document.getElementById('openAdminBtn').addEventListener('click', ()=>{
   adminModal.classList.add('active');
@@ -648,8 +470,9 @@ function initAdminPanel() {
     this.classList.add('active');
     document.getElementById('examsTab').style.display = this.dataset.tab==='exams'?'block':'none';
     document.getElementById('questionsTab').style.display = this.dataset.tab==='questions'?'block':'none';
+    document.getElementById('progressTab').style.display = this.dataset.tab==='progress'?'block':'none';
   }));
-  onValue(examsRef, snap => { adminExams=snap.val()||{}; renderExamList(); document.getElementById('totalExams').textContent=Object.keys(adminExams).length; });
+  onValue(examsRef, snap => { adminExams=snap.val()||{}; renderExamList(); document.getElementById('totalExams').textContent=Object.keys(adminExams).length; renderStudentList(); });
 }
 
 function renderExamList() {
@@ -670,8 +493,9 @@ function renderExamList() {
 }
 function showExamDetail(id) {
   const e=adminExams[id];
+  const questions = e.questions || allQuestions;
   let html=`<b>${e.name} ${e.surname}</b> (${e.email})<br>Puan: ${e.score} | ✅${e.correct} ❌${e.wrong} ⬜${e.empty}<br>`;
-  allQuestions.forEach((q,i)=>{
+  questions.forEach((q,i)=>{
     const ua=e.answers[i]; const txt=ua==='blank'?'Boş':q.o[ua]; const ok=ua!=='blank'&&ua===q.a;
     html+=`<div style="color:${ok?'#10b981':(ua==='blank'?'gray':'#ef4444')}">${i+1}. ${txt} ${ua==='blank'?'':(ok?'✓':'✗')}</div>`;
   });
@@ -683,19 +507,76 @@ document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
   await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
   const exam = adminExams[selectedExamId];
   sendMail({ email: exam.email, name: exam.name + ' ' + exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, location.origin+location.pathname+'?exam='+selectedExamId);
-  document.getElementById('adminMsg').textContent = '✅ Yayınlandı & mail gönderildi.';
 });
 document.getElementById('kilitleBtn').addEventListener('click', async ()=>{ if(selectedExamId) await update(ref(db,`exams/${selectedExamId}`),{revealed:false}); });
 
-// Soru bankası yönetimi
+// Gelişim tablosu
+function renderStudentList() {
+  const emails = [...new Set(Object.values(adminExams).map(e=>e.email))];
+  const list = document.getElementById('studentList');
+  list.innerHTML = emails.map(email => {
+    const studentExams = Object.entries(adminExams).filter(([id, e]) => e.email===email);
+    const lastScore = studentExams.length ? studentExams[studentExams.length-1][1].score : '-';
+    return `<div class="list-item" data-email="${email}" style="cursor:pointer">
+      <span>${studentExams[0][1].name} ${studentExams[0][1].surname} (${email})</span>
+      <span>Son: ${lastScore}p | ${studentExams.length} sınav</span>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('#studentList .list-item').forEach(el => {
+    el.addEventListener('click', () => showStudentProgress(el.dataset.email));
+  });
+}
+
+function showStudentProgress(email) {
+  const studentExams = Object.entries(adminExams)
+    .filter(([id, e]) => e.email===email)
+    .sort((a,b) => a[1].submittedAt - b[1].submittedAt);
+  if (!studentExams.length) return;
+  const container = document.getElementById('studentDetail');
+  let html = `<h4>${studentExams[0][1].name} ${studentExams[0][1].surname}</h4>`;
+  html += '<canvas id="progressChart" width="400" height="200"></canvas>';
+  html += '<table style="width:100%;margin-top:10px;font-size:0.85rem"><tr><th>Tarih</th><th>Puan</th><th>Doğru</th><th>Yanlış</th></tr>';
+  studentExams.forEach(([id, e]) => {
+    html += `<tr><td>${new Date(e.submittedAt).toLocaleDateString()}</td><td>${e.score}</td><td>${e.correct}</td><td>${e.wrong}</td></tr>`;
+  });
+  html += '</table>';
+  container.innerHTML = html;
+  // Basit çizgi grafik
+  setTimeout(() => {
+    const canvas = document.getElementById('progressChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const scores = studentExams.map(e => e[1].score);
+    const maxScore = Math.max(...scores, 100);
+    ctx.clearRect(0, 0, 400, 200);
+    ctx.beginPath();
+    ctx.strokeStyle = '#f43f5e';
+    ctx.lineWidth = 2;
+    scores.forEach((score, i) => {
+      const x = 40 + (i * (320 / (scores.length-1 || 1)));
+      const y = 180 - (score / maxScore * 160);
+      if (i===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      ctx.fillStyle = '#f43f5e';
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, 2*Math.PI);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = '10px Plus Jakarta Sans';
+      ctx.fillText(score, x-10, y-8);
+    });
+    ctx.stroke();
+  }, 100);
+}
+
+// Soru bankası
 function renderQuestionBankFromData(data) {
   const arr = Object.entries(data).map(([id, val]) => ({ id, ...val }));
   document.getElementById('totalQuestions').textContent = arr.length;
   let html = '';
   arr.forEach(q => {
     html += `<div class="list-item"><span>${q.q} <span class="tag ${q.difficulty}">${q.difficulty==='easy'?'Kolay':q.difficulty==='medium'?'Orta':'Zor'}</span></span>
-      <div><button class="btn-sm edit-q" data-id="${q.id}" style="background:var(--info)">✏️ Düzenle</button>
-      <button class="btn-sm del-q" data-id="${q.id}" style="background:var(--danger)">🗑️ Sil</button></div></div>`;
+      <div><button class="btn-sm edit-q" data-id="${q.id}" style="background:var(--info)">✏️</button>
+      <button class="btn-sm del-q" data-id="${q.id}" style="background:var(--danger)">🗑️</button></div></div>`;
   });
   document.getElementById('questionList').innerHTML = html || '<p>Henüz soru yok.</p>';
   document.querySelectorAll('.edit-q').forEach(b => b.addEventListener('click', () => editQuestion(b.dataset.id)));
