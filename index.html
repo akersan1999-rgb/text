@@ -6,6 +6,7 @@
   <title>2026 KPSS Deneme Sınavı</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
+    /* ===== RESET & TEMA ===== */
     * {
       margin: 0;
       padding: 0;
@@ -19,35 +20,49 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
+      background-image: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%);
+      background-attachment: fixed;
     }
     .wrapper {
       max-width: 720px;
       width: 100%;
     }
+
+    /* ===== HEADER ===== */
     .header {
       text-align: center;
       padding: 30px 20px;
       background: linear-gradient(145deg, #131c2e, #18243e);
-      border-radius: 24px;
+      border-radius: 28px;
       margin-bottom: 30px;
       border: 1px solid #24324f;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      transition: 0.3s;
+    }
+    .header:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99, 102, 241, 0.3);
     }
     .header h1 {
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       font-weight: 800;
       background: linear-gradient(135deg, #fff, #a5b4fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
     .header p {
       color: #94a3b8;
-      margin-top: 8px;
-      font-size: 1rem;
+      margin-top: 10px;
+      font-size: 1.05rem;
     }
+
+    /* ===== İLERLEME ===== */
     .progress-wrap {
       background: #1e2942;
-      border-radius: 20px;
-      height: 8px;
+      border-radius: 30px;
+      height: 10px;
       margin-bottom: 25px;
       overflow: hidden;
     }
@@ -55,55 +70,74 @@
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #6366f1, #f59e0b);
-      transition: width 0.4s ease;
-      border-radius: 20px;
+      transition: width 0.6s ease;
+      border-radius: 30px;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
     }
     .stats {
       display: flex;
       justify-content: space-between;
       background: #131c2e;
-      padding: 12px 20px;
-      border-radius: 14px;
+      padding: 14px 22px;
+      border-radius: 16px;
       border: 1px solid #24324f;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
     .stats span {
       font-weight: 600;
       color: #94a3b8;
+      font-size: 0.95rem;
     }
     .stats .count {
       color: #f59e0b;
+      font-weight: 700;
     }
+
+    /* ===== SORU KARTLARI ===== */
     .question-card {
       background: #131c2e;
       border: 1px solid #24324f;
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 24px;
+      border-radius: 24px;
+      padding: 26px;
+      margin-bottom: 26px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transition: 0.3s;
+    }
+    .question-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.3);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.4);
     }
     .question-card .q-head {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 12px;
+      align-items: center;
+      margin-bottom: 14px;
     }
     .question-card .q-head .badge {
       background: rgba(99, 102, 241, 0.2);
       color: #818cf8;
-      padding: 4px 14px;
-      border-radius: 30px;
+      padding: 6px 16px;
+      border-radius: 40px;
       font-size: 0.8rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
     }
     .question-card .q-head .status {
       color: #94a3b8;
       font-size: 0.8rem;
+      font-weight: 500;
     }
     .question-card .q-text {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 600;
       line-height: 1.6;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+      color: #e2e8f0;
     }
+
+    /* ===== ŞIKLAR ===== */
     .options {
       display: flex;
       flex-direction: column;
@@ -114,15 +148,16 @@
       align-items: center;
       gap: 14px;
       padding: 14px 18px;
-      background: rgba(11, 15, 25, 0.4);
+      background: rgba(11, 15, 25, 0.5);
       border: 2px solid #24324f;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.25s;
     }
     .option:hover {
       border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
+      transform: translateX(4px);
     }
     .option input {
       display: none;
@@ -136,7 +171,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: 0.3s;
+      transition: 0.25s;
     }
     .option .dot::after {
       content: '';
@@ -145,104 +180,160 @@
       background: #f59e0b;
       border-radius: 50%;
       transform: scale(0);
-      transition: 0.3s;
+      transition: 0.25s;
     }
-    .option input:checked+.dot {
+    .option input:checked + .dot {
       border-color: #f59e0b;
     }
-    .option input:checked+.dot::after {
+    .option input:checked + .dot::after {
       transform: scale(1);
     }
-    .option input:checked~.option-text {
+    .option input:checked ~ .option-text {
       color: #fff;
       font-weight: 600;
     }
     .option .option-text {
       color: #cbd5e1;
+      font-size: 0.98rem;
     }
     .blank-option {
       border-style: dashed;
       color: #94a3b8;
       font-style: italic;
     }
+    .blank-option .option-text {
+      color: #94a3b8;
+    }
+
+    /* ===== GÖNDER BUTONU ===== */
     .btn-submit {
       width: 100%;
-      padding: 20px;
+      padding: 22px;
       background: linear-gradient(135deg, #f59e0b, #d97706);
       border: none;
-      border-radius: 24px;
-      font-size: 1.3rem;
+      border-radius: 28px;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #0b0f19;
       cursor: pointer;
-      box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 18px 40px rgba(245, 158, 11, 0.25);
       transition: 0.3s;
-      margin-top: 10px;
+      margin-top: 16px;
+      position: relative;
+      overflow: hidden;
     }
     .btn-submit:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 45px rgba(245, 158, 11, 0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 50px rgba(245, 158, 11, 0.4);
     }
     .btn-submit:active {
       transform: scale(0.97);
     }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      transform: none;
+      pointer-events: none;
+    }
+    .btn-submit .spinner {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid #0b0f19;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .btn-submit.loading .btn-text {
+      display: none;
+    }
+    .btn-submit.loading .spinner {
+      display: block;
+    }
+
+    /* ===== BAŞARI EKRANI ===== */
     .success-screen {
       display: none;
       text-align: center;
       padding: 50px 20px;
       background: #111827;
       border: 2px solid #10b981;
-      border-radius: 24px;
+      border-radius: 28px;
       margin-top: 20px;
+      box-shadow: 0 20px 50px rgba(16, 185, 129, 0.15);
+      animation: fadeInUp 0.6s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .success-screen .icon {
-      font-size: 4.5rem;
+      font-size: 4.8rem;
       display: block;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
     .success-screen h2 {
       color: #10b981;
-      font-size: 2rem;
+      font-size: 2.2rem;
+      font-weight: 800;
     }
     .success-screen p {
       color: #94a3b8;
       font-size: 1.1rem;
       margin-top: 10px;
+      line-height: 1.6;
     }
+
+    /* ===== TOAST ===== */
     .toast {
       position: fixed;
       bottom: 30px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
+      transform: translateX(-50%) translateY(100px);
       background: #10b981;
       color: #fff;
-      padding: 14px 30px;
-      border-radius: 50px;
+      padding: 16px 32px;
+      border-radius: 60px;
       font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3);
       opacity: 0;
       transition: 0.5s;
       pointer-events: none;
+      backdrop-filter: blur(6px);
     }
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+    .toast.error {
+      background: #ef4444;
+      box-shadow: 0 12px 35px rgba(239, 68, 68, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 500px) {
-      .header h1 {
-        font-size: 1.8rem;
-      }
-      .question-card .q-text {
-        font-size: 1rem;
-      }
+      .header h1 { font-size: 2rem; }
+      .question-card .q-text { font-size: 1rem; }
+      .option { padding: 12px 14px; }
+      .btn-submit { font-size: 1.2rem; padding: 18px; }
     }
   </style>
 </head>
 <body>
   <div class="wrapper">
+
+    <!-- HEADER -->
     <div class="header">
       <h1>🎯 KPSS Özel Deneme</h1>
-      <p>Soruları dikkatle oku, doğru şıkkı seç. Başarılar! 🍀</p>
+      <p>Soruları dikkatle oku, en doğru şıkkı seç. Başarılar! 🍀</p>
     </div>
+
+    <!-- İLERLEME -->
     <div class="stats">
       <span>📌 Cevaplanan: <span class="count" id="answeredCount">0</span> / <span id="totalQ">20</span></span>
       <span>📊 <span id="progressPercent">0</span>%</span>
@@ -250,18 +341,32 @@
     <div class="progress-wrap">
       <div class="progress-bar" id="progressBar"></div>
     </div>
+
+    <!-- SORULAR -->
     <div id="quizArea"></div>
-    <button class="btn-submit" id="submitBtn" onclick="submitExam()">Sınavı Tamamla ve Gönder 🚀</button>
+
+    <!-- GÖNDER BUTONU -->
+    <button class="btn-submit" id="submitBtn" onclick="submitExam()">
+      <span class="btn-text">🚀 Sınavı Tamamla ve Gönder</span>
+      <span class="spinner"></span>
+    </button>
+
+    <!-- BAŞARI EKRANI -->
     <div class="success-screen" id="successScreen">
       <span class="icon">✅</span>
       <h2>Cevaplarınız İletildi!</h2>
-      <p>Cevaplarınız hocanıza başarıyla ulaştı.<br>Sonuçlarınız en kısa sürede paylaşılacaktır.</p>
+      <p>Cevaplarınız hocanıza başarıyla ulaştı.<br />Sonuçlarınız en kısa sürede paylaşılacaktır.</p>
     </div>
+
   </div>
-  <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
   <script>
-    // ★★★ EMAILJS AYARLARI (V2 API) ★★★
+    // ================================================================
+    // EMAILJS AYARLARI (REST API)
+    // ================================================================
     const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
     const SERVICE_ID = "service_qdab76q";
     const TEMPLATE_ID = "template_64cuej9";
@@ -381,9 +486,15 @@
     }
 
     // ================================================================
-    // GÖNDER (V2 API)
+    // GÖNDER (REST API ile)
     // ================================================================
     function submitExam() {
+      const btn = document.getElementById('submitBtn');
+      // Butonu devre dışı bırak ve loading göster
+      btn.disabled = true;
+      btn.classList.add('loading');
+
+      // Cevapları topla
       let list = [];
       let bos = 0;
       questions.forEach((q, idx) => {
@@ -397,9 +508,9 @@
       const mesaj =
         `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
 
-      // EmailJS V2 API
+      // EmailJS REST API'ye istek
       const url = 'https://api.emailjs.com/api/v1.0/email/send';
-      const payload = {
+      const data = {
         service_id: SERVICE_ID,
         template_id: TEMPLATE_ID,
         user_id: PUBLIC_KEY,
@@ -411,16 +522,13 @@
 
       fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       })
       .then(response => {
-        if (response.status === 200 || response.status === 201) {
+        if (response.ok) {
           // Başarılı
           document.getElementById('quizArea').style.display = 'none';
-          document.querySelector('.btn-submit').style.display = 'none';
           document.querySelector('.stats').style.display = 'none';
           document.querySelector('.progress-wrap').style.display = 'none';
           document.querySelector('.header').style.display = 'none';
@@ -428,25 +536,33 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
           showToast('✅ Cevaplar başarıyla gönderildi!');
         } else {
+          // Hata
           response.text().then(text => {
-            alert('❌ Gönderme hatası: ' + text);
+            showToast('❌ Gönderme hatası: ' + text, true);
           });
         }
       })
       .catch(error => {
-        alert('❌ Ağ hatası: ' + error);
+        showToast('❌ Ağ hatası: ' + error, true);
         console.error(error);
+      })
+      .finally(() => {
+        // Butonu eski haline getir
+        btn.disabled = false;
+        btn.classList.remove('loading');
       });
     }
 
     // ================================================================
     // TOAST
     // ================================================================
-    function showToast(msg) {
+    function showToast(msg, isError = false) {
       const t = document.getElementById('toast');
       t.textContent = msg;
+      t.className = 'toast';
+      if (isError) t.classList.add('error');
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 4000);
+      setTimeout(() => t.classList.remove('show'), 5000);
     }
 
     // ================================================================
