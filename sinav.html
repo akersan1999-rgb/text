@@ -6,7 +6,7 @@
     <title>KPSS Deneme Sınavı 🎯</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
             --bg:#0b0914; --surface:#161325; --card:#1e1a2f; --border:#2d2844;
@@ -21,40 +21,72 @@
             radial-gradient(ellipse at 70% 80%,rgba(99,102,241,0.04) 0%,transparent 50%);
         }
         .container{max-width:780px;width:100%}
-        .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:var(--shadow);animation:fadeIn 0.35s ease}
+
+        .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:var(--shadow);animation:screenIn 0.4s cubic-bezier(0.22, 0.61, 0.36, 1)}
         .screen.active{display:block}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes screenIn{from{opacity:0;transform:translateY(15px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
         h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:1.9rem;letter-spacing:-0.5px}
         h3{color:var(--accent);margin-bottom:12px;font-weight:700}
         input,button,textarea{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;transition:0.2s}
         input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(244,63,94,0.1)}
-        button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;letter-spacing:0.3px;transition:0.25s;display:flex;align-items:center;justify-content:center;gap:6px}
+        button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;letter-spacing:0.3px;transition:0.25s;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;overflow:hidden}
+        button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
+        button:active::after{width:300px;height:300px}
         button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(244,63,94,0.3)}
         button:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+
         .row{display:flex;gap:10px}.row>*{flex:1}
-        .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.4rem;letter-spacing:1px}
+
+        .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.4rem;letter-spacing:1px;animation:pulse 2s infinite}
+        @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,63,94,0.4)}70%{box-shadow:0 0 0 10px rgba(244,63,94,0)}100%{box-shadow:0 0 0 0 rgba(244,63,94,0)}}
+
         .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.25);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
         .stats-item{flex:1}.stats-item .value{display:block;font-size:2.2rem;font-weight:800;color:var(--accent);line-height:1.2}.stats-item .label{font-size:0.85rem;color:var(--text2);margin-top:4px}
+
         .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.2s;font-size:0.95rem}
-        .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.04)}.opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.08)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.2rem}.blank-opt{border-style:dashed;color:var(--text2)}
+        .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.04);transform:translateX(4px)}
+        .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.08);animation:pop 0.2s}
+        @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+        .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.2rem}
+        .blank-opt{border-style:dashed;color:var(--text2)}
+
         .link-box{background:var(--bg);border:1px dashed var(--accent);padding:12px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem}
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex}
-        .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:520px;border:1px solid var(--accent);max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.6)}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:center}
+        .modal.active{display:flex;animation:fadeIn 0.3s}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:520px;border:1px solid var(--accent);max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.6);animation:scaleIn 0.3s}
+        @keyframes scaleIn{from{transform:scale(0.9)}to{transform:scale(1)}}
         .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2);line-height:1}.close-modal:hover{color:#fff}
-        .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.2s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.05)}.list-item.selected{background:rgba(244,63,94,0.1);border-left:4px solid var(--accent)}
+
+        .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.2s;border-radius:8px}
+        .list-item:hover{background:rgba(244,63,94,0.05)}
+        .list-item.selected{background:rgba(244,63,94,0.1);border-left:4px solid var(--accent)}
+
         .detail-box{background:rgba(0,0,0,0.2);padding:15px;border-radius:12px;margin-top:15px;max-height:220px;overflow-y:auto;font-size:0.9rem}
-        .tabs{display:flex;gap:6px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.2s}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+
+        .tabs{display:flex;gap:6px;margin-bottom:15px}
+        .tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.2s}
+        .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+
         .btn-sm{padding:10px 18px;font-size:0.85rem;width:auto;border-radius:10px}
-        .tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:600;letter-spacing:0.3px}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
+        .tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:600;letter-spacing:0.3px}
+        .easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
+
         .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px;font-size:0.9rem}
-        .admin-fab{position:fixed;bottom:30px;right:30px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.4);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.3s}.admin-fab:hover{transform:scale(1.08);box-shadow:0 12px 30px rgba(244,63,94,0.6)}
-        .help-mail{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}.help-mail a:hover{text-decoration:underline}
+
+        .admin-fab{position:fixed;bottom:30px;right:30px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.4);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.3s}
+        .admin-fab:hover{transform:scale(1.08) rotate(90deg);box-shadow:0 12px 30px rgba(244,63,94,0.6)}
+
+        .help-mail{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text2)}
+        .help-mail a{color:var(--info);text-decoration:none;font-weight:600}.help-mail a:hover{text-decoration:underline}
+
         .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:10px;font-size:0.85rem}
-        @media print{body{background:#fff;color:#000}.screen{box-shadow:none;border:1px solid #ccc}.admin-fab,.timer,.share-buttons,.help-mail,button{display:none!important}}
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Giriş -->
     <div class="screen active" id="loginScreen">
         <h2>🎯 KPSS Deneme Sınavı</h2>
         <p style="text-align:center;margin-bottom:20px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
@@ -64,12 +96,16 @@
         <button id="startBtn">🚀 Sınava Başla</button>
         <div class="help-mail">📧 Yardım & Bilgi: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
     </div>
+
+    <!-- Sınav -->
     <div class="screen" id="examScreen">
         <div class="timer" id="timerDisplay">⏱️ 30:00</div>
         <div class="row" style="margin-bottom:15px;color:var(--text2)"><span>Cevaplanan: <strong id="answeredCount">0</strong> / <strong id="totalQ">20</strong></span><span style="text-align:right">İlerleme: <strong id="progressPercent">0</strong>%</span></div>
         <div id="questionsContainer"></div>
         <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
     </div>
+
+    <!-- Bekleme -->
     <div class="screen" id="waitScreen">
         <h2>⏳ Sınavın Kaydedildi</h2>
         <p style="text-align:center;margin-bottom:15px;color:var(--text2)">Sonuç linkini kopyala veya paylaş. Yönetici yayınlayınca görüntülenir.</p>
@@ -81,6 +117,8 @@
         </div>
         <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
     </div>
+
+    <!-- Sonuç -->
     <div class="screen" id="resultScreen">
         <div class="stats-grid">
             <div class="stats-item"><span class="value" id="scoreDisplay">0</span><span class="label">Puan</span></div>
@@ -91,13 +129,14 @@
         <p style="text-align:center;margin-bottom:20px;font-weight:600" id="nameSurnameDisplay"></p>
         <div id="analysisContainer"></div>
         <div class="row" style="margin-top:15px">
-            <button id="pdfDownloadBtn" style="background:var(--info)">📥 Profesyonel PDF İndir</button>
-            <button id="emailResultBtn" style="background:var(--success)">📧 Mail ile Gönder</button>
+            <button id="pdfDownloadBtn" style="background:var(--info)">📥 PDF İndir</button>
+            <button id="excelDownloadBtn" style="background:#217346">📊 Excel İndir</button>
         </div>
         <div class="help-mail">📧 Yardım & Bilgi: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
     </div>
 </div>
 
+<!-- Yönetici Modal -->
 <div class="modal" id="adminModal">
     <div class="modal-content">
         <span class="close-modal" id="closeAdminModal">&times;</span>
@@ -111,7 +150,6 @@
             <div class="tabs">
                 <div class="tab active" data-tab="exams">📋 Sınavlar</div>
                 <div class="tab" data-tab="questions">📚 Soru Bankası</div>
-                <div class="tab" data-tab="settings">⚙️ Mail Ayarları</div>
             </div>
             <div id="examsTab">
                 <p style="margin:10px 0"><span id="totalExams">0</span> sınav kaydı</p>
@@ -122,19 +160,13 @@
                     <button id="kilitleBtn" style="background:var(--warning);flex:1;color:#000">🔒 Kilitle</button>
                     <button id="silBtn" style="background:var(--danger);flex:1">🗑️ Tümünü Sil</button>
                     <button id="adminPdfBtn" style="background:var(--info);flex:1">📥 PDF İndir</button>
+                    <button id="adminExcelBtn" style="background:#217346;flex:1">📊 Excel İndir</button>
                 </div>
                 <p id="adminMsg" style="color:var(--warning);text-align:center;margin-top:10px"></p>
             </div>
             <div id="questionsTab" style="display:none">
                 <button id="addQuestionBtn" style="background:var(--success);margin-bottom:10px">➕ Yeni Soru Ekle</button>
                 <div id="questionList" style="max-height:400px;overflow-y:auto"></div>
-            </div>
-            <div id="settingsTab" style="display:none">
-                <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarlarını gir, PDF'li sonuç mailleri gönder.</p>
-                <input id="emailjsPublicKey" placeholder="EmailJS Public Key"/>
-                <input id="emailjsServiceId" placeholder="EmailJS Service ID"/>
-                <input id="emailjsTemplateId" placeholder="EmailJS Template ID"/>
-                <button id="saveEmailSettings" style="background:var(--success)">💾 Kaydet</button>
             </div>
         </div>
     </div>
@@ -158,7 +190,6 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const examsRef = ref(db, 'exams');
 const questionsRef = ref(db, 'questions');
-const settingsRef = ref(db, 'settings');
 const ADMIN_PASSWORD = "1923";
 
 const defaultQuestions = [
@@ -192,7 +223,7 @@ let answeredSet = new Set();
 let timer = null;
 let remaining = 1800;
 
-// Oturum hafızası
+// Oturum
 if (sessionStorage.getItem('examState')) {
     const state = JSON.parse(sessionStorage.getItem('examState'));
     if (state.screen) showScreen(state.screen);
@@ -200,7 +231,6 @@ if (sessionStorage.getItem('examState')) {
     if (state.userData) userData = state.userData;
 }
 
-// Soruları yükle
 async function initQuestions() {
     try {
         const snap = await get(questionsRef);
@@ -220,6 +250,7 @@ function showScreen(id) {
     sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 
+// Giriş
 document.getElementById('startBtn').addEventListener('click', async () => {
     const name = document.getElementById('nameInput').value.trim();
     const surname = document.getElementById('surnameInput').value.trim();
@@ -270,6 +301,7 @@ function renderExamQuestions() {
     }));
 }
 
+// Sınavı bitir
 document.getElementById('finishBtn').addEventListener('click', async function() {
     const btn=this; btn.disabled=true; btn.textContent='Gönderiliyor...';
     try {
@@ -290,6 +322,7 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
     finally { btn.disabled=false; btn.textContent='✨ Sınavı Bitir ve Gönder'; }
 });
 
+// Sonuç göster
 function showResult(data) {
     showScreen('resultScreen');
     document.getElementById('scoreDisplay').textContent=data.score;
@@ -307,127 +340,120 @@ function showResult(data) {
     document.getElementById('analysisContainer').innerHTML=html;
 }
 
-// PDF (Türkçe karakter desteği)
+// PDF
 async function generatePDFBlob(data, title) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
-    const w = doc.internal.pageSize.getWidth();
-    const h = doc.internal.pageSize.getHeight();
-    
-    // Türkçe font yükle (base64)
+    const w = doc.internal.pageSize.getWidth(), h = doc.internal.pageSize.getHeight();
+    // Font
     const fontUrl = 'https://cdn.jsdelivr.net/npm/roboto-font@0.1.0/fonts/Roboto/roboto-regular-webfont.ttf';
-    const fontResponse = await fetch(fontUrl);
-    const fontBlob = await fontResponse.blob();
+    const fontResp = await fetch(fontUrl); const fontBlob = await fontResp.blob();
     const reader = new FileReader();
-    const fontBase64 = await new Promise(resolve => {
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.readAsDataURL(fontBlob);
-    });
-    doc.addFileToVFS('Roboto-Regular.ttf', fontBase64);
-    doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
-    doc.setFont('Roboto');
-
-    // Başlık
+    const fontB64 = await new Promise(res => { reader.onloadend = () => res(reader.result.split(',')[1]); reader.readAsDataURL(fontBlob); });
+    doc.addFileToVFS('Roboto.ttf', fontB64); doc.addFont('Roboto.ttf', 'Roboto', 'normal'); doc.setFont('Roboto');
     doc.setFillColor(244,63,94); doc.rect(0,0,w,32,'F');
-    doc.setFontSize(18); doc.setTextColor(255,255,255);
-    doc.text(title, w/2, 20, {align:'center'});
-    // Bilgiler
-    doc.setFontSize(11); doc.setTextColor(60,60,60);
+    doc.setFontSize(18); doc.setTextColor(255,255,255); doc.text(title, w/2, 20, {align:'center'});
+    doc.setFontSize(11); doc.setTextColor(60);
     doc.text(`Aday: ${data.name} ${data.surname}`, 20, 45);
     doc.text(`E-posta: ${data.email}`, 20, 53);
     doc.text(`Tarih: ${new Date(data.submittedAt).toLocaleString('tr-TR')}`, 20, 61);
     doc.line(20,66,w-20,66);
-    // Puan
     doc.setFillColor(250,250,250); doc.roundedRect(20,72,w-40,28,4,4,'FD');
-    doc.setFontSize(16); doc.setTextColor(244,63,94);
-    doc.text(`Puan: ${data.score} / 100`, w/2, 84, {align:'center'});
-    doc.setFontSize(11); doc.setTextColor(60);
-    doc.text(`Doğru: ${data.correct}  |  Yanlış: ${data.wrong}  |  Boş: ${data.empty}`, w/2, 94, {align:'center'});
-    // Başarı bar
-    const barX=25, barY=106, barW=w-50;
-    doc.setFillColor(230); doc.rect(barX, barY, barW, 8, 'F');
-    doc.setFillColor(16,185,129); doc.rect(barX, barY, barW*(data.correct/allQuestions.length), 8, 'F');
-    doc.setFontSize(9); doc.setTextColor(100);
-    doc.text(`Başarı: %${Math.round(data.correct/allQuestions.length*100)}`, barX, barY-3);
-    // Sorular
+    doc.setFontSize(16); doc.setTextColor(244,63,94); doc.text(`Puan: ${data.score} / 100`, w/2, 84, {align:'center'});
+    doc.setFontSize(11); doc.setTextColor(60); doc.text(`Doğru: ${data.correct}  |  Yanlış: ${data.wrong}  |  Boş: ${data.empty}`, w/2, 94, {align:'center'});
+    const barX=25, barY=106;
+    doc.setFillColor(230); doc.rect(barX, barY, w-50, 8, 'F');
+    doc.setFillColor(16,185,129); doc.rect(barX, barY, (w-50)*(data.correct/allQuestions.length), 8, 'F');
+    doc.setFontSize(9); doc.setTextColor(100); doc.text(`Başarı: %${Math.round(data.correct/allQuestions.length*100)}`, barX, barY-3);
     let y = 125;
-    doc.setFontSize(13); doc.setTextColor(244,63,94);
-    doc.text('Soru Detayları', 20, y); y+=10;
+    doc.setFontSize(13); doc.setTextColor(244,63,94); doc.text('Soru Detayları', 20, y); y+=10;
     doc.setFontSize(10);
     allQuestions.forEach((q,i) => {
         if (y > h-25) { doc.addPage(); y=20; }
-        const ua = data.answers[i];
-        let cevap='Boş', durum='⬜ Boş', renk=[100,100,100];
+        const ua = data.answers[i]; let cevap='Boş', durum='⬜ Boş', renk=[100,100,100];
         if (ua!=='blank') { cevap=q.o[ua]; renk=ua===q.a?[16,185,129]:[239,68,68]; durum=ua===q.a?'✅ Doğru':'❌ Yanlış'; }
-        doc.setTextColor(renk[0],renk[1],renk[2]);
-        doc.text(`${i+1}. ${q.q}`, 20, y); y+=5;
-        doc.setTextColor(80);
-        doc.text(`   Cevap: ${cevap} (${durum}) | Doğru: ${q.o[q.a]}`, 20, y); y+=5;
+        doc.setTextColor(renk[0],renk[1],renk[2]); doc.text(`${i+1}. ${q.q}`, 20, y); y+=5;
+        doc.setTextColor(80); doc.text(`   Cevap: ${cevap} (${durum}) | Doğru: ${q.o[q.a]}`, 20, y); y+=5;
         if (q.n) { doc.setTextColor(140); doc.setFontSize(9); doc.text(`   Not: ${q.n}`,20,y); doc.setFontSize(10); y+=4; }
         y+=7;
     });
     doc.line(20, y, w-20, y); y+=8;
     doc.setFontSize(8); doc.setTextColor(140);
-    doc.text('Bu belge KPSS Deneme Sınavı sistemi tarafından oluşturulmuştur.', w/2, y, {align:'center'});
-    doc.text('İletişim: akersan1999@gmail.com', w/2, y+5, {align:'center'});
+    doc.text('KPSS Deneme Sınavı Sistemi', w/2, y, {align:'center'});
+    doc.text('akersan1999@gmail.com', w/2, y+5, {align:'center'});
     return doc.output('blob');
 }
 
-// PDF indir
-document.getElementById('pdfDownloadBtn').addEventListener('click', async () => {
-    const d = {
-        name: userData.name, surname: userData.surname, email: userData.email,
-        score: +document.getElementById('scoreDisplay').textContent,
-        correct: +document.getElementById('correctDisplay').textContent,
-        wrong: +document.getElementById('wrongDisplay').textContent,
-        empty: +document.getElementById('emptyDisplay').textContent,
-        answers, submittedAt: Date.now()
-    };
-    const blob = await generatePDFBlob(d, 'KPSS Deneme Sınavı Sonucu');
+// Excel oluştur
+function generateExcelBlob(data) {
+    const rows = [['Soru No', 'Soru', 'Cevabın', 'Doğru Cevap', 'Durum', 'Not']];
+    allQuestions.forEach((q, i) => {
+        const ua = data.answers[i];
+        let cevap = 'Boş', durum = 'Boş', dogru = q.o[q.a];
+        if (ua !== 'blank') {
+            cevap = q.o[ua];
+            durum = ua === q.a ? 'Doğru' : 'Yanlış';
+        }
+        rows.push([i+1, q.q, cevap, dogru, durum, q.n || '']);
+    });
+    // Özet satırları
+    rows.push([]);
+    rows.push(['', 'Aday', `${data.name} ${data.surname}`, '', '', '']);
+    rows.push(['', 'E-posta', data.email, '', '', '']);
+    rows.push(['', 'Puan', data.score, '', '', '']);
+    rows.push(['', 'Doğru', data.correct, '', '', '']);
+    rows.push(['', 'Yanlış', data.wrong, '', '', '']);
+    rows.push(['', 'Boş', data.empty, '', '', '']);
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sonuçlar');
+    const wbout = XLSX.write(wb, { bookType:'xlsx', type:'array' });
+    return new Blob([wbout], {type:'application/octet-stream'});
+}
+
+// İndirme yardımcıları
+function downloadBlob(blob, filename) {
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='kpss_sonuc.pdf'; a.click();
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
-});
+}
 
-// Mail gönderimi
-document.getElementById('emailResultBtn').addEventListener('click', async () => {
-    const snap = await get(settingsRef);
-    const s = snap.val() || {};
-    if (!s.emailjsPublicKey) return alert('Yönetici mail ayarlarını yapmadı.');
-    emailjs.init(s.emailjsPublicKey);
-    const d = {
-        name: userData.name, surname: userData.surname, email: userData.email,
-        score: +document.getElementById('scoreDisplay').textContent,
+// PDF indir (aday)
+document.getElementById('pdfDownloadBtn').addEventListener('click', async () => {
+    const d = { ...userData, score: +document.getElementById('scoreDisplay').textContent,
         correct: +document.getElementById('correctDisplay').textContent,
         wrong: +document.getElementById('wrongDisplay').textContent,
         empty: +document.getElementById('emptyDisplay').textContent,
-        answers, submittedAt: Date.now()
-    };
-    const blob = await generatePDFBlob(d, 'KPSS Sonucu');
-    const reader = new FileReader();
-    reader.onload = async function() {
-        try {
-            await emailjs.send(s.emailjsServiceId, s.emailjsTemplateId, {
-                to_email: userData.email,
-                to_name: userData.name,
-                score: d.score,
-                pdf_data: reader.result.split(',')[1]
-            });
-            alert('Mail gönderildi!');
-        } catch(e) { alert('Mail hatası: '+e.message); }
-    };
-    reader.readAsDataURL(blob);
+        answers, submittedAt: Date.now() };
+    const blob = await generatePDFBlob(d, 'KPSS Deneme Sınavı Sonucu');
+    downloadBlob(blob, 'kpss_sonuc.pdf');
 });
 
-// Paylaş
+// Excel indir (aday)
+document.getElementById('excelDownloadBtn').addEventListener('click', () => {
+    const d = { ...userData, score: +document.getElementById('scoreDisplay').textContent,
+        correct: +document.getElementById('correctDisplay').textContent,
+        wrong: +document.getElementById('wrongDisplay').textContent,
+        empty: +document.getElementById('emptyDisplay').textContent,
+        answers, submittedAt: Date.now() };
+    const blob = generateExcelBlob(d);
+    downloadBlob(blob, 'kpss_sonuc.xlsx');
+});
+
+// Mailto ile gönder (mail hatası çözümü)
+document.getElementById('shareMailBtn').addEventListener('click', () => {
+    const link = document.getElementById('linkBox').textContent;
+    const subject = encodeURIComponent('KPSS Deneme Sınavı Sonuç Linkim');
+    const body = encodeURIComponent(`Sonuç linkim: ${link}\n\nYönetici yayınladığında sonuçları görebilirsiniz.`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+});
+
+// Diğer paylaş butonları
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> {
-    navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!'));
+    navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Link kopyalandı!'));
 });
 document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> {
     window.open(`https://wa.me/?text=${encodeURIComponent(document.getElementById('linkBox').textContent)}`);
-});
-document.getElementById('shareMailBtn').addEventListener('click', ()=> {
-    window.location.href = `mailto:?subject=KPSS Sonucum&body=${encodeURIComponent(document.getElementById('linkBox').textContent)}`;
 });
 document.getElementById('checkBtn').addEventListener('click', async ()=> {
     if (!examId) return;
@@ -457,7 +483,7 @@ document.getElementById('openAdminBtn').addEventListener('click', ()=> {
     document.getElementById('adminLoginForm').style.display='block';
     document.getElementById('adminMain').style.display='none';
 });
-document.getElementById('closeAdminModal').addEventListener('click', ()=>adminModal.classList.remove('active'));
+document.getElementById('closeAdminModal').addEventListener('click', ()=> adminModal.classList.remove('active'));
 
 let adminExams={}, selectedExamId=null;
 document.getElementById('adminLoginBtn').addEventListener('click', ()=>{
@@ -474,15 +500,8 @@ function initAdminPanel() {
         this.classList.add('active');
         document.getElementById('examsTab').style.display=this.dataset.tab==='exams'?'block':'none';
         document.getElementById('questionsTab').style.display=this.dataset.tab==='questions'?'block':'none';
-        document.getElementById('settingsTab').style.display=this.dataset.tab==='settings'?'block':'none';
     }));
     onValue(examsRef, snap => { adminExams=snap.val()||{}; renderExamList(); document.getElementById('totalExams').textContent=Object.keys(adminExams).length; });
-    onValue(settingsRef, snap => {
-        const s=snap.val()||{};
-        document.getElementById('emailjsPublicKey').value=s.emailjsPublicKey||'';
-        document.getElementById('emailjsServiceId').value=s.emailjsServiceId||'';
-        document.getElementById('emailjsTemplateId').value=s.emailjsTemplateId||'';
-    });
 }
 function renderExamList() {
     const list=document.getElementById('examList');
@@ -516,17 +535,13 @@ document.getElementById('adminPdfBtn').addEventListener('click', async ()=>{
     if (!selectedExamId) return;
     const data = adminExams[selectedExamId];
     const blob = await generatePDFBlob(data, `Sınav Sonucu - ${data.name} ${data.surname}`);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='sinav_'+data.name.toLowerCase()+'.pdf'; a.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(blob, 'sinav_'+data.name.toLowerCase()+'.pdf');
 });
-document.getElementById('saveEmailSettings').addEventListener('click', async ()=>{
-    await set(settingsRef, {
-        emailjsPublicKey: document.getElementById('emailjsPublicKey').value,
-        emailjsServiceId: document.getElementById('emailjsServiceId').value,
-        emailjsTemplateId: document.getElementById('emailjsTemplateId').value
-    });
-    alert('Mail ayarları kaydedildi.');
+document.getElementById('adminExcelBtn').addEventListener('click', ()=>{
+    if (!selectedExamId) return;
+    const data = adminExams[selectedExamId];
+    const blob = generateExcelBlob(data);
+    downloadBlob(blob, 'sinav_'+data.name.toLowerCase()+'.xlsx');
 });
 
 // Soru bankası
