@@ -15,20 +15,30 @@
     }
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
     body{
-      background:var(--bg);color:var(--text);min-height:100vh;display:flex;justify-content:center;
-      padding:20px;overflow-x:hidden;
+      background:var(--bg);color:var(--text);min-height:100vh;
       background:linear-gradient(135deg, #0b0914 0%, #1a1030 50%, #0b0914 100%);
       background-size:400% 400%;animation:bgMove 15s ease infinite;
-      position:relative;
+      overflow-x:hidden;position:relative;
     }
-    /* Arka plan parçacıkları */
     body::before{
       content:'';position:fixed;top:0;left:0;width:100%;height:100%;
       background-image:radial-gradient(circle, rgba(244,63,94,0.03) 1px, transparent 1px);
       background-size:30px 30px;pointer-events:none;z-index:0;
     }
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    .container{max-width:800px;width:100%;position:relative;z-index:1}
+    .container{max-width:800px;width:100%;margin:0 auto;position:relative;z-index:1}
+
+    /* Sabit üst çubuk */
+    .sticky-bar{
+      position:sticky;top:0;z-index:100;background:var(--surface);border:1px solid var(--border);
+      border-radius:0 0 16px 16px;padding:12px 20px;margin-bottom:20px;
+      display:flex;justify-content:space-between;align-items:center;
+      box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
+      animation:slideDown 0.4s ease;
+    }
+    @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+    .sticky-bar .timer{font-weight:700;font-size:1.2rem;color:var(--accent)}
+    .sticky-bar .progress-text{font-size:0.9rem;color:var(--text2)}
 
     .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s cubic-bezier(0.22,0.61,0.36,1)}
     .screen.active{display:block}
@@ -45,12 +55,8 @@
     button:active::after{width:300px;height:300px}
 
     .row{display:flex;gap:10px}.row>*{flex:1}
-
     .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-
-    .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.5rem;animation:glow 2s infinite alternate}
-    @keyframes glow{from{box-shadow:0 0 10px rgba(244,63,94,0.2)}to{box-shadow:0 0 25px rgba(244,63,94,0.5)}}
 
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
     .stats-item{flex:1;animation:popIn 0.6s ease backwards}
@@ -91,7 +97,14 @@
   </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="appContainer">
+  <!-- Sabit üst çubuk (sınav ekranında görünür) -->
+  <div class="sticky-bar" id="stickyBar" style="display:none">
+    <span class="timer" id="stickyTimer">⏱️ 30:00</span>
+    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
+    <span class="progress-text">İlerleme: <strong id="stickyProgress">0</strong>%</span>
+  </div>
+
   <!-- Giriş -->
   <div class="screen active" id="loginScreen">
     <h2 class="glow-text">🎯 KPSS Deneme Sınavı</h2>
@@ -106,8 +119,6 @@
   <!-- Sınav -->
   <div class="screen" id="examScreen">
     <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
-    <div class="timer" id="timerDisplay">⏱️ 30:00</div>
-    <div class="row" style="margin-bottom:15px;color:var(--text2)"><span>Cevaplanan: <strong id="answeredCount">0</strong> / <strong id="totalQ">20</strong></span><span style="text-align:right">İlerleme: <strong id="progressPercent">0</strong>%</span></div>
     <div id="questionsContainer"></div>
     <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
   </div>
@@ -180,7 +191,7 @@
         <div id="questionList" style="max-height:450px;overflow-y:auto"></div>
       </div>
       <div id="mailTab" style="display:none">
-        <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarları (kullanıcının yazdığı e-postaya sonuç gider)</p>
+        <p style="color:var(--text2);margin-bottom:10px">Template: Merhaba { {to_name} }, Puanın: { {score} } ...</p>
         <input id="emailjsPublicKey" placeholder="EmailJS Public Key" value="dbF3yWuvy9um9nAdp"/>
         <input id="emailjsServiceId" placeholder="EmailJS Service ID" value="service_qdab76q"/>
         <input id="emailjsTemplateId" placeholder="EmailJS Template ID" value="template_64cuej9"/>
@@ -268,47 +279,47 @@ const defaultQuestions = [
   { q:"İlk Türk İslam devleti?", o:["Karahanlılar","Gazneliler","Selçuklular","Osmanlılar","Büyük Selçuklu"], a:0, difficulty:"hard", n:"Karahanlılar." },
   { q:"En büyük kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
   { q:"Türkiye'nin en yüksek barajı?", o:["Atatürk","Keban","Karakaya","Yusufeli","Deriner"], a:3, difficulty:"hard", n:"Yusufeli." },
-  { q:"Aşağıdakilerden hangisi bir meyve değildir?", o:["Elma","Armut","Domates","Patates","Portakal"], a:3, difficulty:"easy", n:"Patates." },
+  { q:"Meyve olmayan?", o:["Elma","Armut","Domates","Patates","Portakal"], a:3, difficulty:"easy", n:"Patates." },
   { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
-  { q:"Aşağıdakilerden hangisi bir müzik aleti değildir?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
   { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
-  { q:"Yılın en kısa günü?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
-  { q:"Aşağıdakilerden hangisi bir gezegen değildir?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton (cüce gezegen)." },
-  { q:"Türk bayrağının rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
-  { q:"Aşağıdakilerden hangisi bir içecek değildir?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
-  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk (femur)." },
-  { q:"İlk telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"medium", n:"Alexander Graham Bell." },
-  { q:"Dünyanın en uzun kara sınırı?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
-  { q:"Hangi ülkenin başkenti yoktur?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"En çok Oscar alan film?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur (11 Oscar)." },
-  { q:"Bir düzine kaç adettir?", o:["6","10","12","20","24"], a:2, difficulty:"easy", n:"12." },
-  { q:"En hızlı balık?", o:["Ton balığı","Yelken balığı","Köpekbalığı","Som balığı","Alabalık"], a:1, difficulty:"hard", n:"Yelken balığı." },
-  { q:"İngiltere'nin para birimi?", o:["Euro","Dolar","Sterlin","Frank","Mark"], a:2, difficulty:"easy", n:"Sterlin." },
-  { q:"Türkiye'nin en doğusundaki il?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
-  { q:"Aşağıdakilerden hangisi sürüngen değildir?", o:["Yılan","Kertenkele","Kurbağa","Timsah","Kaplumbağa"], a:2, difficulty:"easy", n:"Kurbağa." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"medium", n:"Bell." },
+  { q:"En uzun kara sınırı?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." },
+  { q:"Başkenti olmayan ülke?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
+  { q:"En çok Oscar alan film?", o:["Titanic","Ben-Hur","Yüzüklerin Efendisi","Avatar","Star Wars"], a:1, difficulty:"hard", n:"Ben-Hur." },
+  { q:"Bir düzine kaç adet?", o:["6","10","12","20","24"], a:2, difficulty:"easy", n:"12." },
+  { q:"En hızlı balık?", o:["Ton","Yelken","Köpekbalığı","Som","Alabalık"], a:1, difficulty:"hard", n:"Yelken balığı." },
+  { q:"İngiltere para birimi?", o:["Euro","Dolar","Sterlin","Frank","Mark"], a:2, difficulty:"easy", n:"Sterlin." },
+  { q:"En doğudaki il?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
+  { q:"Sürüngen olmayan?", o:["Yılan","Kertenkele","Kurbağa","Timsah","Kaplumbağa"], a:2, difficulty:"easy", n:"Kurbağa." },
   { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"medium", n:"Kaplumbağa." },
-  { q:"Türkiye'nin en büyük ili (yüzölçüm)?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"hard", n:"Konya." },
-  { q:"Aşağıdakilerden hangisi bir programlama dili değildir?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML (işaretleme dili)." },
-  { q:"Futbol sahası kaç kişiyle oynanır?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"En büyük il (yüzölçüm)?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"hard", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
   { q:"En büyük gezegen?", o:["Dünya","Mars","Jüpiter","Satürn","Uranüs"], a:2, difficulty:"easy", n:"Jüpiter." },
-  { q:"Türk lirasının simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
   { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
-  { q:"En yüksek şelale?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel (Venezuela)." },
-  { q:"Aşağıdakilerden hangisi bir vitamin değildir?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"medium", n:"Kalsiyum (mineral)." },
+  { q:"En yüksek şelale?", o:["Niagara","Victoria","Angel","Iguazu","Yosemite"], a:2, difficulty:"hard", n:"Angel." },
+  { q:"Vitamin olmayan?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"medium", n:"Kalsiyum." },
   { q:"En kalabalık Afrika ülkesi?", o:["Mısır","Etiyopya","Nijerya","Güney Afrika","Kenya"], a:2, difficulty:"medium", n:"Nijerya." },
-  { q:"İlk bilgisayarın adı?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
-  { q:"Aşağıdakilerden hangisi bir gezegen değildir?", o:["Venüs","Mars","Ay","Jüpiter","Merkür"], a:2, difficulty:"easy", n:"Ay (uydu)." },
-  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep (antik Zeugma)." },
-  { q:"İnsan vücudunda kaç kemik var?", o:["186","206","226","256","286"], a:1, difficulty:"medium", n:"206." },
-  { q:"Aşağıdakilerden hangisi bir doğal sayı değildir?", o:["0","1","2","-1","3"], a:3, difficulty:"easy", n:"-1 (negatif)." },
+  { q:"İlk bilgisayar?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
+  { q:"Gezegen olmayan?", o:["Venüs","Mars","Ay","Jüpiter","Merkür"], a:2, difficulty:"easy", n:"Ay." },
+  { q:"En eski şehir?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." },
+  { q:"İnsanda kaç kemik var?", o:["186","206","226","256","286"], a:1, difficulty:"medium", n:"206." },
+  { q:"Doğal sayı olmayan?", o:["0","1","2","-1","3"], a:3, difficulty:"easy", n:"-1." },
   { q:"En soğuk kıta?", o:["Asya","Avrupa","Antarktika","Kuzey Amerika","Güney Amerika"], a:2, difficulty:"easy", n:"Antarktika." },
-  { q:"İlk insanlı uzay aracı?", o:["Apollo 11","Sputnik","Vostok 1","Mercury","Gemini"], a:2, difficulty:"hard", n:"Vostok 1 (Gagarin)." },
+  { q:"İlk insanlı uzay aracı?", o:["Apollo 11","Sputnik","Vostok 1","Mercury","Gemini"], a:2, difficulty:"hard", n:"Vostok 1." },
   { q:"Bir kilo kaç gram?", o:["10","100","500","1000","10000"], a:3, difficulty:"easy", n:"1000." },
-  { q:"Hangi ülkenin bayrağında ejderha var?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Aşağıdakilerden hangisi bir sürüngen değildir?", o:["Yılan","Bukalemun","Kurbağa","Varan","Gecko"], a:2, difficulty:"easy", n:"Kurbağa." },
-  { q:"Dünyanın en küçük ülkesi?", o:["Monako","Vatikan","San Marino","Liechtenstein","Andorra"], a:1, difficulty:"easy", n:"Vatikan." },
+  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
+  { q:"Sürüngen olmayan?", o:["Yılan","Bukalemun","Kurbağa","Varan","Gecko"], a:2, difficulty:"easy", n:"Kurbağa." },
+  { q:"En küçük ülke?", o:["Monako","Vatikan","San Marino","Liechtenstein","Andorra"], a:1, difficulty:"easy", n:"Vatikan." },
   { q:"En pahalı baharat?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"medium", n:"Safran." },
-  { q:"Aşağıdakilerden hangisi bir kıta değildir?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"easy", n:"Grönland (ada)." },
+  { q:"Kıta olmayan?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"easy", n:"Grönland." },
   { q:"Türk milli içeceği?", o:["Çay","Ayran","Rakı","Boza","Şalgam"], a:1, difficulty:"easy", n:"Ayran." }
 ];
 
@@ -320,7 +331,7 @@ let answeredSet = new Set();
 let timer = null;
 let remaining = 1800;
 
-// Parçacık animasyonu
+// Parçacıklar
 function createParticles() {
   const colors = ['#f43f5e', '#ec4899', '#6366f1', '#10b981'];
   for (let i=0; i<20; i++) {
@@ -345,7 +356,7 @@ if (sessionStorage.getItem('examState')) {
   if (state.userData) userData = state.userData;
 }
 
-// Mail ayarlarını varsayılan olarak kaydet
+// Mail varsayılanları
 (async function initMailDefaults() {
   const snap = await get(mailSettingsRef);
   if (!snap.exists()) {
@@ -359,12 +370,10 @@ if (sessionStorage.getItem('examState')) {
 
 async function initQuestions() {
   const snap = await get(questionsRef);
-  if (!snap.exists()) {
-    for (const q of defaultQuestions) await push(questionsRef, q);
-  }
+  if (!snap.exists()) for (const q of defaultQuestions) await push(questionsRef, q);
   onValue(questionsRef, snap => {
     const data = snap.val() || {};
-    allQuestions = Object.entries(data).map(([id, val]) => ({ id, ...val })).sort(() => Math.random()-0.5).slice(0, 20);
+    allQuestions = Object.entries(data).map(([id, val]) => ({ id, ...val })).sort(() => Math.random()-0.5).slice(0,20);
     document.getElementById('totalQuestions').textContent = Object.keys(data).length;
     renderQuestionBank();
   });
@@ -374,11 +383,11 @@ initQuestions();
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.getElementById('stickyBar').style.display = (id === 'examScreen') ? 'flex' : 'none';
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 function goHome() { showScreen('loginScreen'); }
 
-// Sayı animasyonu
 function animateValue(id, start, end, duration) {
   const el = document.getElementById(id);
   let startTime = null;
@@ -407,19 +416,22 @@ document.getElementById('startBtn').addEventListener('click', async () => {
 
 function startExam() {
   answeredSet.clear(); answers = new Array(allQuestions.length).fill('blank'); remaining=1800;
-  document.getElementById('timerDisplay').textContent='⏱️ 30:00';
-  document.getElementById('totalQ').textContent=allQuestions.length;
-  document.getElementById('answeredCount').textContent='0';
-  document.getElementById('progressPercent').textContent='0';
+  updateStickyBar();
+  document.getElementById('stickyTotal').textContent = allQuestions.length;
+  document.getElementById('totalQ').textContent = allQuestions.length;
   renderExamQuestions(); startTimer();
 }
 function startTimer() {
   clearInterval(timer);
   timer = setInterval(() => {
     remaining--; const m=Math.floor(remaining/60), s=remaining%60;
-    document.getElementById('timerDisplay').textContent=`⏱️ ${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+    document.getElementById('stickyTimer').textContent = `⏱️ ${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
     if (remaining<=0) { clearInterval(timer); finishExam(); }
   }, 1000);
+}
+function updateStickyBar() {
+  document.getElementById('stickyAnswered').textContent = answeredSet.size;
+  document.getElementById('stickyProgress').textContent = Math.round(answeredSet.size/allQuestions.length*100);
 }
 function renderExamQuestions() {
   let html='';
@@ -434,8 +446,7 @@ function renderExamQuestions() {
     answers[qIdx]=val==='blank'?'blank':+val; answeredSet.add(qIdx);
     this.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('chosen'));
     this.classList.add('chosen');
-    document.getElementById('answeredCount').textContent=answeredSet.size;
-    document.getElementById('progressPercent').textContent=Math.round(answeredSet.size/allQuestions.length*100);
+    updateStickyBar();
   }));
 }
 
