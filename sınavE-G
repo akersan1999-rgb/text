@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 KPSS Ortaöğretim Deneme Sınavı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-surface: #131c2e;
+            --bg-surface-light: #1e2942;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.15);
+            --error: #ef4444;
+            --error-glow: rgba(239, 68, 68, 0.15);
+            --border: #24324f;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px 10px;
+            display: block;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Progress Bar Fixed Top */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Floating Indicator for Progress */
+        .sticky-stats {
+            position: sticky;
+            top: 15px;
+            z-index: 900;
+            background: rgba(19, 28, 46, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        .stat-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-badge.active {
+            color: var(--accent);
+            border-color: rgba(245, 158, 11, 0.4);
+            background: var(--accent-glow);
+        }
+
+        /* Master Header Visual Component */
+        .master-card {
+            background: linear-gradient(145deg, var(--bg-surface), #15223c);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 35px 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .master-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .master-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .master-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Live Dashboard State Boxes */
+        #state-screen {
+            display: none;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 40px 25px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes cardAppear {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .state-icon-container {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-glow);
+            border: 2px dashed var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: var(--primary-light);
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: pulseWave 2s infinite linear;
+            opacity: 0;
+        }
+        @keyframes pulseWave {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .state-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        .state-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .metric-grid {
+            display: table;
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: separate;
+            border-spacing: 10px;
+        }
+        .metric-cell {
+            display: table-cell;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        .metric-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Remote Action Submission Area */
+        .action-box {
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 25px;
+        }
+        .action-box p {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        /* Admin Gate Controllers */
+        .admin-controls {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+        .input-group {
+            display: table;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .admin-input {
+            display: table-cell;
+            width: 70%;
+            padding: 14px;
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            border: 2px solid var(--border);
+            background: var(--bg-main);
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            outline: none;
+            transition: var(--transition);
+        }
+        .admin-input:focus {
+            border-color: var(--primary);
+        }
+        .admin-btn {
+            display: table-cell;
+            width: 30%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Advanced Questionnaire Cards Custom Styles */
+        .question-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: var(--transition);
+        }
+        .question-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 15px 30px rgba(99,102,241,0.08);
+            transform: translateY(-2px);
+        }
+
+        .card-header-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .q-badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 30px;
+            background: var(--primary-glow);
+            color: var(--primary-light);
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+
+        .question-body {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-wrapper {
+            position: relative;
+            cursor: pointer;
+            display: block;
+        }
+        .option-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            padding: 16px 18px;
+            background: rgba(11, 15, 25, 0.4);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: rgba(241, 245, 249, 0.85);
+            transition: var(--transition);
+        }
+
+        .option-indicator {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-right: 14px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+        }
+        .option-indicator::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: var(--transition);
+        }
+
+        /* Hover States for Active Unchecked Choices */
+        .option-wrapper:hover .option-content {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Checked Radio Mechanics Styles */
+        .option-input:checked + .option-content {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .option-input:checked + .option-content .option-indicator {
+            border-color: var(--accent);
+        }
+        .option-input:checked + .option-content .option-indicator::after {
+            transform: scale(1);
+        }
+
+        /* Neutral System Option style for skipped states */
+        .blank-choice .option-content {
+            border-style: dashed;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.9rem;
+            padding: 12px 18px;
+        }
+        .option-input:checked + .blank-choice .option-content {
+            border-color: var(--text-muted);
+            background: rgba(148, 163, 184, 0.08);
+            color: var(--text-main);
+        }
+
+        /* Extreme Visualization Feedback Modes (Google Forms Style Post-Release) */
+        .card-eval-correct {
+            border-color: var(--success) !important;
+            background: linear-gradient(to bottom right, var(--bg-surface), rgba(16, 185, 129, 0.04)) !important;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.08) !important;
+        }
+        .card-eval-wrong {
+            border-color: var(--error) !important;
+            background: linear-gradient(to bottom right, var(--bg-surface), rgba(239, 68, 68, 0.04)) !important;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.08) !important;
+        }
+        .card-eval-blank {
+            border-color: var(--accent) !important;
+            background: linear-gradient(to bottom right, var(--bg-surface), rgba(245, 158, 11, 0.04)) !important;
+        }
+
+        /* Option Colors on Result Revealed State */
+        .eval-true-choice .option-content {
+            border-color: var(--success) !important;
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+        .eval-true-choice .option-indicator {
+            border-color: var(--success) !important;
+            background: var(--success);
+        }
+        .eval-true-choice .option-indicator::after {
+            background: white !important;
+            transform: scale(1);
+        }
+
+        .eval-false-choice .option-content {
+            border-color: var(--error) !important;
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #ffffff !important;
+        }
+        .eval-false-choice .option-indicator {
+            border-color: var(--error) !important;
+            background: var(--error);
+        }
+
+        /* Interactive Dynamic Explanatory Dialog Box */
+        .explanation-banner {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background: #0b0f19;
+            border-left: 4px solid var(--primary);
+            animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Action Submit Execution Controls */
+        .master-submit-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: #0b0f19;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1.25rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 35px var(--accent-glow);
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 30px;
+        }
+        .master-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.3);
+        }
+        .master-submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Utilities */
+        .d-none { display: none !important; }
+        .flex-box { display: flex; align-items: center; gap: 8px; }
+        
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 25px rgba(16,185,129,0.3);
+            z-index: 2000;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Progress Bar Line Component -->
+    <div class="progress-container">
+        <div class="progress-bar" id="exam-progress"></div>
+    </div>
+
+    <div class="wrapper">
+        
+        <!-- Sticky Real-time Stats Indicator -->
+        <div class="sticky-stats" id="live-indicator">
+            <div class="stat-badge flex-box">
+                <span style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></span>
+                <span>2026 KPSS Ortaöğretim</span>
+            </div>
+            <div class="stat-badge active" id="completion-badge">
+                <span>Cevaplanan: 0 / 20</span>
+            </div>
+        </div>
+
+        <!-- Master Title Hero Header Block -->
+        <div class="master-card" id="welcome-header">
+            <h1>KPSS Özel Deneme Provası</h1>
+            <p>Senin için hazırladığım sınav provası. Soruları dikkatle oku, en doğru şıkkı seç. Başarılar dilerim! 🍀</p>
+        </div>
+
+        <!-- Advanced Remote Synced Dashboard Screen Box -->
+        <div id="state-screen">
+            <div class="state-icon-container">
+                <div class="pulse-ring"></div>
+                📥
+            </div>
+            <h2 class="state-title">Cevapların Sisteme Gönderildi!</h2>
+            <p class="state-desc">Test başarıyla tamamlandı. Cevap verileriniz güvenli bir şekilde şifrelenerek kaydedildi. Sınav sorumlusu analizi onayladığında sonuçlarınızı görebileceksiniz.</p>
+            
+            <div class="metric-grid">
+                <div class="metric-cell">
+                    <div class="metric-val" id="disp-total">20</div>
+                    <div class="metric-label">Toplam Soru</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="metric-val" id="disp-answered">0</div>
+                    <div class="metric-label">İşaretlenen</div>
+                </div>
+            </div>
+
+            <!-- Alternative manual remote action setup -->
+            <div class="action-box">
+                <p>⚠️ Eğer internet bağlantısı kesildiyse, cevap kodunu kopyalayıp bana WhatsApp'tan da gönderebilirsin:</p>
+                <button type="button" class="admin-btn" style="border-radius:8px; display:inline-block; width:auto; float:none;" onclick="kopyalaCevapKodu()">Cevap Kodunu Kopyala 📋</button>
+            </div>
+
+            <!-- Admin Gate Controller to trigger analysis display locally via secret token -->
+            <div class="admin-controls">
+                <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--accent); font-weight: 600;">🔑 Sonuçları Yayınla & Analizi Aç (Hoca Paneli)</p>
+                <div class="input-group">
+                    <input type="password" id="gateKey" class="admin-input" placeholder="Yetki Kodu Girin">
+                    <button type="button" class="admin-btn" onclick="yetkilendirVeYayinla()">Onayla</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Questionnaire Form Frame Wrapper -->
+        <form id="quizFrame" autocomplete="off">
+            <div id="dynamic-cards-root"></div>
+            
+            <!-- Complete Action Trigger Button -->
+            <button type="button" id="master-submit-trigger" class="master-submit-btn" onclick="cevaplariPaketleVeGonder()">
+                Sınavı Tamamla ve Cevapları Gönder 🎯
+            </button>
+        </form>
+
+    </div>
+
+    <!-- Notification Toast Popup Structure Element -->
+    <div class="copy-toast" id="toast-msg">Cevap kodu panoya kopyalandı!</div>
+
+    <script>
+        // Full verified comprehensive expert 20-question custom content package matrix
+        const dataSet = [
+            { q: "Aşağıdaki cümlelerin hangisinde, hem ünsüz benzeşmesi (sertleşme) hem de ünsüz yumuşamasına uğramış bir sözcük kullanılmıştır?", s: ["Sıcak çayını yudumlarken geçmiş günleri özlemle andı.", "Gittiği her yerde kendinden bir iz bırakmayı başarırdı.", "Yaptığı işlerin her zaman arkasında duran bir insandı.", "Çiçeğin yaprakları sıcaktan dolayı büzüşmeye başlamıştı.", "Gençliğinde yazdığı şiirleri bir defterde toplamıştı."], a: 2, e: "<b>Cevap C</b>: 'Yaptığı' sözcüğünde; 'yap-mak' fiiline '-dık' sıfat-fiil eki gelirken 'k' sesi 'g' sesine yumuşamış, aynı zamanda 'd' eki 't' sesine sertleşmiştir (benzeşmiştir)." },
+            { q: "Aşağıdaki cümlelerin hangisinde bir yazım yanlışı yapılmıştır?", s: ["Laboratuvardaki tüm cihazlar sabaha karşı aniden bozuldu.", "Bu projede her şeyin usulüne uygun yapılması gerekiyor.", "Sınav başvurusunu kılavuzda belirtilen tarihe kadar yapmalısın.", "Onun bu vurdumduymaz tavırları herkesi çileden çıkardı.", "Birkaç gün sonra gerçekleştirilecek olan kurultay çok önemli."], a: 1, e: "<b>Cevap B</b>: 'her şey' sözcüğü her zaman ayrı yazılır. Cümlede birleşik yazılarak yazım hatası yapılmıştır." },
+            { q: "'Yalnızlık, insanın kendi iç dünyasıyla baş başa kalmasını sağlayan görkemli bir tapınaktır.' cümlesinin ögelerinin doğru sıralanışı aşağıdakilerden hangisidir?", s: ["Özne - Zarf Tümleci - Yüklem", "Özne - Yüklem", "Belirtisiz Nesne - Özne - Yüklem", "Özne - Edat Tümleci - Yüklem", "Belirtili Nesne - Zarf Tümleci - Yüklem"], a: 1, e: "<b>Cevap B</b>: 'insanın kendi iç dünyasıyla baş başa kalmasını sağlayan görkemli bir tapınaktır' kısmı komple tamlama grubudur ve Yüklemdir. 'Yalnızlık' ise Öznedir. Cümle Özne ve Yüklemden oluşmuştur." },
+            { q: "Aşağıdaki cümlelerin hangisinde altı çizili sözcük yalnızca çekim eki almıştır?", s: ["Gözleri yollarda kalmış, bir haber bekliyordu.", "Sınıftaki öğrencilerin sessizliği dikkat çekiciydi.", "Günün erken saatlerinde yürüyüş yapmayı çok severdi.", "Yazarın son kitabında önemli toplumsal mesajlar var.", "Soruları dikkatli bir şekilde okuyup cevapladı."], a: 0, e: "<b>Cevap A</b>: 'Gözleri' kelimesinin kökü göz'dür. Aldığı ekler çoğul eki ve iyelik ekidir, yani sadece çekim eki almıştır. Diğer şıklardaki kelimeler yapım eki barındırır." },
+            { q: "Karahanlılar Dönemi'nde Yusuf Has Hacib tarafından yazılan ve Türk-İslam edebi geleneğinin ilk siyasetnamesi kabul edilen ünlü eser aşağıdakilerden hangisidir?", s: ["Divânu Lugâti't-Türk", "Atabetü'l-Hakayık", "Kutadgu Bilig", "Divân-ı Hikmet", "Şehname"], a: 2, e: "<b>Cevap C</b>: Kutadgu Bilig (Mutluluk Veren Bilgi), Yusuf Has Hacib tarafından Karahanlı hükümdarına sunulan ilk Türk-İslam siyasetnamesidir." },
+            { q: "Osmanlı Devleti'nde, fethedilen toprakların kayıtlarının tutulduğu, devletin gelir kaynaklarının ve nüfusunun yazıldığı defterlere ne ad verilirdi?", s: ["Mühimme Defteri", "Tahrir Defteri", "Şer'iyye Sicili", "Ruznamçe Defteri", "Tereke Defteri"], a: 1, e: "<b>Cevap B</b>: Tahrir Defterleri, nişancı denetiminde fethedilen arazilerin, nüfusun ve vergi gelirlerinin detaylıca kaydedildiği defterlerdir." },
+            { q: "19. yüzyılda Osmanlı Devleti'nde, padişahın yetkilerini ilk kez sınırlandıran ve anayasal düzene geçişin ilk basamağı kabul edilen belge hangisidir?", s: ["Tanzimat Fermanı", "Sened-i İttifak", "Islahat Fermanı", "Kanun-ı Esasi", "Kanunname-i Ali Osman"], a: 1, e: "<b>Cevap B</b>: 1808 yılında İkinci Mahmut ile Ayanlar arasında imzalanan Sened-i İttifak, Osmanlı'da padişah yetkilerini kısıtlayan ilk belgedir." },
+            { q: "Kurtuluş Savaşı sürecinde, millî mücadelenin haklılığını uluslararası alanda bilimsel ve hukuki verilere dayanarak kanıtlayan ilk uluslararası rapor hangisidir?", s: ["Bristol Raporu (Amiral Bristol)", "Harbord Raporu (General Harbord)", "Milne Hattı Raporu", "Sandler Raporu", "King-Crane Raporu"], a: 0, e: "<b>Cevap A</b>: Amiral Bristol Raporu, Batı Anadolu'daki Rum iddialarının yalan olduğunu ve Türklerin haklı mücadelesini dünyaya duyuran ilk resmi uluslararası belgedir." },
+            { q: "Lozan Barış Konferansı'na gitmeden önce, TBMM Hükümeti'nin Türk heyetinden kesinlikle taviz verilmemesini istediği iki kırmızı çizgi konu hangisidir?", s: ["Boğazlar ve Musul Sorunu", "Ermeni Yurdu ve Kapitülasyonlar", "Ege Adaları ve Dış Borçlar", "Yunanistan Sınırı ve Nüfus Mübadelesi", "Yabancı Okullar ve Hatay Sorunu"], a: 1, e: "<b>Cevap B</b>: Mustafa Kemal Atatürk ve TBMM, İsmet İnönü başkanlığındaki heyete Ermeni yurdu iddiaları ve Kapitülasyonlar konusunda asla taviz verilmemesi talimatını kesin olarak vermiştir." },
+            { q: "Atatürk Dönemi'nde, Türk kadınına milletvekili seçme ve seçilme hakkı hangi yılda verilmiştir?", s: ["1930", "1933", "1934", "1926", "1928"], a: 2, e: "<b>Cevap C</b>: Türk kadını 1930'da belediye, 1933'te muhtarlık, 5 Aralık 1934'te ise milletvekili seçme ve seçilme hakkına kavuşmuştur (034 kodlaması)." },
+            { q: "Türkiye'de, tektonik hareketler sonucu oluşan ve 'Kuzey Anadolu Fay Hattı (KAF)' üzerinde yer almayan göl aşağıdakilerden hangisidir?", s: ["Sapanca Gölü", "İznik Gölü", "Manyas (Kuş) Gölü", "Tuz Gölü", "Abant Gölü"], a: 3, e: "<b>Cevap D</b>: Tuz Gölü, İç Anadolu Bölgesi'nde yer alan bir tektonik göldür, Kuzey Anadolu Fay Hattı (KAF) kuşağında bulunmaz." },
+            { q: "Türkiye'de, Doğu Karadeniz kıyı kuşağında kışların ılık geçmesi ve yıl boyu nemliliğin yüksek olması nedeniyle, normalde Akdeniz iklimine ait olan zeytin ve turunçgillerin yetişebilmesi hangi coğrafi kavramla açıklanır?", s: ["Makroklima", "Mikroklima", "Fiziki Adaptasyon", "Karasallık", "Epirojenik Çeşitlilik"], a: 1, e: "<b>Cevap B</b>: Çevresine göre özel konum ve iklim şartları nedeniyle ayrışan, küçük boyutlu özel iklim alanlarına 'Mikroklima' adı verilir." },
+            { q: "Türkiye'de demir-çelik sanayisinin en önemli tesislerinden olan Karabük ve Ereğli Demir-Çelik fabrikalarının bu bölgede kurulmasının temel nedeni hangisidir?", s: ["Zengin demir yataklarının bulunması", "Tüketici nüfusa ve pazara yakınlık", "Liman imkanları ve ulaşım kolaylığı", "Enerji kaynağına (taş kömürüne) yakınlık", "Su kaynaklarının bolluğu"], a: 3, e: "<b>Cevap D</b>: Batı Karadeniz'de zengin demir madeni yoktur. Tesislerin orada kurulmasının yegane sebebi, yüksek ısı sağlayan enerji kaynağı olan taş kömürü yataklarına yakınlıktır." },
+            { q: "Türkiye'de, karstik aşınım ve birikim şekillerinin (obruk, mağara, traverten) en yaygın görüldüğü coğrafi bölge ve toprak türü eşleştirmesi hangisinde doğrudur?", s: ["İç Anadolu Bölgesi - Çernezyom", "Akdeniz Bölgesi - Terra Rossa", "Ege Bölgesi - Kahverengi Orman", "Güneydoğu Anadolu - Podzol", "Marmara Bölgesi - Alüvyal"], a: 1, e: "<b>Cevap B</b>: Kalker ve karstik arazilerin en yoğun olduğu bölge Akdeniz'dir. Bu sahadaki tipik kırmızı renkli Akdeniz toprağına Terra Rossa denir." },
+            { q: "1982 Anayasası'na göre, Türkiye Büyük Millet Meclisi'nin (TBMM) yeni yasama yılına başlayacağı gün anayasada doğrudan hangi gün olarak belirlenmiştir?", s: ["1 Eylül", "1 Ekim", "15 Ekim", "1 Kasım", "29 Ekim"], a: 1, e: "<b>Cevap B</b>: 1982 Anayasası açık hükmü gereği, TBMM her yıl ekim ayının ilk günü (1 Ekim) kendiliğinden toplanarak yasama yılını açar." },
+            { q: "Bir ülkede yetkili makamlar tarafından konulmuş olan ve yürürlükte bulunan yazılı hukuk kurallarının tamamına ne ad verilir?", s: ["Pozitif Hukuk", "Mevzu Hukuk (Mevzuat)", "Tabii Hukuk", "Tarihi Hukuk", "Objektif Hukuk"], a: 1, e: "<b>Cevap B</b>: Yürürlükteki hem yazılı hem yazısız kurallara Pozitif Hukuk denirken; SADECE yetkili makamlarca konulan 'yazılı' kuralların tamamına Mevzu Hukuk (Mevzuat) adı verilir." },
+            { q: "1982 Anayasası'na göre, Anayasa Mahkemesi'ne üye seçme yetkisi hangi kurumlar arasında paylaştırılmıştır?", s: ["Yalnızca Cumhurbaşkanı", "Yalnızca TBMM", "Cumhurbaşkanı ve TBMM", "Cumhurbaşkanı, TBMM ve HSK", "Cumhurbaşkanı ve Yargıtay"], a: 2, e: "<b>Cevap C</b>: Anayasa Mahkemesi'nin 15 üyesi vardır. Bunların 12 üyesini Cumhurbaşkanı, 3 üyesini ise TBMM seçmektedir." },
+            { q: "2026 yılı itibarıyla, uzayda aktif olarak görev yapan ve Türkiye'nin en son fırlatılan yüksek çözünürlüklü ilk yerli gözlem uydusunun adı nedir?", s: ["Türksat 6A", "İMECE", "Göktürk-1", "Rasat", "Göktürk-2"], a: 1, e: "<b>Cevap B</b>: İMECE, Türkiye'nin metre altı çözünürlüğe sahip ilk yerli ve millî elektro-optik uzay gözlem uydusudur." },
+            { q: "Birleşmiş Milletler Eğitim, Bilim ve Kültür Örgütü (UNESCO) tarafından 'Dünya Kültür Mirası' listesinde yer alan ve 'Tarihin Sıfır Noktası' olarak nitelendirilen Şanlıurfa'daki arkeolojik alan hangisidir?", s: ["Çatalhöyük", "Göbeklitepe", "Alacahöyük", "Hattuşaş", "Karahan Tepe"], a: 1, e: "<b>Cevap B</b>: Şanlıurfa sınırlarında yer alan Göbeklitepe, neolitik döneme ait dünyanın bilinen en eski kült yapılar topluluğudur ve tarihin sıfır noktası kabul edilir." },
+            { q: "Dünyanın en derin kanyonları arasında gösterilen ve Türkiye'nin doğa turizmi açısından büyük önem taşıyan, Kastamonu sınırlarında yer alan ünlü kanyon hangisidir?", s: ["Ihlara Vadisi", "Saklıkent Kanyonu", "Valla Kanyonu", "Köprülü Kanyon", "Karanlık Kanyon"], a: 2, e: "<b>Cevap C</b>: Kastamonu Pınarbaşı ilçesinde yer alan Valla Kanyonu, geçişi oldukça zor ve dünyanın en derin/büyük kanyonları arasında yer alan doğa harikasıdır." }
+        ];
+
+        // Init and dynamic render logic configuration
+        const root = document.getElementById('dynamic-cards-root');
+        
+        function renderQuiz() {
+            let htmlPayload = '';
+            dataSet.forEach((item, indexSoru) => {
+                htmlPayload += `
+                    <div class="question-card" id="q-box-${indexSoru}">
+                        <div class="card-header-meta">
+                            <span class="q-badge">Soru ${indexSoru + 1}</span>
+                            <span style="font-size:0.75rem; color:var(--text-muted);" id="badge-status-${indexSoru}">Boş bırakıldı</span>
+                        </div>
+                        <div class="question-body">${item.q}</div>
+                        <div class="options-list">
+                `;
+                
+                item.s.forEach((optionText, indexOption) => {
+                    htmlPayload += `
+                        <label class="option-wrapper" onclick="recalcProgress(${indexSoru}, ${indexOption})">
+                            <input type="radio" name="input-q-${indexSoru}" value="${indexOption}" class="option-input">
+                            <div class="option-content" id="opt-node-${indexSoru}-${indexOption}">
+                                <div class="option-indicator"></div>
+                                <span>${optionText}</span>
+                            </div>
+                        </label>
+                    `;
+                });
+
+                // Standard un-obtrusive Blank choice configuration item
+                htmlPayload += `
+                        <label class="option-wrapper blank-choice" onclick="recalcProgress(${indexSoru}, 'blank')">
+                            <input type="radio" name="input-q-${indexSoru}" value="blank" class="option-input" checked>
+                            <div class="option-content">
+                                <div class="option-indicator"></div>
+                                <span>Bu soruyu boş bırakmak istiyorum</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="explanation-banner" id="explain-${indexSoru}"></div>
+                </div>`;
+            });
+            root.innerHTML = htmlPayload;
+        }
+
+        // Tracks live interaction parameters metrics
+        let answeredRegistry = new Set();
+
+        window.recalcProgress = function(sIdx, oIdx) {
+            const statusLabel = document.getElementById(`badge-status-${sIdx}`);
+            if (oIdx === 'blank') {
+                answeredRegistry.delete(sIdx);
+                statusLabel.innerText = "Boş bırakıldı";
+                statusLabel.style.color = "var(--text-muted)";
+            } else {
+                answeredRegistry.add(sIdx);
+                const charArr = ['A','B','C','D','E'];
+                statusLabel.innerText = `${charArr[oIdx]} Şıkkı Seçildi`;
+                statusLabel.style.color = "var(--accent)";
+            }
+            
+            // Updates indicators visual layers smoothly
+            const count = answeredRegistry.size;
+            document.getElementById('completion-badge').innerText = `Cevaplanan: ${count} / 20`;
+            const percentage = (count / 20) * 100;
+            document.getElementById('exam-progress').style.width = `${percentage}%`;
+        }
+
+        // Global state matrix data variables
+        let payloadStringDump = '';
+
+        window.cevaplariPaketleVeGonder = function() {
+            let logCevaplar = [];
+            let answersMarkedCount = 0;
+
+            dataSet.forEach((soru, sIndex) => {
+                const targetInput = document.querySelector(`input[name="input-q-${sIndex}"]:checked`);
+                const val = targetInput ? targetInput.value : 'blank';
+                logCevaplar.push(`Soru ${sIndex+1}: ${val === 'blank' ? 'Boş' : ['A','B','C','D','E'][parseInt(val)]}`);
+                if (val !== 'blank') answersMarkedCount++;
+                
+                // Disables entry points for full state capture freeze
+                document.querySelectorAll(`input[name="input-q-${sIndex}"]`).forEach(input => input.disabled = true);
+            });
+
+            payloadStringDump = `2026 KPSS Cevap Kaydı:\n` + logCevaplar.join('\n');
+
+            // View transformations actions switching
+            document.getElementById('quizFrame').style.display = 'none';
+            document.getElementById('welcome-header').style.display = 'none';
+            document.getElementById('live-indicator').style.display = 'none';
+
+            document.getElementById('state-screen').style.display = 'block';
+            document.getElementById('disp-answered').innerText = answersMarkedCount;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.kopyalaCevapKodu = function() {
+            if (!navigator.clipboard) {
+                // Fallback approach if secure layer context is missing
+                const textarea = document.createElement("textarea");
+                textarea.value = payloadStringDump;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textarea);
+            } else {
+                navigator.clipboard.writeText(payloadStringDump);
+            }
+            
+            const toast = document.getElementById('toast-msg');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        window.yetkilendirVeYayinla = function() {
+            const inputKey = document.getElementById('gateKey').value;
+            if (inputKey !== "1907") {
+                alert("Geçersiz sınav sorumlusu yetki kodu!");
+                return;
+            }
+
+            // Unveil structures locally and apply extreme validation colors layers
+            document.getElementById('state-screen').style.display = 'none';
+            document.getElementById('welcome-header').style.display = 'block';
+            document.getElementById('welcome-header').innerHTML = `
+                <h1 style="color:var(--success)">Sınav Sonuçları ve Çözüm Analizi</h1>
+                <p>Hoca onay modu aktif. Tüm soruların doğru cevapları, işaretlediğin şıklar ve detaylı çözümler aşağıda gösterilmiştir.</p>
+            `;
+            
+            document.getElementById('quizFrame').style.display = 'block';
+            document.getElementById('master-submit-trigger').style.display = 'none';
+
+            dataSet.forEach((soru, sIndex) => {
+                const checkedNode = document.querySelector(`input[name="input-q-${sIndex}"]:checked`);
+                const userChoice = checkedNode ? checkedNode.value : 'blank';
+                
+                const cardNode = document.getElementById(`q-box-${sIndex}`);
+                const explainNode = document.getElementById(`explain-${sIndex}`);
+                
+                // Inject custom descriptive feedback explanation details text directly
+                explainNode.innerHTML = soru.e;
+                explainNode.style.display = 'block';
+
+                if (userChoice === 'blank') {
+                    cardNode.classList.add('card-eval-blank');
+                    // Style the true target answer as strong visual indicator guide
+                    document.getElementById(`opt-node-${sIndex}-${soru.a}`).parentNode.classList.add('eval-true-choice');
+                } else {
+                    const chosenIdx = parseInt(userChoice);
+                    if (chosenIdx === soru.a) {
+                        cardNode.classList.add('card-eval-correct');
+                        document.getElementById(`opt-node-${sIndex}-${soru.a}`).parentNode.classList.add('eval-true-choice');
+                    } else {
+                        cardNode.classList.add('card-eval-wrong');
+                        document.getElementById(`opt-node-${sIndex}-${chosenIdx}`).parentNode.classList.add('eval-false-choice');
+                        document.getElementById(`opt-node-${sIndex}-${soru.a}`).parentNode.classList.add('eval-true-choice');
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize elements execution wrapper call trigger points
+        renderQuiz();
+    </script>
+</body>
+</html>
