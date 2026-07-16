@@ -138,10 +138,9 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- TÜM JAVASCRIPT ARTIK TEK BİR MODULE İÇİNDE GÜVENLİ VE SENKRONİZE ÇALIŞIYOR 🚀 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
   // Firebase Yapılandırması
   const firebaseConfig = {
@@ -159,6 +158,7 @@
   const db = getDatabase(app);
 
   const ADMIN_PIN = "1923"; 
+  let isAdmin = false; // Senin yönetici olup olmadığını takip eden kritik bayrak! 🔑
 
   // Sorular listesi
   const questions = [
@@ -192,9 +192,12 @@
 
   document.getElementById('totalQ').textContent = total;
 
-  // Veritabanı dinleyicisi doğrudan modülün içinden çalışıyor
+  // GERÇEK ZAMANLI EKRAN DEĞİŞİM TAKİBİ (Sadece normal kullanıcılar için çalışacak)
   const examRef = ref(db, 'kpss_exam');
   onValue(examRef, (snapshot) => {
+    // EĞER BU TARAYICIDA SEN YÖNETİCİ GİRİŞİ YAPTIYSAN, DİNLEYİCİ SENİN EKRANINI DEĞİŞTİREMEZ! 🛑
+    if (isAdmin) return;
+
     const data = snapshot.val();
     if (data && data.status === 'completed') {
       if (data.revealed === true) {
@@ -381,8 +384,17 @@
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
 
+    // Şifre doğruysa isAdmin bayrağını true yapıyoruz. Dinleyici artık bu tarayıcıyı kilitleyemez! 🔓
+    isAdmin = true;
+
+    // Bekleme ekranındaysak, yöneticinin görebilmesi için bekleme ekranını geçici olarak gizleyip giriş ekranını gösterelim.
+    document.getElementById('waitingScreen').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'block';
+
     const examRef = ref(db, 'kpss_exam');
-    onValue(examRef, (snapshot) => {
+    
+    // get() metodu veriyi tek seferlik çeker, onValue gibi arka planda sürekli prompt tetiklemez!
+    get(examRef).then((snapshot) => {
       const data = snapshot.val();
       if (!data) {
         alert("Henüz çözülmüş bir sınav verisi bulunamadı!");
@@ -410,6 +422,10 @@
       } else if (action === "2") {
         update(examRef, { revealed: false }).then(() => {
           showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
+          // Tekrar kilitlendiği için yönetici modundan çıkalım ve bekleme ekranına dönelim.
+          isAdmin = false;
+          document.getElementById('startScreen').style.display = 'none';
+          document.getElementById('waitingScreen').style.display = 'block';
         });
       } else if (action === "3") {
         if(confirm("Sınavı tamamen silmek ve sıfırlamak istediğine emin misin?")) {
@@ -418,8 +434,17 @@
             setTimeout(() => location.reload(), 1500);
           });
         }
+      } else {
+        // Herhangi bir işlem seçilmediyse veya iptal edildiyse, yönetici modundan çıkıp bekleme moduna geri döndür.
+        if (data.status === 'completed' && !data.revealed) {
+          isAdmin = false;
+          document.getElementById('startScreen').style.display = 'none';
+          document.getElementById('waitingScreen').style.display = 'block';
+        }
       }
-    }, { onlyOnce: true });
+    }).catch((err) => {
+      showToast("❌ Veri çekme hatası: " + err, true);
+    });
   }
 
   function showToast(msg, isError = false) {
