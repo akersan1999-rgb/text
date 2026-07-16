@@ -4,240 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 KPSS Deneme Sınavı</title>
-  <!-- GÜNCEL EMAILJS SDK (v4) -->
+  <!-- EmailJS v4 SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    body {
-      background: #0b0f19;
-      color: #f1f5f9;
-      padding: 20px 10px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-    }
-    .wrapper {
-      max-width: 720px;
-      width: 100%;
-    }
-    .header {
-      text-align: center;
-      padding: 30px 20px;
-      background: linear-gradient(145deg, #131c2e, #18243e);
-      border-radius: 24px;
-      margin-bottom: 30px;
-      border: 1px solid #24324f;
-    }
-    .header h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a5b4fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .header p {
-      color: #94a3b8;
-      margin-top: 8px;
-      font-size: 1rem;
-    }
-    .progress-wrap {
-      background: #1e2942;
-      border-radius: 20px;
-      height: 8px;
-      margin-bottom: 25px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #6366f1, #f59e0b);
-      transition: width 0.4s ease;
-      border-radius: 20px;
-    }
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      background: #131c2e;
-      padding: 12px 20px;
-      border-radius: 14px;
-      border: 1px solid #24324f;
-      margin-bottom: 25px;
-    }
-    .stats span {
-      font-weight: 600;
-      color: #94a3b8;
-    }
-    .stats .count {
-      color: #f59e0b;
-    }
-    .question-card {
-      background: #131c2e;
-      border: 1px solid #24324f;
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-    .question-card .q-head {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .question-card .q-head .badge {
-      background: rgba(99, 102, 241, 0.2);
-      color: #818cf8;
-      padding: 4px 14px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-    .question-card .q-head .status {
-      color: #94a3b8;
-      font-size: 0.8rem;
-    }
-    .question-card .q-text {
-      font-size: 1.1rem;
-      font-weight: 600;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .option {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
-      background: rgba(11, 15, 25, 0.4);
-      border: 2px solid #24324f;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .option:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .option input {
-      display: none;
-    }
-    .option .dot {
-      width: 22px;
-      height: 22px;
-      border: 2px solid #94a3b8;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: 0.3s;
-    }
-    .option .dot::after {
-      content: '';
-      width: 10px;
-      height: 10px;
-      background: #f59e0b;
-      border-radius: 50%;
-      transform: scale(0);
-      transition: 0.3s;
-    }
-    .option input:checked+.dot {
-      border-color: #f59e0b;
-    }
-    .option input:checked+.dot::after {
-      transform: scale(1);
-    }
-    .option input:checked~.option-text {
-      color: #fff;
-      font-weight: 600;
-    }
-    .option .option-text {
-      color: #cbd5e1;
-    }
-    .blank-option {
-      border-style: dashed;
-      color: #94a3b8;
-      font-style: italic;
-    }
-    .btn-submit {
-      width: 100%;
-      padding: 20px;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      border: none;
-      border-radius: 24px;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #0b0f19;
-      cursor: pointer;
-      box-shadow: 0 15px 35px rgba(245, 158, 11, 0.25);
-      transition: 0.3s;
-      margin-top: 10px;
-    }
-    .btn-submit:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 45px rgba(245, 158, 11, 0.4);
-    }
-    .btn-submit:active {
-      transform: scale(0.97);
-    }
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 50px 20px;
-      background: #111827;
-      border: 2px solid #10b981;
-      border-radius: 24px;
-      margin-top: 20px;
-    }
-    .success-screen .icon {
-      font-size: 4.5rem;
-      display: block;
-      margin-bottom: 15px;
-    }
-    .success-screen h2 {
-      color: #10b981;
-      font-size: 2rem;
-    }
-    .success-screen p {
-      color: #94a3b8;
-      font-size: 1.1rem;
-      margin-top: 10px;
-    }
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #10b981;
-      color: #fff;
-      padding: 14px 30px;
-      border-radius: 50px;
-      font-weight: 700;
-      opacity: 0;
-      transition: 0.5s;
-      pointer-events: none;
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    @media (max-width: 500px) {
-      .header h1 {
-        font-size: 1.8rem;
-      }
-      .question-card .q-text {
-        font-size: 1rem;
-      }
-    }
+    /* (Aynı stil, değişmedi) */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: #0b0f19; color: #f1f5f9; padding: 20px 10px; min-height: 100vh; display: flex; justify-content: center; }
+    .wrapper { max-width: 720px; width: 100%; }
+    .header { text-align: center; padding: 30px 20px; background: linear-gradient(145deg, #131c2e, #18243e); border-radius: 24px; margin-bottom: 30px; border: 1px solid #24324f; }
+    .header h1 { font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: #94a3b8; margin-top: 8px; font-size: 1rem; }
+    .progress-wrap { background: #1e2942; border-radius: 20px; height: 8px; margin-bottom: 25px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #f59e0b); transition: width 0.4s ease; border-radius: 20px; }
+    .stats { display: flex; justify-content: space-between; background: #131c2e; padding: 12px 20px; border-radius: 14px; border: 1px solid #24324f; margin-bottom: 25px; }
+    .stats span { font-weight: 600; color: #94a3b8; }
+    .stats .count { color: #f59e0b; }
+    .question-card { background: #131c2e; border: 1px solid #24324f; border-radius: 20px; padding: 24px; margin-bottom: 24px; }
+    .question-card .q-head { display: flex; justify-content: space-between; margin-bottom: 12px; }
+    .question-card .q-head .badge { background: rgba(99,102,241,0.2); color: #818cf8; padding: 4px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+    .question-card .q-head .status { color: #94a3b8; font-size: 0.8rem; }
+    .question-card .q-text { font-size: 1.1rem; font-weight: 600; line-height: 1.6; margin-bottom: 18px; }
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(11,15,25,0.4); border: 2px solid #24324f; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+    .option:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+    .option input { display: none; }
+    .option .dot { width: 22px; height: 22px; border: 2px solid #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.3s; }
+    .option .dot::after { content: ''; width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; transform: scale(0); transition: 0.3s; }
+    .option input:checked+.dot { border-color: #f59e0b; }
+    .option input:checked+.dot::after { transform: scale(1); }
+    .option input:checked~.option-text { color: #fff; font-weight: 600; }
+    .option .option-text { color: #cbd5e1; }
+    .blank-option { border-style: dashed; color: #94a3b8; font-style: italic; }
+    .btn-submit { width: 100%; padding: 20px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 24px; font-size: 1.3rem; font-weight: 800; color: #0b0f19; cursor: pointer; box-shadow: 0 15px 35px rgba(245,158,11,0.25); transition: 0.3s; margin-top: 10px; }
+    .btn-submit:hover { transform: translateY(-4px); box-shadow: 0 20px 45px rgba(245,158,11,0.4); }
+    .btn-submit:active { transform: scale(0.97); }
+    .success-screen { display: none; text-align: center; padding: 50px 20px; background: #111827; border: 2px solid #10b981; border-radius: 24px; margin-top: 20px; }
+    .success-screen .icon { font-size: 4.5rem; display: block; margin-bottom: 15px; }
+    .success-screen h2 { color: #10b981; font-size: 2rem; }
+    .success-screen p { color: #94a3b8; font-size: 1.1rem; margin-top: 10px; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: #10b981; color: #fff; padding: 14px 30px; border-radius: 50px; font-weight: 700; opacity: 0; transition: 0.5s; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 500px) { .header h1 { font-size: 1.8rem; } .question-card .q-text { font-size: 1rem; } }
   </style>
 </head>
 <body>
@@ -264,19 +73,20 @@
   <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
 
   <script>
-    // ★★★ GÜNCEL EMAILJS KULLANIMI ★★★
-    (function() {
-      // Yeni sürümde init böyle
-      emailjs.init({
-        publicKey: "dbF3yWuvy9um9nAdp"
-      });
-    })();
+    // ================================================================
+    // ★★★ EMAILJS v4 DOĞRU KULLANIM ★★★
+    // ================================================================
+
+    // 1. Public Key'i bu şekilde ayarla (v4 metodu)
+    emailjs.init({
+      publicKey: "dbF3yWuvy9um9nAdp"
+    });
 
     const SERVICE_ID = "service_qdab76q";
     const TEMPLATE_ID = "template_64cuej9";
 
     // ================================================================
-    // 20 SORU
+    // 20 SORU (aynı)
     // ================================================================
     const questions = [
       { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2 },
@@ -380,6 +190,9 @@
       document.getElementById('progressBar').style.width = percent + '%';
     }
 
+    // ================================================================
+    // GÖNDER FONKSİYONU (v4 ile uyumlu)
+    // ================================================================
     function submitExam() {
       let list = [];
       let bos = 0;
@@ -399,6 +212,7 @@
         message: mesaj
       };
 
+      // v4 send metodu: emailjs.send(serviceID, templateID, templateParams)
       emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
         .then(() => {
           document.getElementById('quizArea').style.display = 'none';
