@@ -261,7 +261,7 @@
   <div class="toast" id="toast">✅ Cevaplar gönderildi!</div>
 
   <script>
-    // ★★★ EMAILJS AYARLARI (REST API KULLANILACAK) ★★★
+    // ★★★ EMAILJS AYARLARI (V2 API) ★★★
     const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
     const SERVICE_ID = "service_qdab76q";
     const TEMPLATE_ID = "template_64cuej9";
@@ -381,7 +381,7 @@
     }
 
     // ================================================================
-    // GÖNDER (REST API ile)
+    // GÖNDER (V2 API)
     // ================================================================
     function submitExam() {
       let list = [];
@@ -397,9 +397,9 @@
       const mesaj =
         `📝 2026 KPSS Deneme Cevapları\n\n${list.join('\n')}\n\n✅ Cevaplanan: ${total - bos}\n⬜ Boş: ${bos}`;
 
-      // EmailJS REST API'ye istek
+      // EmailJS V2 API
       const url = 'https://api.emailjs.com/api/v1.0/email/send';
-      const data = {
+      const payload = {
         service_id: SERVICE_ID,
         template_id: TEMPLATE_ID,
         user_id: PUBLIC_KEY,
@@ -414,10 +414,10 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       })
       .then(response => {
-        if (response.ok) {
+        if (response.status === 200 || response.status === 201) {
           // Başarılı
           document.getElementById('quizArea').style.display = 'none';
           document.querySelector('.btn-submit').style.display = 'none';
@@ -428,7 +428,6 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
           showToast('✅ Cevaplar başarıyla gönderildi!');
         } else {
-          // Hata
           response.text().then(text => {
             alert('❌ Gönderme hatası: ' + text);
           });
