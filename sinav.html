@@ -20,7 +20,7 @@
     }
     .container{max-width:780px;width:100%}
 
-    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 12px 30px rgba(0,0,0,0.4);animation:screenIn 0.4s cubic-bezier(0.22,0.61,0.36,1)}
+    .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 12px 30px rgba(0,0,0,0.4);animation:screenIn 0.35s ease}
     .screen.active{display:block}
     @keyframes screenIn{from{opacity:0;transform:translateY(15px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 
@@ -31,9 +31,15 @@
     button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(244,63,94,0.3)}
     .row{display:flex;gap:10px}.row>*{flex:1}
 
+    .back-btn{background:var(--info);width:auto;padding:10px 20px;margin-bottom:15px;display:inline-flex;border-radius:10px}
+
     .timer{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);padding:16px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:700;font-size:1.4rem}
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.25);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
     .stats-item .value{display:block;font-size:2.2rem;font-weight:800;color:var(--accent)}.stats-item .label{font-size:0.85rem;color:var(--text2)}
+
+    .progress-bar-bg{background:#2d2844;border-radius:10px;height:20px;margin:20px 0;overflow:hidden}
+    .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--danger),var(--warning),var(--success));transition:width 0.8s ease}
+    .progress-labels{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text2);margin-top:5px}
 
     .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.2s}
     .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.04)}.opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.08)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.2rem}.blank-opt{border-style:dashed;color:var(--text2)}
@@ -41,7 +47,7 @@
     .link-box{background:var(--bg);border:1px dashed var(--accent);padding:12px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem}
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex;animation:fadeIn 0.3s}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:520px;border:1px solid var(--accent);max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.6)}
+    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:550px;border:1px solid var(--accent);max-height:85vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,0.6)}
     .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
     .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.2s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.05)}.list-item.selected{background:rgba(244,63,94,0.1);border-left:4px solid var(--accent)}
     .detail-box{background:rgba(0,0,0,0.2);padding:15px;border-radius:12px;margin-top:15px;max-height:220px;overflow-y:auto;font-size:0.9rem}
@@ -52,7 +58,6 @@
     .admin-fab{position:fixed;bottom:30px;right:30px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.4);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.3s}.admin-fab:hover{transform:scale(1.08) rotate(90deg)}
     .help-mail{text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
     .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:10px;font-size:0.85rem}
-    .back-btn{background:var(--info);margin-bottom:15px;width:auto;display:inline-flex}
   </style>
 </head>
 <body>
@@ -101,6 +106,12 @@
       <div class="stats-item"><span class="value" id="emptyDisplay">0</span><span class="label">Boş</span></div>
     </div>
     <p style="text-align:center;margin-bottom:20px;font-weight:600" id="nameSurnameDisplay"></p>
+    <div class="progress-bar-bg">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-labels">
+      <span>Doğru</span><span>Toplam</span>
+    </div>
     <div id="analysisContainer"></div>
     <div class="share-buttons" style="margin-top:15px">
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp ile Paylaş</button>
@@ -142,7 +153,7 @@
         <div id="questionList" style="max-height:400px;overflow-y:auto"></div>
       </div>
       <div id="mailTab" style="display:none">
-        <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarlarını yap, yayınla butonuyla mail gitsin.</p>
+        <p style="color:var(--text2);margin-bottom:10px">EmailJS ayarlarını gir, yayınla butonuyla mail gitsin.</p>
         <input id="emailjsPublicKey" placeholder="EmailJS Public Key" />
         <input id="emailjsServiceId" placeholder="EmailJS Service ID" />
         <input id="emailjsTemplateId" placeholder="EmailJS Template ID" />
@@ -174,7 +185,7 @@ const questionsRef = ref(db, 'questions');
 const mailSettingsRef = ref(db, 'mailSettings');
 const ADMIN_PASSWORD = "1923";
 
-// Geniş soru havuzu (50+ soru)
+// Geniş soru havuzu
 const defaultQuestions = [
   { q:"Türkiye'nin en kalabalık şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
@@ -196,37 +207,37 @@ const defaultQuestions = [
   { q:"Yağış getiren bulut?", o:["Kümülüs","Sirüs","Nimbüs","Stratüs","Alto"], a:2, difficulty:"hard", n:"Nimbüs." },
   { q:"Basınç birimi?", o:["Newton","Pascal","Joule","Watt","Volt"], a:1, difficulty:"hard", n:"Pascal." },
   { q:"Haberleşme aracı olmayan?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"easy", n:"Kalem." },
-  { q:"Kızılay'ın kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
+  { q:"Kızılay kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
   { q:"En kalabalık kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
-  { q:"Atatürk hangi şehirde doğdu?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, difficulty:"easy", n:"Selanik." },
-  { q:"Üçgenin iç açıları toplamı?", o:["90","180","270","360","100"], a:1, difficulty:"easy", n:"180 derece." },
-  { q:"Hangi gezegen halkalıdır?", o:["Mars","Jüpiter","Satürn","Venüs","Merkür"], a:2, difficulty:"medium", n:"Satürn." },
-  { q:"Aşağıdakilerden hangisi asal sayıdır?", o:["4","6","9","11","15"], a:3, difficulty:"medium", n:"11." },
-  { q:"Türk Hava Yolları'nın kodu?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"easy", n:"TK." },
-  { q:"İnsan vücudundaki en büyük organ?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
-  { q:"Dünyanın en uzun nehri?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:1, difficulty:"hard", n:"Nil." },
-  { q:"Hangisi yenilenebilir enerji değildir?", o:["Güneş","Rüzgar","Doğalgaz","Hidroelektrik","Jeotermal"], a:2, difficulty:"medium", n:"Doğalgaz." },
+  { q:"Atatürk'ün doğum yeri?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, difficulty:"easy", n:"Selanik." },
+  { q:"Üçgen iç açı toplamı?", o:["90","180","270","360","100"], a:1, difficulty:"easy", n:"180." },
+  { q:"Halkalı gezegen?", o:["Mars","Jüpiter","Satürn","Venüs","Merkür"], a:2, difficulty:"medium", n:"Satürn." },
+  { q:"Asal sayı?", o:["4","6","9","11","15"], a:3, difficulty:"medium", n:"11." },
+  { q:"THY kodu?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"easy", n:"TK." },
+  { q:"En büyük organ?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
+  { q:"En uzun nehir?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:1, difficulty:"hard", n:"Nil." },
+  { q:"Yenilenemez enerji?", o:["Güneş","Rüzgar","Doğalgaz","Hidroelektrik","Jeotermal"], a:2, difficulty:"medium", n:"Doğalgaz." },
   { q:"İlk Türk devleti?", o:["Hun","Göktürk","Uygur","Selçuklu","Osmanlı"], a:0, difficulty:"hard", n:"Asya Hun." },
-  { q:"Su kaç derecede kaynar?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
-  { q:"En küçük kemik nerede?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"hard", n:"Kulak (üzengi)." },
-  { q:"Türkiye'nin en yüksek dağı?", o:["Erciyes","Ağrı","Süphan","Kaçkar","Uludağ"], a:1, difficulty:"medium", n:"Ağrı Dağı." },
-  { q:"Bir yıl kaç gündür?", o:["300","365","366","350","400"], a:1, difficulty:"easy", n:"365 gün." },
-  { q:"Hangi padişah döneminde Lale Devri yaşandı?", o:["III. Ahmet","I. Mahmut","II. Osman","IV. Mehmet","III. Selim"], a:0, difficulty:"hard", n:"III. Ahmet." },
-  { q:"Dünyanın en kalabalık ülkesi?", o:["ABD","Çin","Hindistan","Rusya","Endonezya"], a:2, difficulty:"medium", n:"Hindistan." },
-  { q:"Ebru sanatı hangi kültüre aittir?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"hard", n:"Türk." },
-  { q:"Kan grubunu belirleyen sistem?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"medium", n:"ABO sistemi." },
-  { q:"İlk uçak ne zaman uçtu?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"hard", n:"Wright Kardeşler 1903." },
-  { q:"En büyük çöl?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"hard", n:"Antarktika (soğuk çöl)." },
-  { q:"Aşağıdakilerden hangisi sürüngen değildir?", o:["Yılan","Kertenkele","Kaplumbağa","Kurbağa","Timsah"], a:3, difficulty:"medium", n:"Kurbağa (amfibi)." },
-  { q:"Fatih Sultan Mehmet'in babası?", o:["I. Murat","II. Murat","Yıldırım Bayezid","Çelebi Mehmet","Orhan Gazi"], a:1, difficulty:"hard", n:"II. Murat." },
-  { q:"En hızlı kara hayvanı?", o:["Aslan","Çita","Tavşan","At","Kurt"], a:1, difficulty:"easy", n:"Çita." },
-  { q:"Türk bayrağındaki ay ve yıldız neyi temsil eder?", o:["Bağımsızlık","Gökyüzü","Devlet","Millet","Vatan"], a:0, difficulty:"easy", n:"Bağımsızlık." },
-  { q:"Aşağıdakilerden hangisi Nobel ödülü kategorisi değildir?", o:["Fizik","Kimya","Matematik","Tıp","Edebiyat"], a:2, difficulty:"medium", n:"Matematik yok." },
-  { q:"Dünyanın en derin gölü?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"hard", n:"Baykal." },
-  { q:"Bir bilgisayarın beyni olarak adlandırılan parça?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"easy", n:"CPU." },
-  { q:"Hangi ülke Avrupa Birliği'ne üye değildir?", o:["Almanya","Fransa","İsviçre","İtalya","Hollanda"], a:2, difficulty:"medium", n:"İsviçre." },
-  { q:"Yer çekimi yasasını kim buldu?", o:["Einstein","Newton","Galileo","Darwin","Tesla"], a:1, difficulty:"easy", n:"Newton." },
-  { q:"Aşağıdakilerden hangisi bir element değildir?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su (bileşik)." }
+  { q:"Su kaynama noktası?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
+  { q:"En küçük kemik?", o:["Kol","Bacak","Kulak","Burun","El"], a:2, difficulty:"hard", n:"Kulak." },
+  { q:"En yüksek dağ?", o:["Erciyes","Ağrı","Süphan","Kaçkar","Uludağ"], a:1, difficulty:"medium", n:"Ağrı Dağı." },
+  { q:"Bir yıl kaç gün?", o:["300","365","366","350","400"], a:1, difficulty:"easy", n:"365." },
+  { q:"Lale Devri padişahı?", o:["III. Ahmet","I. Mahmut","II. Osman","IV. Mehmet","III. Selim"], a:0, difficulty:"hard", n:"III. Ahmet." },
+  { q:"En kalabalık ülke?", o:["ABD","Çin","Hindistan","Rusya","Endonezya"], a:2, difficulty:"medium", n:"Hindistan." },
+  { q:"Ebru sanatı kime ait?", o:["Çin","Hint","Türk","Pers","Arap"], a:2, difficulty:"hard", n:"Türk." },
+  { q:"Kan grubu sistemi?", o:["ABO","Rh","MN","HLA","Kell"], a:0, difficulty:"medium", n:"ABO." },
+  { q:"İlk uçuş yılı?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"hard", n:"1903." },
+  { q:"En büyük çöl?", o:["Sahra","Gobi","Kalahari","Atacama","Antarktika"], a:4, difficulty:"hard", n:"Antarktika." },
+  { q:"Sürüngen olmayan?", o:["Yılan","Kertenkele","Kaplumbağa","Kurbağa","Timsah"], a:3, difficulty:"medium", n:"Kurbağa." },
+  { q:"Fatih'in babası?", o:["I. Murat","II. Murat","Yıldırım","Çelebi","Orhan"], a:1, difficulty:"hard", n:"II. Murat." },
+  { q:"En hızlı hayvan?", o:["Aslan","Çita","Tavşan","At","Kurt"], a:1, difficulty:"easy", n:"Çita." },
+  { q:"Bayraktaki semboller?", o:["Bağımsızlık","Gökyüzü","Devlet","Millet","Vatan"], a:0, difficulty:"easy", n:"Bağımsızlık." },
+  { q:"Nobel'de olmayan?", o:["Fizik","Kimya","Matematik","Tıp","Edebiyat"], a:2, difficulty:"medium", n:"Matematik." },
+  { q:"En derin göl?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"hard", n:"Baykal." },
+  { q:"Bilgisayarın beyni?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"easy", n:"CPU." },
+  { q:"AB dışı ülke?", o:["Almanya","Fransa","İsviçre","İtalya","Hollanda"], a:2, difficulty:"medium", n:"İsviçre." },
+  { q:"Yer çekimi yasası?", o:["Einstein","Newton","Galileo","Darwin","Tesla"], a:1, difficulty:"easy", n:"Newton." },
+  { q:"Element olmayan?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." }
 ];
 
 let allQuestions = [];
@@ -245,11 +256,12 @@ if (sessionStorage.getItem('examState')) {
   if (state.userData) userData = state.userData;
 }
 
+// Soru kütüphanesini başlat
 async function initQuestions() {
-  try {
-    const snap = await get(questionsRef);
-    if (!snap.exists()) for (const q of defaultQuestions) await push(questionsRef, q);
-  } catch(e) {}
+  const snap = await get(questionsRef);
+  if (!snap.exists()) {
+    for (const q of defaultQuestions) await push(questionsRef, q);
+  }
   onValue(questionsRef, snap => {
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([id, val]) => ({ id, ...val }));
@@ -265,10 +277,7 @@ function showScreen(id) {
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 
-// Ana sayfaya dön (verileri koru)
-function goHome() {
-  showScreen('loginScreen');
-}
+function goHome() { showScreen('loginScreen'); }
 
 // Giriş
 document.getElementById('startBtn').addEventListener('click', async () => {
@@ -277,10 +286,8 @@ document.getElementById('startBtn').addEventListener('click', async () => {
   const email = document.getElementById('emailInput').value.trim();
   const errDiv = document.getElementById('loginError'); errDiv.style.display='none';
   if (!name || !surname || !email.includes('@')) { errDiv.textContent='Tüm alanları doldurun.'; errDiv.style.display='block'; return; }
-  try {
-    const snap = await get(examsRef);
-    if (Object.values(snap.val()||{}).some(e=>e.email===email)) { errDiv.textContent='Bu e-posta ile sınav girilmiş.'; errDiv.style.display='block'; return; }
-  } catch(e) { errDiv.textContent='Bağlantı hatası.'; errDiv.style.display='block'; return; }
+  const snap = await get(examsRef);
+  if (Object.values(snap.val()||{}).some(e=>e.email===email)) { errDiv.textContent='Bu e-posta ile sınav girilmiş.'; errDiv.style.display='block'; return; }
   if (!allQuestions.length) { errDiv.textContent='Sorular yükleniyor...'; errDiv.style.display='block'; return; }
   userData = { name, surname, email };
   showScreen('examScreen');
@@ -333,8 +340,8 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
       wrong++; return v;
     });
     const score = Math.round(correct/allQuestions.length*100);
-    const ref = push(examsRef); examId = ref.key;
-    await set(ref, { ...userData, score, correct, wrong, empty, answers:final, status:'completed', revealed:false, submittedAt:Date.now() });
+    const newRef = push(examsRef); examId = newRef.key;
+    await set(newRef, { ...userData, score, correct, wrong, empty, answers:final, status:'completed', revealed:false, submittedAt:Date.now() });
     showScreen('waitScreen');
     const link = location.origin+location.pathname+'?exam='+examId;
     document.getElementById('linkBox').textContent=link;
@@ -350,6 +357,12 @@ function showResult(data) {
   document.getElementById('wrongDisplay').textContent=data.wrong;
   document.getElementById('emptyDisplay').textContent=data.empty;
   document.getElementById('nameSurnameDisplay').textContent=`${data.name} ${data.surname} - ${data.email}`;
+
+  // İlerleme çubuğu
+  const total = data.correct + data.wrong + data.empty;
+  const percent = total > 0 ? Math.round((data.correct / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = percent + '%';
+
   let html='';
   allQuestions.forEach((q,i) => {
     const ua=data.answers[i]; let color='#6b7280', status='⬜ Boş', choice='Seçilmedi';
@@ -358,6 +371,7 @@ function showResult(data) {
       <b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> <span style="color:${color}">${choice}</span> (${status})<br><b>Doğru:</b> ${q.o[q.a]}<br><small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML=html;
+
   const resultLink = location.origin+location.pathname+'?exam='+examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Deneme Sınavı Sonucum: '+resultLink)}`);
   document.getElementById('sendMailResult').onclick = () => sendResultMail(data, resultLink);
@@ -382,7 +396,7 @@ async function sendResultMail(data, link) {
   } catch(e) { alert('Mail gönderilemedi: '+e.message); }
 }
 
-// Paylaş butonları (bekleme)
+// Paylaş butonları
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> {
   navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!'));
 });
@@ -392,7 +406,7 @@ document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> {
 });
 document.getElementById('shareMailBtn').addEventListener('click', ()=> {
   const link = document.getElementById('linkBox').textContent;
-  window.location.href = `mailto:?subject=KPSS Deneme Sınavı Sonuç Linkim&body=${encodeURIComponent('Sonuç linkim: '+link)}`;
+  window.location.href = `mailto:?subject=KPSS Sonuç Linkim&body=${encodeURIComponent('Link: '+link)}`;
 });
 document.getElementById('checkBtn').addEventListener('click', async ()=> {
   if (!examId) return;
@@ -449,6 +463,7 @@ function initAdminPanel() {
     document.getElementById('emailjsTemplateId').value = s.templateId || '';
   });
 }
+
 function renderExamList() {
   const list=document.getElementById('examList');
   const ids=Object.keys(adminExams);
@@ -465,6 +480,7 @@ function renderExamList() {
     showExamDetail(selectedExamId); document.getElementById('adminActions').style.display='flex';
   }));
 }
+
 function showExamDetail(id) {
   const e=adminExams[id];
   let html=`<b>${e.name} ${e.surname}</b> (${e.email})<br>Puan: ${e.score} | ✅${e.correct} ❌${e.wrong} ⬜${e.empty}<br><small>${new Date(e.submittedAt).toLocaleString()}</small><hr>`;
@@ -475,40 +491,37 @@ function showExamDetail(id) {
   document.getElementById('detailPanel').innerHTML=html; document.getElementById('detailPanel').style.display='block';
 }
 
-// Yayınla + Mail Gönder
-document.getElementById('yayinlaBtn').addEventListener('click', async () => {
+// Yayınla & Mail
+document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
   if (!selectedExamId) return;
   await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
-  // Mail gönder
   const exam = adminExams[selectedExamId];
   const snap = await get(mailSettingsRef);
-  const settings = snap.val() || {};
-  if (settings.publicKey && settings.serviceId && settings.templateId) {
-    emailjs.init(settings.publicKey);
-    try {
-      await emailjs.send(settings.serviceId, settings.templateId, {
-        to_email: exam.email,
-        to_name: `${exam.name} ${exam.surname}`,
-        score: exam.score,
-        correct: exam.correct,
-        wrong: exam.wrong,
-        empty: exam.empty,
-        link: `${location.origin}${location.pathname}?exam=${selectedExamId}`
-      });
-      document.getElementById('adminMsg').textContent = '✅ Yayınlandı ve mail gönderildi.';
-    } catch(e) {
-      document.getElementById('adminMsg').textContent = '✅ Yayınlandı ancak mail gönderilemedi.';
-    }
+  const s = snap.val() || {};
+  if (s.publicKey) {
+    emailjs.init(s.publicKey);
+    emailjs.send(s.serviceId, s.templateId, {
+      to_email: exam.email,
+      to_name: exam.name + ' ' + exam.surname,
+      score: exam.score,
+      correct: exam.correct,
+      wrong: exam.wrong,
+      empty: exam.empty,
+      link: location.origin+location.pathname+'?exam='+selectedExamId
+    }).then(()=>{
+      document.getElementById('adminMsg').textContent = '✅ Yayınlandı & mail gönderildi.';
+    }).catch(()=>{
+      document.getElementById('adminMsg').textContent = '✅ Yayınlandı, mail hatası.';
+    });
   } else {
-    document.getElementById('adminMsg').textContent = '✅ Yayınlandı. (Mail ayarları eksik)';
+    document.getElementById('adminMsg').textContent = '✅ Yayınlandı. Mail ayarları yok.';
   }
 });
-
 document.getElementById('kilitleBtn').addEventListener('click', async ()=>{ if(selectedExamId) await update(ref(db,`exams/${selectedExamId}`),{revealed:false}); });
 document.getElementById('silBtn').addEventListener('click', ()=>{ if(confirm('Tüm sınavlar silinecek!')) set(examsRef,null).then(()=>location.reload()); });
 
-// Mail ayarları kaydet
-document.getElementById('saveMailSettingsBtn').addEventListener('click', async () => {
+// Mail ayarları
+document.getElementById('saveMailSettingsBtn').addEventListener('click', async ()=>{
   await set(mailSettingsRef, {
     publicKey: document.getElementById('emailjsPublicKey').value.trim(),
     serviceId: document.getElementById('emailjsServiceId').value.trim(),
@@ -520,19 +533,20 @@ document.getElementById('saveMailSettingsBtn').addEventListener('click', async (
 // Soru bankası
 function renderQuestionBank() {
   onValue(questionsRef, snap => {
-    const allData = snap.val() || {};
-    const allArray = Object.entries(allData).map(([id, val]) => ({ id, ...val }));
-    let innerHtml = '';
-    allArray.forEach(q => {
-      innerHtml += `<div class="list-item"><span>${q.q} <span class="tag ${q.difficulty}">${q.difficulty==='easy'?'Kolay':q.difficulty==='medium'?'Orta':'Zor'}</span></span>
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+    let html = '';
+    arr.forEach(q => {
+      html += `<div class="list-item"><span>${q.q} <span class="tag ${q.difficulty}">${q.difficulty==='easy'?'Kolay':q.difficulty==='medium'?'Orta':'Zor'}</span></span>
       <div><button class="btn-sm edit-q" data-id="${q.id}" style="background:var(--info)">✏️</button>
       <button class="btn-sm del-q" data-id="${q.id}" style="background:var(--danger)">🗑️</button></div></div>`;
     });
-    document.getElementById('questionList').innerHTML = innerHtml || '<p style="padding:10px;text-align:center">Henüz soru yok.</p>';
+    document.getElementById('questionList').innerHTML = html || '<p style="padding:10px;text-align:center">Henüz soru yok.</p>';
     document.querySelectorAll('.edit-q').forEach(b=>b.addEventListener('click',()=>editQuestion(b.dataset.id)));
     document.querySelectorAll('.del-q').forEach(b=>b.addEventListener('click',()=>deleteQuestion(b.dataset.id)));
   });
 }
+
 document.getElementById('addQuestionBtn').addEventListener('click', ()=>{
   const q=prompt('Soru:'); if(!q) return;
   const opts=[]; for(let i=0;i<5;i++) { const o=prompt(String.fromCharCode(65+i)+')'); if(!o) return; opts.push(o); }
@@ -541,6 +555,7 @@ document.getElementById('addQuestionBtn').addEventListener('click', ()=>{
   const n=prompt('Not:')||'';
   push(questionsRef,{q,o:opts,a:+a,difficulty:d,n});
 });
+
 function editQuestion(id) {
   get(questionsRef).then(snap => {
     const questions = snap.val() || {};
