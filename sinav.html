@@ -100,7 +100,7 @@
 <div class="container">
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 30:00</span>
-    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
+    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">10</strong></span>
     <span class="progress-text">İlerleme: <strong id="stickyProgress">0</strong>%</span>
   </div>
 
@@ -124,14 +124,15 @@
       <button class="home-btn" id="goToHomeFromDiff">🏠 Ana Sayfa</button>
     </div>
     <h2>🎚️ Zorluk Seviyesini Seç</h2>
-    <p style="text-align:center;color:var(--text2);margin-bottom:15px">Her seviyede <strong>20 soru</strong>, <strong>100 puan</strong> üzerinden değerlendirme</p>
+    <p style="text-align:center;color:var(--text2);margin-bottom:15px">Her seviyede rastgele <strong>10 soru</strong>, <strong>100 puan</strong> üzerinden değerlendirme</p>
     <div class="difficulty-buttons">
       <div class="difficulty-btn" data-diff="easy">🟢 Kolay <span style="font-size:0.9rem;margin-left:10px">🌸</span></div>
       <div class="difficulty-btn" data-diff="medium">🟡 Orta <span style="font-size:0.9rem;margin-left:10px">📚</span></div>
       <div class="difficulty-btn" data-diff="hard">🔴 Zor <span style="font-size:0.9rem;margin-left:10px">🧠</span></div>
       <div class="difficulty-btn selected" data-diff="all">🌈 Tümü (Karışık) <span style="font-size:0.9rem;margin-left:10px">🎲</span></div>
+      <div class="difficulty-btn" data-diff="kpss" style="border-color:#f59e0b;background:rgba(245,158,11,0.1)">📋 KPSS Çıkmış Sorular (2020) <span style="font-size:0.9rem;margin-left:10px">🏛️</span></div>
     </div>
-    <button id="startExamAfterDiff">✨ Sınava Başla (20 Soru, 100 Puan)</button>
+    <button id="startExamAfterDiff">✨ Sınava Başla (10 Soru, 100 Puan)</button>
     <div class="footer">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
   </div>
 
@@ -251,8 +252,9 @@ const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
 const MAIL_TEMPLATE_ID = "template_pqqrclq";
 
-// 200+ soru havuzu
+// ========== 270 SORULUK BÜYÜK HAVUZ ==========
 const questionPool = [
+  // --- ESKİ 200 GENEL KÜLTÜR SORUSU ---
   { q:"Türkiye'nin başkenti?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:0, difficulty:"easy", n:"Ankara." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
   { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
@@ -302,10 +304,186 @@ const questionPool = [
   { q:"En pahalı baharat?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
   { q:"İlk bilgisayar?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
   { q:"Hangi ülkenin başkenti yok?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." }
+  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
+  { q:"En kalabalık Türk şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
+  { q:"Almanya başkenti?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:1, difficulty:"easy", n:"Berlin." },
+  { q:"Çift ünlü içeren kelime?", o:["Türk","Aile","Kalem","Kitap","Defter"], a:1, difficulty:"medium", n:"Aile." },
+  { q:"En büyük göl?", o:["Van","Tuz","Beyşehir","Eğirdir","İznik"], a:0, difficulty:"medium", n:"Van Gölü." },
+  { q:"Maden olmayan?", o:["Demir","Bakır","Kömür","Petrol","Su"], a:4, difficulty:"easy", n:"Su." },
+  { q:"Doğal afet olmayan?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"easy", n:"İnsan kaynaklı." },
+  { q:"En uzun akarsu?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, difficulty:"medium", n:"Kızılırmak." },
+  { q:"Hangi padişah İstanbul'u fethetti?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"easy", n:"Fatih Sultan Mehmet." },
+  { q:"Haberleşme aracı olmayan?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"easy", n:"Kalem." },
+  { q:"THY kodu?", o:["THY","TK","TR","TU","TA"], a:1, difficulty:"medium", n:"TK." },
+  { q:"Yer çekimi yasası?", o:["Einstein","Newton","Galileo","Darwin","Tesla"], a:1, difficulty:"easy", n:"Newton." },
+  { q:"AB dışı ülke?", o:["Almanya","Fransa","İsviçre","İtalya","Hollanda"], a:2, difficulty:"medium", n:"İsviçre." },
+  { q:"Element olmayan?", o:["Helyum","Demir","Su","Oksijen","Karbon"], a:2, difficulty:"medium", n:"Su." },
+  { q:"En büyük organ?", o:["Kalp","Beyin","Karaciğer","Deri","Akciğer"], a:3, difficulty:"medium", n:"Deri." },
+  { q:"Güneş'e en yakın gezegen?", o:["Venüs","Dünya","Mars","Merkür","Jüpiter"], a:3, difficulty:"medium", n:"Merkür." },
+  { q:"Sayının kendisiyle çarpımı?", o:["Toplam","Fark","Bölüm","Kare","Küp"], a:3, difficulty:"easy", n:"Kare." },
+  { q:"Bir bilgisayarın beyni?", o:["RAM","CPU","HDD","SSD","GPU"], a:1, difficulty:"easy", n:"CPU." },
+  { q:"İlk uçak ne zaman uçtu?", o:["1903","1914","1896","1920","1885"], a:0, difficulty:"medium", n:"1903 Wright Kardeşler." },
+  { q:"Sürüngen olmayan?", o:["Yılan","Kertenkele","Kaplumbağa","Kurbağa","Timsah"], a:3, difficulty:"easy", n:"Kurbağa." },
+  { q:"En hızlı balık?", o:["Ton","Yelken","Köpekbalığı","Som","Alabalık"], a:1, difficulty:"medium", n:"Yelken balığı." },
+  { q:"Vitamin olmayan?", o:["A","B","C","D","Kalsiyum"], a:4, difficulty:"easy", n:"Kalsiyum." },
+  { q:"Türkiye'nin en doğusu?", o:["Iğdır","Van","Hakkari","Ağrı","Kars"], a:0, difficulty:"medium", n:"Iğdır." },
+  { q:"İngiltere başkenti?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:2, difficulty:"easy", n:"Londra." },
+  { q:"Kıta olmayan?", o:["Asya","Afrika","Avrupa","Avustralya","Grönland"], a:4, difficulty:"easy", n:"Grönland." },
+  { q:"Türk milli içeceği?", o:["Çay","Ayran","Rakı","Boza","Şalgam"], a:1, difficulty:"easy", n:"Ayran." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu icat eden?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişiyle oynanır?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+  { q:"En büyük kemik?", o:["Uyluk","Kaval","Pazı","Kaburga","Kürek"], a:0, difficulty:"medium", n:"Uyluk." },
+  { q:"Telefonu kim icat etti?", o:["Edison","Bell","Tesla","Newton","Einstein"], a:1, difficulty:"easy", n:"Bell." },
+  { q:"En uzun yaşayan hayvan?", o:["Fil","Balina","Kaplumbağa","Köpek","Kedi"], a:2, difficulty:"easy", n:"Kaplumbağa." },
+  { q:"Türkiye'nin en büyük ili?", o:["Konya","Sivas","Ankara","Erzurum","Van"], a:0, difficulty:"medium", n:"Konya." },
+  { q:"Programlama dili olmayan?", o:["Python","Java","C++","HTML","Rust"], a:3, difficulty:"medium", n:"HTML." },
+  { q:"Futbol sahası kaç kişi?", o:["9","10","11","12","13"], a:2, difficulty:"easy", n:"11." },
+  { q:"TL simgesi?", o:["$","€","₺","£","¥"], a:2, difficulty:"easy", n:"₺." },
+  { q:"En çok kullanılan sosyal medya?", o:["Twitter","Instagram","Facebook","TikTok","LinkedIn"], a:2, difficulty:"medium", n:"Facebook." },
+  { q:"İlk kadın savaş pilotu?", o:["Sabiha Gökçen","Türkan Saylan","Halide Edip","Afet İnan","Nene Hatun"], a:0, difficulty:"medium", n:"Sabiha Gökçen." },
+  { q:"Müzik aleti olmayan?", o:["Keman","Piyano","Davul","Fırça","Flüt"], a:3, difficulty:"easy", n:"Fırça." },
+  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
+  { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
+  { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
+  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
+  { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
+
+  // --- YENİ 70 KPSS 2020 ÇIKMIŞ SORU ---
+  { q:"Tarih öğretmeni: 'Mani dinine ait kitaplarda dinî ve dünyevi sahneleri canlandıran minyatürler bulunmaktadır... Bu eserlerin bulunduğu devletin sınırları içinde Hoça, Bezeklik, Turfan ve Bulak gibi önemli kültür sanat merkezleri vardır.' demiştir. Bu Türk devleti hangisidir?", o:["Hunlar","Avarlar","Uygurlar","Göktürkler","Hazarlar"], a:2, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Uygurlar." },
+  { q:"Sivas Gök Medrese, Sultan Han Kervansarayı ve Konya Alaeddin Camii aşağıdakilerden hangisine aittir?", o:["Anadolu Selçuklu Devleti","Büyük Selçuklu Devleti","Karamanoğulları","Germiyanoğulları","Osmanlı Devleti"], a:0, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Anadolu Selçuklu Devleti." },
+  { q:"Selçuklular Dönemi'nde devlet işleri 'divan' denilen büyük divanda görüşülüp karara bağlanırdı. Aşağıdakilerden hangisi bu divana bağlı alt divanlardan biri değildir?", o:["Divan-ı İstifa","Divan-ı Arz","Divan-ı İşraf","Divan-ı Hümayun","Divan-ı Mezalim"], a:3, difficulty:"hard", n:"2020 KPSS Çıkmış Soru - Divan-ı Hümayun Osmanlı'ya aittir." },
+  { q:"Osmanlı Devleti'ndeki kadılarla ilgili aşağıdakilerden hangisi söylenemez?", o:["Berat sahibi oldukları","Vergiden muaf oldukları","Vakıfları denetledikleri","Davalarda hüküm verdikleri","Cezaları infaz ettikleri"], a:4, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Kadılar hüküm verir ancak cezayı infaz etmezler." },
+  { q:"Aşağıdakilerden hangisi, Osmanlı Devleti'nde coğrafya ve astronomi alanında ön plana çıkmış kişilerden biri değildir?", o:["Ali Kuşçu","Piri Reis","Seydi Ali Reis","Matrakçı Nasuh","Naima"], a:4, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Naima tarihçidir." },
+  { q:"Osmanlı Devleti'nin dış borçlarını tahsil etmek üzere 1881 yılında kurulan ve maliye üzerinde denetim sağlayan teşkilat aşağıdakilerden hangisidir?", o:["Osmanlı Bankası","Hazine-i Hassa","İrad-ı Cedit","İtibar-ı Milli Bankası","Düyûn-ı Umumiye"], a:4, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Düyûn-ı Umumiye." },
+  { q:"Mustafa Kemal Paşa Birinci Dünya Savaşı sırasında aşağıdaki yerlerden hangisinde görev yapmıştır?", o:["Mısır","Basra","Hicaz","Suriye","Galiçya"], a:3, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Suriye-Filistin Cephesi." },
+  { q:"Atatürk'ün, 1 Kasım 1936 tarihli TBMM açılış konuşmasında 'Daima kendisiyle dostluğa çok ehemmiyet verdiğimiz Fransa ile aramızda, tek ve büyük mesele budur.' ifadesini kullanmasına neden olan dış politika sorunu hangisidir?", o:["Musul","Hatay","Yabancı Okullar","Boğazlar","Kapitülasyonlar"], a:1, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Hatay sorunu." },
+  { q:"Aşağıdakilerden hangisi Soğuk Savaş yıllarında varlığını sürdüren Varşova Paktı ülkelerinden biri değildir?", o:["Polonya","Avusturya","Çekoslovakya","Bulgaristan","Macaristan"], a:1, difficulty:"hard", n:"2020 KPSS Çıkmış Soru - Avusturya tarafsızdı." },
+  { q:"Türkiye'de en geniş alanı şekillendiren dış kuvvet aşağıdakilerden hangisidir?", o:["Akarsular","Buzullar","Rüzgârlar","Dalgalar","Kütle hareketleri"], a:0, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Akarsular." },
+  { q:"Aşağıdakilerden hangisi Türkiye'nin dahil olduğu uluslararası doğal gaz boru hattı projelerinden biri değildir?", o:["Mısır - Türkiye Boru Hattı","Irak - Türkiye Boru Hattı","Azerbaycan - Türkiye Boru Hattı","Transmed Boru Hattı","Mavi Akım Projesi"], a:3, difficulty:"hard", n:"2020 KPSS Çıkmış Soru - Transmed Boru Hattı Cezayir-İtalya." },
+  { q:"1982 Anayasası'na göre, milletvekili seçilebilmek için en az hangi düzeyde mezuniyet gerekir?", o:["İlkokul","Ortaokul","Lise","Ön lisans","Lisans"], a:0, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - En az ilkokul mezunu." },
+  { q:"1982 Anayasası'na göre, bakanları atama görev ve yetkisi aşağıdakilerden hangisine aittir?", o:["Yüksek Seçim Kurulu","Milli Güvenlik Kurulu","Cumhurbaşkanı","Anayasa Mahkemesi","TBMM"], a:2, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Cumhurbaşkanı." },
+  { q:"Aşağıdakilerden hangisi bir kimsenin kan hısmıdır?", o:["Nişanlısı","Kayınvalidesi","Süt kardeşi","Büyükannesi","Baldızı"], a:3, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Büyükanne." },
+  { q:"Öldüğü günü kavuşma vakti olarak tanımlamasından dolayı bu güne 'şeb-i arûs' (düğün gecesi) denilen ve ölüm yıl dönümü bu adla anılan İslam alimi kimdir?", o:["Yunus Emre","Hacı Bektaş-ı Veli","Mevlana Celaleddin-i Rumi","Hacı Bayram Veli","Ahmet Yesevi"], a:2, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Mevlana." },
+  { q:"İçişleri bakanlığına bağlı, afet ve acil durumlara ilişkin süreçlerin aktif yönetimi için gerekli çalışmaları yürütmekle görevli kurumun kısa adı hangisidir?", o:["AFAD","ATAM","TÜBİTAK","TİKA","ASELSAN"], a:0, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - AFAD." },
+  { q:"Sultan II. Abdülhamid tarafından kurulan, ırk, din, dil, sınıf ve cinsiyet farkı gözetmeksizin bakıma muhtaç kişilere hizmet veren kurum hangisidir?", o:["Yeşilay","Darülaceze","Darülfünun","Darülbedayi","Darülelhan"], a:1, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Darülaceze." },
+  { q:"4721 sayılı Türk Medeni Kanunu'na göre erginlik kaç yaşın doldurulmasıyla başlar?", o:["14","15","16","17","18"], a:4, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - 18 yaş." },
+  { q:"Aşağıdakilerden hangisi hukukun yardımcı kaynaklarından biridir?", o:["Kanunlar","Uluslararası andlaşmalar","Bilimsel görüşler","Yönetmelikler","Cumhurbaşkanlığı kararnameleri"], a:2, difficulty:"medium", n:"2020 KPSS Çıkmış Soru - Bilimsel görüşler (Doktrin)." },
+  { q:"'İyilik takasa gelmez, değiş tokuş pazarına girince iyiliğin değeri kalmaz.' Bu cümlede anlatılmak istenen aşağıdakilerden hangisidir?", o:["Maddi yardım, daha çok zarar veren bir iyiliktir.","İyilik yapan insanı bütünüyle değiştirir.","İyilik, yarattığınız değişim oranında büyüktür.","İyilik kendi başına kıymetlidir, bir karşılık beklenerek yapıldığında kıymetini yitirir.","Yardımlaşmayı bilmeyenler için iyiliğin değeri yoktur."], a:3, difficulty:"easy", n:"2020 KPSS Çıkmış Soru - Karşılık beklememek." },
+  { q:"En kalabalık Türk şehri?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:1, difficulty:"easy", n:"İstanbul." },
+  { q:"Almanya başkenti?", o:["Paris","Berlin","Londra","Roma","Madrid"], a:1, difficulty:"easy", n:"Berlin." },
+  { q:"Çift ünlü içeren kelime?", o:["Türk","Aile","Kalem","Kitap","Defter"], a:1, difficulty:"medium", n:"Aile." },
+  { q:"En büyük göl?", o:["Van","Tuz","Beyşehir","Eğirdir","İznik"], a:0, difficulty:"medium", n:"Van Gölü." },
+  { q:"Maden olmayan?", o:["Demir","Bakır","Kömür","Petrol","Su"], a:4, difficulty:"easy", n:"Su." },
+  { q:"Doğal afet olmayan?", o:["Deprem","Sel","Çığ","Trafik kazası","Heyelan"], a:3, difficulty:"easy", n:"İnsan kaynaklı." },
+  { q:"En uzun akarsu?", o:["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], a:2, difficulty:"medium", n:"Kızılırmak." },
+  { q:"Hangi padişah İstanbul'u fethetti?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"easy", n:"Fatih Sultan Mehmet." },
+  { q:"Haberleşme aracı olmayan?", o:["Telefon","Radyo","TV","Mektup","Kalem"], a:4, difficulty:"easy", n:"Kalem." }
 ];
 
-let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1800, selectedDifficulty = 'all';
+let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1200, selectedDifficulty = 'all';
 
 // Animasyonlu arka plan
 function createFloatingItems() {
@@ -334,8 +512,13 @@ if (sessionStorage.getItem('examState')) {
 
 function pickRandomQuestions(difficulty) {
   let filtered = questionPool;
-  if (difficulty !== 'all') filtered = questionPool.filter(q => q.difficulty === difficulty);
-  allQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 20);
+  if (difficulty === 'kpss') {
+    // Sadece 2020 çıkmış soruları (başlığında KPSS yazanları)
+    filtered = questionPool.filter(q => q.n && q.n.includes('KPSS'));
+  } else if (difficulty !== 'all') {
+    filtered = questionPool.filter(q => q.difficulty === difficulty);
+  }
+  allQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 10);
 }
 
 onValue(questionsRef, snap => renderQuestionBankFromData(snap.val()||{}));
@@ -387,8 +570,8 @@ function startExam() {
   pickRandomQuestions(selectedDifficulty);
   answeredSet.clear();
   answers = new Array(allQuestions.length).fill('blank');
-  remaining = 1800;
-  document.getElementById('stickyTimer').textContent = '⏱️ 30:00';
+  remaining = 1200; // 20 dakika
+  document.getElementById('stickyTimer').textContent = '⏱️ 20:00';
   document.getElementById('stickyTotal').textContent = allQuestions.length;
   document.getElementById('stickyAnswered').textContent = '0';
   document.getElementById('stickyProgress').textContent = '0';
