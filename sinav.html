@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2026 KPSS Kişisel Deneme Sınavı 🎯</title>
+    <title>KPSS Deneme Sınavı 🎯</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -13,31 +13,35 @@
                 radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
             background-attachment: fixed;
         }
-        .wrapper { max-width: 720px; width: 100%; margin-bottom: 220px; }
+        .wrapper { max-width: 720px; width: 100%; margin-bottom: 250px; }
+
+        /* EKRANLAR */
         .start-screen, .exam-screen, .result-screen, .waiting-screen { display: none; }
-        .start-screen { display: block; background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; padding: 45px 30px; text-align: center; border: 1px solid #3c244f; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .start-screen { display: block; background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; padding: 45px 30px; text-align: center; border: 1px solid #3c244f; }
         .start-screen h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
-        .start-screen p { color: #cbd5e1; font-size: 1.05rem; margin-bottom: 24px; }
+        .start-screen p { color: #cbd5e1; margin-bottom: 24px; }
         .warning-box { background: rgba(244, 63, 94, 0.1); border: 1px dashed #f43f5e; padding: 12px; border-radius: 12px; color: #f43f5e; font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; }
         .start-screen input { width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid #3c244f; background: #0f0b19; color: #fff; font-size: 1rem; outline: none; margin-bottom: 18px; }
-        .btn-primary { width: 100%; padding: 16px; background: linear-gradient(135deg, #f43f5e, #ec4899); border: none; border-radius: 14px; color: #fff; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn { padding: 14px 20px; border: none; border-radius: 14px; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-primary { width: 100%; background: linear-gradient(135deg, #f43f5e, #ec4899); font-size: 1.1rem; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* SINAV */
         .timer-container { display: flex; justify-content: space-between; align-items: center; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; }
         .timer-clock { font-size: 1.25rem; font-weight: 800; color: #fff; background: #f43f5e; padding: 4px 12px; border-radius: 8px; font-family: monospace; }
         .header { text-align: center; padding: 25px; background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; margin-bottom: 20px; border: 1px solid #3c244f; }
         .header h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, #f43f5e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .dynamic-bubble { background: rgba(99, 102, 241, 0.15); border: 1px solid #6366f1; padding: 8px 15px; border-radius: 30px; font-size: 0.85rem; color: #a5b4fc; display: inline-block; margin-top: 12px; font-weight: 600; }
         .progress-wrap { background: #22183e; border-radius: 30px; height: 8px; margin-bottom: 20px; overflow: hidden; }
-        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #f43f5e, #a5b4fc); transition: width 0.4s ease; }
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #f43f5e, #a5b4fc); transition: width 0.4s; }
         .stats { display: flex; justify-content: space-between; background: #19132e; padding: 12px 20px; border-radius: 14px; border: 1px solid #3c244f; margin-bottom: 24px; font-size: 0.9rem; color: #cbd5e1; }
-        .question-card { background: #19132e; border: 1px solid #3c244f; border-radius: 20px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .question-card.active-q { border-color: #f43f5e; }
+        .question-card { background: #19132e; border: 1px solid #3c244f; border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+        .question-card.active-q { border-color: #f43f5e; box-shadow: 0 0 15px rgba(244, 63, 94, 0.2); }
         .q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .badge { background: rgba(244, 63, 94, 0.12); color: #f43f5e; padding: 5px 14px; border-radius: 40px; font-size: 0.8rem; font-weight: 700; }
         .q-text { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 18px; color: #e2e8f0; }
         .options { display: flex; flex-direction: column; gap: 10px; }
-        .option { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(15, 11, 25, 0.4); border: 2px solid #3c244f; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .option { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(15, 11, 25, 0.4); border: 2px solid #3c244f; border-radius: 12px; cursor: pointer; transition: 0.2s; }
         .option:hover { border-color: #f43f5e; background: rgba(244, 63, 94, 0.08); }
         .option::before { content: '✓'; font-size: 1.2rem; color: #f43f5e; width: 24px; text-align: center; opacity: 0; font-weight: bold; }
         .option.selected-opt { border-color: #f43f5e; background: rgba(244, 63, 94, 0.1); }
@@ -45,22 +49,28 @@
         .blank-option { border-style: dashed; color: #cbd5e1; }
         .btn-submit { width: 100%; padding: 20px; background: linear-gradient(135deg, #f43f5e, #ec4899); border: none; border-radius: 20px; font-size: 1.25rem; font-weight: 800; color: #fff; cursor: pointer; margin-top: 10px; }
         .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* BEKLEME */
         .waiting-screen { background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; padding: 45px 30px; text-align: center; border: 1px solid #3c244f; }
         .waiting-icon { font-size: 4rem; margin-bottom: 15px; animation: bounce 2s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .link-box { background: #0f0b19; border: 1px dashed #f43f5e; padding: 10px; border-radius: 8px; word-break: break-all; font-size: 0.8rem; margin: 10px 0; color: #f43f5e; }
+
+        /* SONUÇ */
         .result-screen { background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; padding: 35px 25px; border: 1px solid #3c244f; }
+        .grade-container { text-align: center; margin-bottom: 25px; }
         .grade { font-size: 4rem; font-weight: 850; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.3); }
         .grade-comment { font-size: 1.2rem; color: #fff; font-weight: 700; margin-top: 10px; }
         .detail-stats { color: #cbd5e1; margin-top: 15px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; }
         .analysis-item { background: rgba(15, 11, 25, 0.6); border: 1px solid #3c244f; padding: 18px; border-radius: 14px; margin-bottom: 12px; }
         .correct-card { border-left: 5px solid #10b981; } .wrong-card { border-left: 5px solid #ef4444; } .empty-card { border-left: 5px solid #6b7280; }
         .analysis-note { font-size: 0.92rem; color: #f43f5e; font-style: italic; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(244,63,94,0.2); }
-        .btn-check-result { margin-top: 20px; padding: 12px 30px; background: #6366f1; border: none; border-radius: 14px; color: #fff; font-weight: 700; cursor: pointer; }
-        .link-box { background: #0f0b19; border: 1px dashed #f43f5e; padding: 10px; border-radius: 8px; word-break: break-all; font-size: 0.8rem; margin-top: 10px; color: #f43f5e; }
-        .admin-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1330; border-top: 2px solid #f43f5e; padding: 15px 20px; z-index: 999; max-height: 50vh; overflow-y: auto; }
-        .admin-toggle { background: #f43f5e; border: none; color: #fff; padding: 10px 20px; border-radius: 20px; font-weight: 700; cursor: pointer; margin-bottom: 10px; width: 100%; }
+
+        /* YÖNETİCİ PANELİ */
+        .admin-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1330; border-top: 2px solid #f43f5e; padding: 15px; z-index: 999; max-height: 45vh; overflow-y: auto; }
+        .admin-toggle { background: #f43f5e; color: #fff; padding: 10px; border: none; border-radius: 20px; font-weight: 700; width: 100%; cursor: pointer; margin-bottom: 10px; }
         .admin-content { display: none; flex-direction: column; gap: 10px; }
-        .admin-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .admin-row { display: flex; gap: 10px; align-items: center; }
         .admin-row input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #3c244f; background: #0f0b19; color: #fff; }
         .admin-btn { padding: 10px 16px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
         .btn-giris { background: #6366f1; color: #fff; } .btn-yayinla { background: #10b981; color: #fff; } .btn-kilitle { background: #f59e0b; color: #000; } .btn-sifirla { background: #ef4444; color: #fff; }
@@ -68,36 +78,46 @@
         .exam-item { padding: 6px; border-bottom: 1px solid #3c244f; display: flex; justify-content: space-between; cursor: pointer; }
         .exam-item.selected { background: rgba(244,63,94,0.2); }
         .detail-panel { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.85rem; }
+        .admin-msg { font-size: 0.85rem; color: #fbbf24; text-align: center; }
+
         .toast { position: fixed; bottom: 200px; left: 50%; transform: translateX(-50%) translateY(100px); background: #ec4899; color: #fff; padding: 14px 28px; border-radius: 50px; font-weight: 700; opacity: 0; transition: 0.4s; z-index: 1000; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.error { background: #ef4444; }
     </style>
 </head>
 <body>
+
 <div class="wrapper">
+    <!-- GİRİŞ -->
     <div class="start-screen" id="startScreen">
         <h2>🎯 2026 KPSS Özel Denemesi</h2>
-        <p>Hazır olduğunda başla düğmesine basarak testi başlatabilirsin.</p>
-        <div class="warning-box">⚠️ Sadece 30 dakikan var!</div>
-        <input type="email" id="userEmail" placeholder="E-posta adresini gir" />
-        <button class="btn-primary" id="startExamBtn">Sınava Başla 🚀</button>
+        <p>Hazır olduğunda başla düğmesine bas.</p>
+        <div class="warning-box">⚠️ 30 dakika süren var!</div>
+        <input type="email" id="userEmail" placeholder="E-posta adresin" />
+        <button class="btn btn-primary" id="startExamBtn">Sınava Başla 🚀</button>
     </div>
+
+    <!-- SINAV -->
     <div class="exam-screen" id="examScreen">
         <div class="timer-container"><span>⏱️ Kalan Süre:</span><span class="timer-clock" id="timerClock">30:00</span></div>
-        <div class="header"><h1>🎯 KPSS Deneme Sınavı</h1><div class="dynamic-bubble" id="moralBubble">Başarıyla ilerliyorsun! ❤️</div></div>
+        <div class="header"><h1>🎯 KPSS Deneme Sınavı</h1><div style="color:#a5b4fc; margin-top:10px">Başarıyla ilerliyorsun ❤️</div></div>
         <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
         <div class="stats"><span>Cevaplanan: <span id="answeredCount">0</span> / <span id="totalQ">20</span></span><span><span id="progressPercent">0</span>%</span></div>
         <div id="quizArea"></div>
         <button type="button" class="btn-submit" id="submitBtn">Sınavı Bitir ve Gönder ✨</button>
     </div>
+
+    <!-- BEKLEME -->
     <div class="waiting-screen" id="waitingScreen">
         <div class="waiting-icon">⏳</div>
-        <h2>Sınavın Kaydedildi!</h2>
-        <p>Sonuçlar yönetici tarafından yayınlandığında buradan görebilirsin.</p>
-        <p style="font-size:0.9rem; color:#a5b4fc; margin-top:10px;">Sonuç linkini kaybetme:</p>
+        <h2>Sınavın Kaydedildi</h2>
+        <p>Sonuçlar yönetici tarafından yayınlanınca buradan görebilirsin.</p>
+        <p style="font-size:0.9rem; color:#a5b4fc; margin-top:10px;">Sonuç linkin (kaybetme):</p>
         <div class="link-box" id="resultLink"></div>
-        <button class="btn-check-result" id="checkResultBtn">📊 Sonuçlarımı Gör</button>
+        <button class="btn btn-primary" id="checkResultBtn" style="background:#6366f1; margin-top:10px;">📊 Sonuçlarımı Gör</button>
     </div>
+
+    <!-- SONUÇ -->
     <div class="result-screen" id="resultScreen">
         <div class="grade-container">
             <div class="grade" id="resultGrade">0 Puan</div>
@@ -108,8 +128,9 @@
     </div>
 </div>
 
+<!-- YÖNETİCİ PANELİ -->
 <div class="admin-panel" id="adminPanel">
-    <button class="admin-toggle" id="adminToggle">⚙️ Yönetici Paneli</button>
+    <button class="admin-toggle" id="adminToggle">⚙️ Yönetici Paneli (Aç/Kapat)</button>
     <div class="admin-content" id="adminContent">
         <div class="admin-row">
             <input type="password" id="adminPassInput" placeholder="Şifre" />
@@ -117,7 +138,7 @@
         </div>
         <div class="exam-list" id="examList" style="display:none;"></div>
         <div class="detail-panel" id="detailPanel" style="display:none;"></div>
-        <div class="admin-buttons" id="adminButtons" style="display:none;">
+        <div class="admin-buttons" id="adminButtons" style="display:none; margin-top:10px; display:flex; gap:5px; flex-wrap:wrap;">
             <button class="admin-btn btn-yayinla" id="yayinlaBtn">✅ Yayınla</button>
             <button class="admin-btn btn-kilitle" id="kilitleBtn">🔒 Kilitle</button>
             <button class="admin-btn btn-sifirla" id="sifirlaBtn">🧹 Tümünü Sil</button>
@@ -132,15 +153,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getDatabase, ref, push, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-// ★ Yönetici şifreni burada belirle, kimse göremez
-const ADMIN_PASSWORD = "1923";
-
+// ✅ DOĞRU PROJE ID: test-ba1a3
 const firebaseConfig = {
     apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
-    authDomain: "test-bala3.firebaseapp.com",
-    databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/",
-    projectId: "test-bala3",
-    storageBucket: "test-bala3.firebasestorage.app",
+    authDomain: "test-ba1a3.firebaseapp.com",
+    databaseURL: "https://test-ba1a3-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "test-ba1a3",
+    storageBucket: "test-ba1a3.firebasestorage.app",
     messagingSenderId: "413174140566",
     appId: "1:413174140566:web:f7eefa4717579784b3bcb7"
 };
@@ -148,43 +167,54 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const examsRef = ref(db, 'exams');
 
+// Yönetici şifresi (isteğe bağlı değiştir)
+const ADMIN_PASSWORD = "1923";
+
+// Sorular
 const questions = [
-    { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz","Karasal","Muson","Karadeniz","Marmara"], ans:2, note:"Muson Asya'da görülür. ❤️" },
-    { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], ans:0, note:"23 Nisan 1920! 🌸" },
-    { q: "Isı alışverişi türü olmayan?", opts: ["Konveksiyon","Radyasyon","Kondüksiyon","Adveksiyon","Süblimleşme"], ans:4, note:"Süblimleşme hal değişimi. ✨" },
-    { q: "TDK'nın amacı?", opts: ["Arındırmak","Doğru kullanım","Geliştirmek","Hepsi","Hiçbiri"], ans:3, note:"Hepsi doğru. 📚" },
-    { q: "Batı Cephesi'nde yapılmayan savaş?", opts: ["I. İnönü","II. İnönü","Kütahya-Eskişehir","Sakarya","Çanakkale"], ans:4, note:"Çanakkale I. Dünya Savaşı. 🇹🇷" },
+    { q: "Türkiye'de görülmeyen iklim?", opts: ["Akdeniz","Karasal","Muson","Karadeniz","Marmara"], ans:2, note:"Muson Asya'da görülür. ❤️" },
+    { q: "TBMM açılış tarihi?", opts: ["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], ans:0, note:"23 Nisan 1920. 🌸" },
+    { q: "Isı alışveriş türü değil?", opts: ["Konveksiyon","Radyasyon","Kondüksiyon","Adveksiyon","Süblimleşme"], ans:4, note:"Süblimleşme hal değişimi. ✨" },
+    { q: "TDK amacı?", opts: ["Arındırmak","Doğru kullanım","Geliştirmek","Hepsi","Hiçbiri"], ans:3, note:"Hepsi. 📚" },
+    { q: "Batı Cephesi'nde olmayan savaş?", opts: ["I.İnönü","II.İnönü","Kütahya-Eskişehir","Sakarya","Çanakkale"], ans:4, note:"Çanakkale. 🇹🇷" },
     { q: "En uzun akarsu?", opts: ["Fırat","Dicle","Kızılırmak","Sakarya","Yeşilırmak"], ans:2, note:"Kızılırmak. ❤️" },
-    { q: "Tanzimat Fermanı padişahı?", opts: ["II. Mahmud","Abdülmecid","Abdülaziz","V. Murad","II. Abdülhamid"], ans:1, note:"Abdülmecid. 🌟" },
-    { q: "UNESCO Dünya Mirası şehir?", opts: ["İstanbul","Ankara","İzmir","Bursa","Antalya"], ans:0, note:"İstanbul. 🏰" },
-    { q: "En çok yağış alan bölge?", opts: ["Doğu Anadolu","Karadeniz","Akdeniz","Ege","Marmara"], ans:1, note:"Karadeniz. 🌲" },
+    { q: "Tanzimat Fermanı padişahı?", opts: ["II.Mahmud","Abdülmecid","Abdülaziz","V.Murad","II.Abdülhamid"], ans:1, note:"Abdülmecid. 🌟" },
+    { q: "UNESCO şehri?", opts: ["İstanbul","Ankara","İzmir","Bursa","Antalya"], ans:0, note:"İstanbul. 🏰" },
+    { q: "En yağışlı bölge?", opts: ["D.Anadolu","Karadeniz","Akdeniz","Ege","Marmara"], ans:1, note:"Karadeniz. 🌲" },
     { q: "Halkçılık neyi savunur?", opts: ["Milli birlik","Sosyal adalet","Laiklik","Devletçilik","Cumhuriyet"], ans:1, note:"Sosyal adalet. 🤝" },
-    { q: "Milli park olmayan?", opts: ["Göreme","Olimpos","Yedigöller","Sapanca","Kazdağları"], ans:3, note:"Sapanca park değil. 🌊" },
+    { q: "Milli park olmayan?", opts: ["Göreme","Olimpos","Yedigöller","Sapanca","Kazdağları"], ans:3, note:"Sapanca. 🌊" },
     { q: "En kalabalık şehir?", opts: ["Ankara","İstanbul","İzmir","Bursa","Antalya"], ans:1, note:"İstanbul. 🏙️" },
     { q: "Yapım eki?", opts: ["-ler","-de","-den","-lik","-e"], ans:3, note:"-lik yapım eki. ✍️" },
     { q: "Türkiye'de çıkarılmayan?", opts: ["Kömür","Demir","Altın","Elmas","Boksit"], ans:3, note:"Elmas yok. 💎" },
-    { q: "Cumhuriyet ilanı?", opts: ["1920","1921","1922","1923","1924"], ans:3, note:"1923! 🇹🇷" },
-    { q: "Ulaşım türü olmayan?", opts: ["Kara","Deniz","Hava","Demir","Uzay"], ans:4, note:"Uzay ulaşım değil. 🚀" },
+    { q: "Cumhuriyet ilanı?", opts: ["1920","1921","1922","1923","1924"], ans:3, note:"1923. 🇹🇷" },
+    { q: "Ulaşım türü değil?", opts: ["Kara","Deniz","Hava","Demir","Uzay"], ans:4, note:"Uzay. 🚀" },
     { q: "En büyük göl?", opts: ["Van","Tuz","Beyşehir","Eğirdir","İznik"], ans:0, note:"Van Gölü. 🌊" },
     { q: "Anadolu uygarlığı değil?", opts: ["Hitit","Frig","Urartu","Mısır","Lidya"], ans:3, note:"Mısır. 📐" },
-    { q: "Başkent?", opts: ["Ankara","İstanbul","İzmir","Bursa","Eskişehir"], ans:0, note:"Ankara! 🇹🇷" },
-    { q: "Yazılım dili olmayan?", opts: ["Python","Java","C++","HTML","Photoshop"], ans:4, note:"Photoshop. 💻" }
+    { q: "Başkent?", opts: ["Ankara","İstanbul","İzmir","Bursa","Eskişehir"], ans:0, note:"Ankara. 🇹🇷" },
+    { q: "Yazılım dili değil?", opts: ["Python","Java","C++","HTML","Photoshop"], ans:4, note:"Photoshop. 💻" }
 ];
 
+// Genel değişkenler
 let userEmail = '';
-let answered = new Set();
-let tempAnswers = {};
-let timerInterval, secondsRemaining = 1800;
 let currentExamId = null;
+let tempAnswers = {};
+let answered = new Set();
+let timerInterval = null;
+let secondsRemaining = 1800;
 const total = questions.length;
 document.getElementById('totalQ').textContent = total;
 
+// --- ÖĞRENCİ FONKSİYONLARI ---
 function startTimer() {
     timerInterval = setInterval(() => {
         secondsRemaining--;
-        const m = Math.floor(secondsRemaining/60), s = secondsRemaining%60;
+        const m = Math.floor(secondsRemaining / 60);
+        const s = secondsRemaining % 60;
         document.getElementById('timerClock').textContent = `${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
-        if (secondsRemaining <= 0) { clearInterval(timerInterval); submitExam(); }
+        if (secondsRemaining <= 0) {
+            clearInterval(timerInterval);
+            submitExam();
+        }
     }, 1000);
 }
 
@@ -200,15 +230,19 @@ function startExam() {
 
 function renderQuestions() {
     let html = '';
-    questions.forEach((q,i) => {
-        html += `<div class="question-card" id="q-${i}"><div class="q-head"><span class="badge">Soru ${i+1}</span><span id="status-${i}">Boş</span></div><div class="q-text">${q.q}</div><div class="options">`;
-        q.opts.forEach((opt,oi) => html += `<div class="option" data-q="${i}" data-o="${oi}"><span>${opt}</span></div>`);
+    questions.forEach((q, i) => {
+        html += `<div class="question-card" id="q-${i}">
+            <div class="q-head"><span class="badge">Soru ${i+1}</span><span id="status-${i}">Boş</span></div>
+            <div class="q-text">${q.q}</div>
+            <div class="options">`;
+        q.opts.forEach((opt, oi) => html += `<div class="option" data-q="${i}" data-o="${oi}"><span>${opt}</span></div>`);
         html += `<div class="option blank-option" data-q="${i}" data-o="blank"><span>Boş bırak</span></div></div></div>`;
     });
     document.getElementById('quizArea').innerHTML = html;
-    document.querySelectorAll('.option').forEach(el => el.addEventListener('click', function() {
+    document.querySelectorAll('.option').forEach(el => el.addEventListener('click', function () {
         const qIdx = +this.dataset.q, val = this.dataset.o;
-        if (val === 'blank') selectBlank(qIdx, this); else selectOption(qIdx, +val, this);
+        if (val === 'blank') selectBlank(qIdx, this);
+        else selectOption(qIdx, +val, this);
     }));
 }
 
@@ -229,86 +263,100 @@ function selectBlank(qIdx, el) {
 function updateStatus(qIdx) {
     const val = tempAnswers[qIdx], s = document.getElementById(`status-${qIdx}`);
     if (val === undefined || val === 'blank') { answered.delete(qIdx); s.textContent = 'Boş'; }
-    else { answered.add(qIdx); s.textContent = ['A','B','C','D','E'][val]; }
+    else { answered.add(qIdx); s.textContent = ['A', 'B', 'C', 'D', 'E'][val]; }
     updateProgress();
 }
 function updateProgress() {
     const cnt = answered.size;
     document.getElementById('answeredCount').textContent = cnt;
-    document.getElementById('progressPercent').textContent = Math.round(cnt/total*100);
-    document.getElementById('progressBar').style.width = (cnt/total*100)+'%';
+    document.getElementById('progressPercent').textContent = Math.round(cnt / total * 100);
+    document.getElementById('progressBar').style.width = (cnt / total * 100) + '%';
 }
 
 async function submitExam() {
     const btn = document.getElementById('submitBtn');
     if (btn.disabled) return;
-    btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+    btn.disabled = true;
+    btn.textContent = 'Gönderiliyor...';
     try {
         clearInterval(timerInterval);
-        let correct=0, wrong=0, empty=0, answers=[];
-        questions.forEach((q,i) => {
+        let correct = 0, wrong = 0, empty = 0, answers = [];
+        questions.forEach((q, i) => {
             const val = tempAnswers[i] !== undefined ? tempAnswers[i] : 'blank';
             answers.push(val);
             if (val === 'blank') empty++;
             else if (val === q.ans) correct++;
             else wrong++;
         });
-        const score = Math.round(correct/total*100);
+        const score = Math.round(correct / total * 100);
         const newRef = push(examsRef);
         currentExamId = newRef.key;
         await set(newRef, {
             email: userEmail, score, correct, wrong, empty, answers,
-            status:'completed', revealed:false, submittedAt: Date.now()
+            status: 'completed', revealed: false, submittedAt: Date.now()
         });
         document.getElementById('examScreen').style.display = 'none';
-        const waitEl = document.getElementById('waitingScreen');
-        waitEl.style.display = 'block';
+        document.getElementById('waitingScreen').style.display = 'block';
         const link = `${location.origin}${location.pathname}?exam=${currentExamId}`;
-        document.getElementById('resultLink').innerHTML = `<input value="${link}" readonly style="width:100%;background:transparent;border:none;color:#f43f5e;text-align:center;" onclick="this.select();document.execCommand('copy')" />`;
-        showToast('Sınav gönderildi! Sonuç linki kopyalandı.');
-    } catch(e) {
+        document.getElementById('resultLink').innerHTML = `<input value="${link}" readonly style="width:100%;background:transparent;border:none;color:#f43f5e;text-align:center" onclick="this.select();document.execCommand('copy')" />`;
+        showToast('Sınav gönderildi! Link kopyalandı.');
+    } catch (e) {
         console.error(e);
-        showToast('Hata: '+e.message, true);
+        showToast('Hata: ' + e.message, true);
     } finally {
-        btn.disabled = false; btn.textContent = 'Sınavı Bitir ve Gönder ✨';
+        btn.disabled = false;
+        btn.textContent = 'Sınavı Bitir ve Gönder ✨';
     }
 }
 
-// Aday sonuç görüntüleme
 function showResults(data) {
-    document.getElementById('startScreen').style.display='none';
-    document.getElementById('examScreen').style.display='none';
-    document.getElementById('waitingScreen').style.display='none';
-    document.getElementById('resultScreen').style.display='block';
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('examScreen').style.display = 'none';
+    document.getElementById('waitingScreen').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
     document.getElementById('resultGrade').textContent = data.score + ' Puan';
-    document.getElementById('gradeComment').textContent = data.score>=85 ? 'Mükemmel! 🏆' : (data.score>=60 ? 'İyi 💪' : 'Yanındayım 🧸');
+    const comment = data.score >= 85 ? 'Mükemmel! 🏆' : (data.score >= 60 ? 'İyi 💪' : 'Yanındayım 🧸');
+    document.getElementById('gradeComment').textContent = comment;
     document.getElementById('resultDetail').textContent = `✅ ${data.correct} | ❌ ${data.wrong} | ⬜ ${data.empty}`;
     let html = '';
-    questions.forEach((q,i) => {
+    questions.forEach((q, i) => {
         const ua = data.answers[i];
-        let cls='empty-card', status='⬜ Boş', choice='Seçilmedi';
+        let cls = 'empty-card', status = '⬜ Boş', choice = 'Seçilmedi';
         if (ua !== 'blank') {
             const ui = +ua; choice = q.opts[ui];
-            cls = ui===q.ans ? 'correct-card' : 'wrong-card';
-            status = ui===q.ans ? '✅ Doğru' : '❌ Yanlış';
+            cls = ui === q.ans ? 'correct-card' : 'wrong-card';
+            status = ui === q.ans ? '✅ Doğru' : '❌ Yanlış';
         }
         html += `<div class="analysis-item ${cls}"><b>Soru ${i+1}:</b> ${q.q}<br><b>Cevabın:</b> ${choice} (${status})<br><b>Doğru:</b> ${q.opts[q.ans]}<br><div class="analysis-note">💡 ${q.note}</div></div>`;
     });
     document.getElementById('analysisArea').innerHTML = html;
 }
 
-// URL'den examId alıp otomatik sonuç göster
+// URL'den examId varsa otomatik sonuç göster
 const params = new URLSearchParams(location.search);
 const urlExamId = params.get('exam');
 if (urlExamId) {
     get(ref(db, `exams/${urlExamId}`)).then(snap => {
         const d = snap.val();
         if (d && d.revealed) showResults(d);
-        else document.getElementById('startScreen').innerHTML = '<h2>Sonuç henüz yayınlanmadı veya geçersiz link.</h2>';
+        else document.getElementById('startScreen').innerHTML = '<h2>Sonuç henüz yayınlanmadı.</h2>';
     });
 }
 
-// Yönetici Paneli
+document.getElementById('checkResultBtn').addEventListener('click', async () => {
+    if (!currentExamId) return;
+    const snap = await get(ref(db, `exams/${currentExamId}`));
+    const d = snap.val();
+    if (d && d.revealed) showResults(d);
+    else showToast('Henüz yayınlanmadı', true);
+});
+
+onValue(ref(db, `exams/${currentExamId}`), snap => {
+    const d = snap.val();
+    if (d && d.revealed && document.getElementById('waitingScreen').style.display === 'block') showResults(d);
+});
+
+// --- YÖNETİCİ PANELİ ---
 let allExams = {}, selectedId = null, adminLoggedIn = false;
 const adminContent = document.getElementById('adminContent');
 const examListDiv = document.getElementById('examList');
@@ -316,8 +364,8 @@ const detailPanel = document.getElementById('detailPanel');
 const adminButtons = document.getElementById('adminButtons');
 const adminMsg = document.getElementById('adminMsg');
 
-document.getElementById('adminToggle').addEventListener('click', ()=>{
-    adminContent.style.display = adminContent.style.display==='flex' ? 'none' : 'flex';
+document.getElementById('adminToggle').addEventListener('click', () => {
+    adminContent.style.display = (adminContent.style.display === 'flex') ? 'none' : 'flex';
 });
 
 onValue(examsRef, snap => {
@@ -335,15 +383,15 @@ function renderExamList() {
     let html = '';
     ids.forEach(id => {
         const ex = allExams[id];
-        html += `<div class="exam-item ${selectedId===id?'selected':''}" data-id="${id}"><span>${ex.email} (${ex.score}p)</span><span>${ex.revealed?'✅':'🔒'}</span></div>`;
+        html += `<div class="exam-item ${selectedId === id ? 'selected' : ''}" data-id="${id}"><span>${ex.email} (${ex.score}p)</span><span>${ex.revealed ? '✅' : '🔒'}</span></div>`;
     });
     examListDiv.innerHTML = html;
     examListDiv.style.display = 'block';
     document.querySelectorAll('.exam-item').forEach(el => {
-        el.addEventListener('click', function() {
-            document.querySelectorAll('.exam-item').forEach(i=>i.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedId = this.dataset.id;
+        el.addEventListener('click', () => {
+            document.querySelectorAll('.exam-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedId = el.dataset.id;
             showDetail(selectedId);
             adminButtons.style.display = 'flex';
         });
@@ -354,17 +402,17 @@ function showDetail(id) {
     const ex = allExams[id];
     if (!ex) return;
     let html = `<b>${ex.email}</b> - ${ex.score} puan<br>✅${ex.correct} ❌${ex.wrong} ⬜${ex.empty}<br><small>${new Date(ex.submittedAt).toLocaleString()}</small><hr>`;
-    questions.forEach((q,i) => {
+    questions.forEach((q, i) => {
         const ua = ex.answers[i];
-        const uText = ua==='blank' ? 'Boş' : q.opts[+ua];
-        const correct = ua!=='blank' && +ua===q.ans;
+        const uText = ua === 'blank' ? 'Boş' : q.opts[+ua];
+        const correct = ua !== 'blank' && +ua === q.ans;
         html += `<div style="font-size:0.8rem; color:${ua==='blank'?'gray':(correct?'#10b981':'#ef4444')}">${i+1}. ${uText} ${ua==='blank'?'':(correct?'✓':'✗')}</div>`;
     });
     detailPanel.innerHTML = html;
     detailPanel.style.display = 'block';
 }
 
-document.getElementById('adminGirisBtn').addEventListener('click', ()=>{
+document.getElementById('adminGirisBtn').addEventListener('click', () => {
     if (document.getElementById('adminPassInput').value.trim() === ADMIN_PASSWORD) {
         adminLoggedIn = true;
         document.getElementById('adminPassInput').disabled = true;
@@ -376,42 +424,35 @@ document.getElementById('adminGirisBtn').addEventListener('click', ()=>{
     }
 });
 
-document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
+document.getElementById('yayinlaBtn').addEventListener('click', async () => {
     if (!selectedId) return;
     await update(ref(db, `exams/${selectedId}`), { revealed: true });
     adminMsg.textContent = 'Yayınlandı';
 });
-document.getElementById('kilitleBtn').addEventListener('click', async ()=>{
+document.getElementById('kilitleBtn').addEventListener('click', async () => {
     if (!selectedId) return;
     await update(ref(db, `exams/${selectedId}`), { revealed: false });
     adminMsg.textContent = 'Kilitlendi';
 });
-document.getElementById('sifirlaBtn').addEventListener('click', ()=>{
+document.getElementById('sifirlaBtn').addEventListener('click', () => {
     if (confirm('Tüm sınavlar silinecek!')) {
-        set(examsRef, null).then(()=>{ adminMsg.textContent='Silindi'; setTimeout(()=>location.reload(),1000); });
+        set(examsRef, null).then(() => {
+            adminMsg.textContent = 'Silindi';
+            setTimeout(() => location.reload(), 1000);
+        });
     }
 });
 
-document.getElementById('checkResultBtn').addEventListener('click', async ()=>{
-    if (!currentExamId) return;
-    const snap = await get(ref(db, `exams/${currentExamId}`));
-    const d = snap.val();
-    if (d && d.revealed) showResults(d);
-    else showToast('Henüz yayınlanmadı', true);
-});
-
-onValue(ref(db, `exams/${currentExamId}`), snap => {
-    const d = snap.val();
-    if (d && d.revealed && document.getElementById('waitingScreen').style.display==='block') showResults(d);
-});
-
-function showToast(msg, err=false) {
+// --- YARDIMCI ---
+function showToast(msg, err = false) {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'toast'+(err?' error':'');
+    t.textContent = msg;
+    t.className = 'toast' + (err ? ' error' : '');
     t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'), 4000);
+    setTimeout(() => t.classList.remove('show'), 4000);
 }
 
+// Başlatma
 document.getElementById('startExamBtn').addEventListener('click', startExam);
 document.getElementById('submitBtn').addEventListener('click', submitExam);
 </script>
