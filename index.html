@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 KPSS Kişisel Deneme Sınavı 🎯</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   
   <!-- Firebase SDK (Gerçek zamanlı bağlantı için) -->
   <script type="module">
@@ -15,7 +15,7 @@
     const firebaseConfig = {
       apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
       authDomain: "test-bala3.firebaseapp.com",
-      databaseURL: "https://test-bala3-default-rtdb.firebaseio.com", 
+      databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/", 
       projectId: "test-bala3",
       storageBucket: "test-bala3.firebasestorage.app",
       messagingSenderId: "413174140566",
@@ -92,6 +92,7 @@
     .result-screen { background: linear-gradient(145deg, #19132e, #22183e); border-radius: 24px; padding: 35px 25px; border: 1px solid #3c244f; }
     .grade-container { text-align: center; margin-bottom: 25px; }
     .grade { font-size: 4rem; font-weight: 850; color: #f43f5e; text-shadow: 0 0 20px rgba(244, 63, 94, 0.3); }
+    .grade-comment { font-size: 1.2rem; color: #fff; font-weight: 700; margin-top: 10px; padding: 0 15px; line-height: 1.5; }
     .detail-stats { color: #cbd5e1; margin-top: 15px; text-align: center; font-size: 1rem; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; display: inline-block; width: 100%; }
     .analysis-item { background: rgba(15, 11, 25, 0.6); border: 1px solid #3c244f; padding: 18px; border-radius: 14px; margin-bottom: 12px; }
     .analysis-item.correct-card { border-left: 5px solid #10b981; }
@@ -201,6 +202,7 @@
 
   // GERÇEK ZAMANLI EKRAN DURUMU TAKİBİ
   window.addEventListener('load', () => {
+    // Firebase yüklendikten sonra çalışması için 1 saniye bekletiyoruz
     setTimeout(() => {
       if (!window.db) return;
       const examRef = window.dbRef(window.db, 'kpss_exam');
@@ -257,7 +259,7 @@
       `;
       q.opts.forEach((opt, oi) => {
         html += `
-          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx}, ${oi})">
+          <label class="option" id="opt-label-${idx}-${oi}" onclick="selectOption(${idx},${oi})">
             <input type="radio" name="q${idx}" value="${oi}" />
             <span class="dot"></span>
             <span class="option-text">${opt}</span>
@@ -346,6 +348,7 @@
       }).then(() => {
         document.getElementById('examScreen').style.display = 'none';
         document.getElementById('waitingScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         showToast('✨ Sınav başarıyla kaydedildi! Sevgilin onayladığında sonuçlar açılacak.', false);
       }).catch(err => {
         showToast('❌ Veritabanı Hatası: ' + err, true);
@@ -369,7 +372,7 @@
     else comment = "Canın sağ olsun sevgilim, moral bozmak yok, her zaman yanındayım! 🧸💛";
     
     document.getElementById('gradeComment').textContent = comment;
-    document.getElementById('resultDetail').textContent = `✅ Doğru: ${correct}  |  ❌ Yanlış: ${wrong}  |  ⬜ Boş: ${empty}`;
+    document.getElementById('resultDetail').textContent = `✅ Doğru: ${correct}  |  ❌ Yanlış: ${wrong}  \vert{}  ⬜ Boş: ${empty}`;
     
     let analysisHtml = '';
     questions.forEach((q, idx) => {
@@ -383,71 +386,5 @@
       }
       analysisHtml += `
         <div class="analysis-item ${statusClass}">
-          <div style="font-weight:700; margin-bottom:8px;">Soru ${idx + 1}: ${q.q}</div>
-          <div style="font-size:0.9rem; margin-bottom:4px;"><b>Senin Cevabın:</b> ${userChoiceText} (${statusText})</div>
-          <div style="font-size:0.9rem; color:#10b981;"><b>Doğru Cevap:</b> ${q.opts[q.ans]}</div>
-          <div class="analysis-note">💡 <b>Not:</b> ${q.note}</div>
-        </div>
-      `;
-    });
-    document.getElementById('analysisArea').innerHTML = analysisHtml;
-  }
-
-  // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
-  function openAdminPanel() {
-    const pin = prompt("Yönetici Şifresini Girin:");
-    if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
-
-    if (!window.db) { showToast("❌ Veritabanına ulaşılamıyor!", true); return; }
-
-    const examRef = window.dbRef(window.db, 'kpss_exam');
-    window.dbOnValue(examRef, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        alert("Henüz çözülmüş bir sınav verisi bulunamadı!");
-        return;
-      }
-
-      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)";
-      
-      const action = prompt(
-        `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
-        `👤 Aday: ${data.email}\n` +
-        `🏆 Puan: ${data.score} / 100\n` +
-        `📊 Sonuç: ${data.correct} Doğru, ${data.wrong} Yanlış, ${data.empty} Boş\n` +
-        `🔑 Durum: ${statusInfo}\n\n` +
-        `[1] SONUÇLARI YAYINLA (Onun ekranında anında açılır!)\n` +
-        `[2] Sonuçları Geri Kilitle (Onu bekleme ekranına alır)\n` +
-        `[3] Sınavı Sıfırla (Kız arkadaşına tekrar çözme hakkı verir)\n\n` +
-        `Yapmak istediğin işlem numarasını gir:`
-      );
-
-      if (action === "1") {
-        window.dbUpdate(examRef, { revealed: true }).then(() => {
-          showToast("🔓 Sonuçlar başarıyla yayınlandı! Onun ekranında anında açıldı.", false);
-        });
-      } else if (action === "2") {
-        window.dbUpdate(examRef, { revealed: false }).then(() => {
-          showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
-        });
-      } else if (action === "3") {
-        if(confirm("Sınavı tamamen silmek ve sıfırlamak istediğine emin misin?")) {
-          window.dbSet(examRef, null).then(() => {
-            showToast("🧹 Tüm veriler sıfırlandı! Sayfa yenileniyor...", false);
-            setTimeout(() => location.reload(), 1500);
-          });
-        }
-      }
-    }, { onlyOnce: true });
-  }
-
-  function showToast(msg, isError = false) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'toast';
-    if (isError) t.classList.add('error');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 4000);
-  }
-</script>
-</body>
-</html>
+          <div style="font-weight:700; margin-bottom:8px;">Soru ${idx + 1}:${q.q}</div>
+          <div style="font-size:0.9rem; margin-bottom:4px;"><b>Senin Cevabın:
