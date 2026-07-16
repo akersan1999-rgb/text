@@ -159,11 +159,7 @@
 
   const ADMIN_PIN = "1923"; 
   
-  // URL parametre kontrolü
-  const urlParams = new URLSearchParams(window.location.search);
-  const isAdmin = urlParams.get('admin') === 'true';
-
-  // Sorular listesi
+  // Sorular listesi (TÜMÜ KORUNDU)
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
     { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan meclisimizin açılış günüdür bitanem! 🌸" },
@@ -198,21 +194,18 @@
   // GERÇEK ZAMANLI EKRAN DEĞİŞİM TAKİBİ
   const examRef = ref(db, 'kpss_exam');
   
-  // Admin değilse normal dinleyiciyi çalıştır
-  if (!isAdmin) {
-    onValue(examRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data && data.status === 'completed') {
-        if (data.revealed === true) {
-          showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
-        } else {
-          document.getElementById('startScreen').style.display = 'none';
-          document.getElementById('examScreen').style.display = 'none';
-          document.getElementById('waitingScreen').style.display = 'block';
-        }
+  onValue(examRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data && data.status === 'completed') {
+      if (data.revealed === true) {
+        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+      } else {
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('examScreen').style.display = 'none';
+        document.getElementById('waitingScreen').style.display = 'block';
       }
-    });
-  }
+    }
+  });
 
   function startTimer() {
     timerInterval = setInterval(() => {
@@ -396,11 +389,6 @@
 
   // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
   function openAdminPanel() {
-    if (!isAdmin) {
-      alert("Bu tarayıcı yönetici modunda değil! Lütfen sayfaya URL sonuna '?admin=true' ekleyerek girin. Örn: https://akersan1999-rgb.github.io/sinav.html?admin=true");
-      return;
-    }
-
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
 
