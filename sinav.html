@@ -80,7 +80,8 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.error { background: #ef4444; }
 
-    .admin-panel-trigger { text-align: center; margin-top: 40px; font-size: 0.9rem; font-weight: bold; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+    .admin-panel-trigger { text-align: center; margin-top: 40px; font-size: 0.9rem; font-weight: bold; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; transition: 0.3s; }
+    .admin-panel-trigger:hover { background: rgba(255,255,255,0.1); color: #fff; }
   </style>
 </head>
 <body>
@@ -142,26 +143,33 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  // ★★★ Firebase import'u - Hata yakalama ile ★★★
+  let db, examRef;
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const { getDatabase, ref, set, onValue, update, get } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
 
-  // Firebase Yapılandırması
-  const firebaseConfig = {
-    apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
-    authDomain: "test-bala3.firebaseapp.com",
-    databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/", 
-    projectId: "test-bala3",
-    storageBucket: "test-bala3.firebasestorage.app",
-    messagingSenderId: "413174140566",
-    appId: "1:413174140566:web:f7eefa4717579784b3bcb7",
-    measurementId: "G-1K995EJ7WR"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuj-l1GPAWz4wFrP209LCY2B_zr2_m8dg",
+      authDomain: "test-bala3.firebaseapp.com",
+      databaseURL: "https://test-bala3-default-rtdb.europe-west1.firebasedatabase.app/",
+      projectId: "test-bala3",
+      storageBucket: "test-bala3.firebasestorage.app",
+      messagingSenderId: "413174140566",
+      appId: "1:413174140566:web:f7eefa4717579784b3bcb7",
+      measurementId: "G-1K995EJ7WR"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const ADMIN_PIN = "1923"; 
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+    examRef = ref(db, 'kpss_exam');
+    console.log("🔥 Firebase bağlantısı başarılı!");
+  } catch (error) {
+    console.error("❌ Firebase import hatası:", error);
+    alert("Firebase bağlanamadı! Lütfen internet bağlantınızı kontrol edin veya sayfayı yenileyin.");
+  }
 
-  // Sorular listesi
+  // ★★★ SORULAR (20 adet) ★★★
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
     { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan meclisimizin açılış günüdür bitanem! 🌸" },
@@ -193,36 +201,8 @@
   let tempAnswers = {};
 
   document.getElementById('totalQ').textContent = total;
-  const examRef = ref(db, 'kpss_exam');
-  
-  // EKRAN DURUMU DİNLEYİCİSİ (Otomatik sonuç gösterimi)
-  onValue(examRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data && data.status === 'completed' && data.revealed === true) {
-      // Eğer sonuçlar yayınlanmışsa direkt göster
-      showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
-    } else if (data && data.status === 'completed' && data.revealed === false) {
-      // Kilitli durumda bekleme ekranını göster (eğer sınav bitmişse)
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('examScreen').style.display = 'none';
-      document.getElementById('waitingScreen').style.display = 'block';
-    }
-  });
 
-  // BEKLEME EKRANINDAKİ "Sonuçlarımı Gör" butonu için manuel kontrol
-  document.getElementById('checkResultBtn').addEventListener('click', () => {
-    get(examRef).then((snapshot) => {
-      const data = snapshot.val();
-      if (data && data.status === 'completed' && data.revealed === true) {
-        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
-      } else if (data && data.status === 'completed' && data.revealed === false) {
-        showToast('⏳ Sonuçların henüz onaylanmadı. Lütfen bekle.', true);
-      } else {
-        showToast('❌ Henüz bir sınav kaydı yok.', true);
-      }
-    });
-  });
-
+  // ★★★ FONKSİYONLAR ★★★
   function startTimer() {
     timerInterval = setInterval(() => {
       secondsRemaining--;
@@ -325,6 +305,7 @@
   }
 
   function submitExam() {
+    if (!examRef) { showToast('❌ Firebase bağlantısı yok!', true); return; }
     clearInterval(timerInterval);
     let correctCount = 0; let wrongCount = 0; let emptyCount = 0;
     let userAnswers = [];
@@ -352,6 +333,8 @@
       document.getElementById('waitingScreen').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       showToast('✨ Sınav başarıyla kaydedildi! Sevgilin onayladığında sonuçlar açılacak.', false);
+    }).catch(err => {
+      showToast('❌ Firebase kayıt hatası: ' + err.message, true);
     });
   }
 
@@ -393,15 +376,29 @@
     document.getElementById('analysisArea').innerHTML = analysisHtml;
   }
 
-  // ★ YÖNETİCİ PANELİ (SORUNSUZ / URL OLMADAN DİREKT AÇILIR) ★
+  // ★★★ YÖNETİCİ PANELİ (DÜZELTİLDİ - DOĞRUDAN ÇALIŞIR) ★★★
   function openAdminPanel() {
-    const pin = prompt("Yönetici Şifresini Girin:");
-    if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
-    
+    // Önce Firebase bağlantısı kontrolü
+    if (!examRef) {
+      showToast("❌ Firebase bağlantısı yok, lütfen sayfayı yenileyin!", true);
+      return;
+    }
+
+    // Şifre sor
+    const pin = prompt("🔑 Yönetici Şifresini Girin (Varsayılan: 1923):");
+    if (pin === null) return; // iptal edildi
+    if (pin !== "1923") {
+      showToast("❌ Geçersiz şifre!", true);
+      return;
+    }
+
+    showToast("✅ Şifre doğru, veriler yükleniyor...", false);
+
+    // Firebase'den verileri çek
     get(examRef).then((snapshot) => {
       const data = snapshot.val();
       
-      const statusInfo = data ? (data.revealed ? "YAYINLANDI" : "KİLİTLİ (Kız arkadaşın bekliyor)") : "VERİ YOK (Sınav çözülmedi)";
+      const statusInfo = data ? (data.revealed ? "✅ YAYINLANDI" : "🔒 KİLİTLİ (Öğrenci bekliyor)") : "📭 VERİ YOK (Sınav çözülmedi)";
       const emailInfo = data ? data.email : "Henüz giren yok";
       const scoreInfo = data ? data.score + " / 100" : "Sınav yapılmadı";
       
@@ -410,29 +407,60 @@
         `👤 Aday: ${emailInfo}\n` +
         `🏆 Puan: ${scoreInfo}\n` +
         `🔑 Durum: ${statusInfo}\n\n` +
-        `[1] SONUÇLARI YAYINLA\n` +
-        `[2] Sonuçları Geri Kilitle\n` +
-        `[3] Sınavı Sıfırla (Tekrar çözme hakkı verir)\n\n` +
+        `[1] ✅ SONUÇLARI YAYINLA\n` +
+        `[2] 🔒 Sonuçları Geri Kilitle\n` +
+        `[3] 🧹 Sınavı Sıfırla (Tekrar çözme hakkı verir)\n\n` +
         `İşlem numarası gir:`
       );
 
       if (action === "1") {
-        if(!data) { alert("Ortada yayınlanacak bir sınav yok!"); return; }
-        update(examRef, { revealed: true }).then(() => showToast("🔓 Sonuçlar yayınlandı!", false));
-      } else if (action === "2") {
-        if(!data) return;
-        update(examRef, { revealed: false }).then(() => showToast("🔒 Sonuçlar tekrar kilitlendi.", false));
-      } else if (action === "3") {
-        if(confirm("Sınavı tamamen silmek istediğine emin misin?")) {
-          set(examRef, null).then(() => {
-            showToast("🧹 Sıfırlandı! Yenileniyor...", false);
-            setTimeout(() => location.reload(), 1500);
+        if(!data) { alert("❌ Ortada yayınlanacak bir sınav yok!"); return; }
+        update(examRef, { revealed: true }).then(() => {
+          showToast("🔓 Sonuçlar başarıyla yayınlandı!", false);
+          // Sayfayı yenilemeden sonuçları göstermek için tekrar kontrol et
+          get(examRef).then((snap) => {
+            const d = snap.val();
+            if (d && d.revealed) {
+              showResults(d.score, d.correct, d.wrong, d.empty, d.answers);
+            }
           });
+        }).catch(err => showToast("❌ Hata: " + err.message, true));
+      } else if (action === "2") {
+        if(!data) { alert("❌ Ortada kilitlenecek bir sınav yok!"); return; }
+        update(examRef, { revealed: false }).then(() => {
+          showToast("🔒 Sonuçlar tekrar kilitlendi.", false);
+        }).catch(err => showToast("❌ Hata: " + err.message, true));
+      } else if (action === "3") {
+        if(confirm("⚠️ Sınavı tamamen silmek istediğine emin misin? Bu geri alınamaz!")) {
+          set(examRef, null).then(() => {
+            showToast("🧹 Sınav başarıyla sıfırlandı! Sayfa yenileniyor...", false);
+            setTimeout(() => location.reload(), 1500);
+          }).catch(err => showToast("❌ Hata: " + err.message, true));
         }
+      } else {
+        showToast("ℹ️ İşlem iptal edildi.", false);
       }
+    }).catch((err) => {
+      showToast("❌ Veri çekme hatası: " + err.message, true);
     });
   }
 
+  // ★★★ BEKLEME EKRANINDA SONUÇ KONTROLÜ ★★★
+  function checkResultManually() {
+    if (!examRef) { showToast("❌ Firebase bağlantısı yok!", true); return; }
+    get(examRef).then((snapshot) => {
+      const data = snapshot.val();
+      if (data && data.status === 'completed' && data.revealed === true) {
+        showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+      } else if (data && data.status === 'completed' && data.revealed === false) {
+        showToast('⏳ Sonuçların henüz onaylanmadı. Lütfen bekle.', true);
+      } else {
+        showToast('❌ Henüz bir sınav kaydı yok.', true);
+      }
+    }).catch(err => showToast("❌ Hata: " + err.message, true));
+  }
+
+  // ★★★ TOAST ★★★
   function showToast(msg, isError = false) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.className = 'toast';
@@ -441,9 +469,26 @@
     setTimeout(() => t.classList.remove('show'), 4000);
   }
 
+  // ★★★ EVENT LİSTENER'LAR ★★★
   document.getElementById('startExamBtn').addEventListener('click', startExam);
   document.getElementById('submitBtn').addEventListener('click', submitExam);
   document.getElementById('adminPanelBtn').addEventListener('click', openAdminPanel);
+  document.getElementById('checkResultBtn').addEventListener('click', checkResultManually);
+
+  // ★★★ FIREBASE DURUM DİNLEYİCİSİ (OTOMATİK SONUÇ AÇMA) ★★★
+  if (examRef) {
+    onValue(examRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && data.status === 'completed' && data.revealed === true) {
+        // Eğer sonuçlar yayınlanmışsa ve sayfada sonuç ekranı yoksa göster
+        if (document.getElementById('resultScreen').style.display !== 'block') {
+          showResults(data.score, data.correct, data.wrong, data.empty, data.answers);
+        }
+      }
+    });
+  }
+
+  console.log("✅ Uygulama başarıyla yüklendi!");
 </script>
 </body>
 </html>
