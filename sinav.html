@@ -22,24 +22,12 @@
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
     .floating-items{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
-    .float-item{
-      position:absolute;font-size:2rem;animation:floatAround 8s linear infinite;opacity:0.15;
-    }
-    @keyframes floatAround{
-      0%{transform:translate(0, 100vh) rotate(0deg);opacity:0}
-      10%{opacity:0.2}
-      90%{opacity:0.2}
-      100%{transform:translate(100vw, -100px) rotate(360deg);opacity:0}
-    }
+    .float-item{position:absolute;font-size:2rem;animation:floatAround 8s linear infinite;opacity:0.12}
+    @keyframes floatAround{0%{transform:translate(0,100vh) rotate(0deg);opacity:0}10%{opacity:0.15}90%{opacity:0.15}100%{transform:translate(100vw,-100px) rotate(360deg);opacity:0}}
 
     .container{max-width:800px;margin:0 auto;padding:20px;position:relative;z-index:1}
 
-    .sticky-bar{
-      position:sticky;top:0;z-index:100;background:var(--surface);border:1px solid var(--border);
-      border-radius:0 0 16px 16px;padding:12px 20px;margin-bottom:20px;
-      display:none;justify-content:space-between;align-items:center;
-      box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
-    }
+    .sticky-bar{position:sticky;top:0;z-index:100;background:var(--surface);border:1px solid var(--border);border-radius:0 0 16px 16px;padding:12px 20px;margin-bottom:20px;display:none;justify-content:space-between;align-items:center;box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px)}
     .sticky-bar .timer{font-weight:700;font-size:1.2rem;color:var(--accent)}
     .sticky-bar .progress-text{font-size:0.9rem;color:var(--text2)}
 
@@ -58,8 +46,11 @@
     button:active::after{width:300px;height:300px}
 
     .row{display:flex;gap:10px}.row>*{flex:1}
-    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
+    .btn-group{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+    .btn-group>*{flex:1;min-width:120px}
+    .back-btn{background:var(--info);width:auto;padding:12px 24px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .home-btn{background:var(--info);width:auto;padding:12px 24px;display:inline-flex;border-radius:10px;font-weight:600}
 
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
     .stats-item{flex:1;animation:popIn 0.6s ease backwards}
@@ -74,7 +65,8 @@
     @keyframes slideLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
     .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(6px)}
     .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15);box-shadow:0 0 15px rgba(244,63,94,0.2)}
-    .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+    .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}
+    .blank-opt{border-style:dashed;color:var(--text2)}
 
     .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem;transition:0.3s}.link-box:hover{background:rgba(244,63,94,0.05)}
 
@@ -91,18 +83,16 @@
     .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
     .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px;font-size:0.9rem}
     .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.4s}.admin-fab:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 15px 35px rgba(244,63,94,0.7)}
-    .help-mail{text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
+    .help-mail{text-align:center;margin-top:15px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
     .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:12px;font-size:0.9rem}
     .difficulty-buttons{display:flex;flex-direction:column;gap:15px;margin:20px 0}
     .difficulty-btn{background:var(--card);border:2px solid var(--border);color:var(--text);padding:20px;border-radius:16px;font-size:1.3rem;font-weight:700;cursor:pointer;transition:0.4s;text-align:center}.difficulty-btn:hover{border-color:var(--accent)}.difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
-
     .success-msg{color:var(--success);text-align:center;margin-top:10px;font-weight:600}
-    .feedback-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:4rem;z-index:1000;pointer-events:none;transition:transform 0.3s ease}
-    .feedback-pop.show{transform:translate(-50%,-50%) scale(1);animation:popBounce 0.6s ease forwards}
-    @keyframes popBounce{0%{transform:translate(-50%,-50%) scale(0)}50%{transform:translate(-50%,-50%) scale(1.3)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
 
-    .footer{text-align:center;margin-top:30px;padding:15px;color:var(--text2);font-size:0.8rem;border-top:1px solid var(--border)}
-    .footer span{color:var(--accent);font-weight:600}
+    .footer{text-align:center;margin-top:30px;padding:20px;color:var(--text2);font-size:0.85rem;border-top:1px solid var(--border);letter-spacing:0.5px}
+    .footer span{color:var(--accent);font-weight:700;font-size:1rem}
+    .nav-buttons{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+    .nav-buttons button{flex:1;min-width:140px}
   </style>
 </head>
 <body>
@@ -124,16 +114,17 @@
     <button id="startBtn">🚀 Devam Et</button>
     <p style="text-align:center;margin-top:15px;font-size:0.8rem;color:var(--text2)">Yönetici iseniz sağ alttaki 🔐 butonuna tıklayın.</p>
     <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
-    <button class="back-btn" id="goToHomeFromLogin" style="margin-top:10px">🏠 Ana Sayfa</button>
-    <div class="footer">Tasarlayan & Düzenleyen: <span>Akersan</span></div>
+    <div class="footer">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
   </div>
 
   <!-- Zorluk Seçimi -->
   <div class="screen" id="difficultyScreen">
-    <button class="back-btn" id="backToLoginBtn">⬅️ Geri</button>
-    <button class="back-btn" id="goToHomeFromDiff" style="background:var(--info);margin-left:10px">🏠 Ana Sayfa</button>
+    <div class="nav-buttons">
+      <button class="back-btn" id="backToLoginBtn">⬅️ Geri</button>
+      <button class="home-btn" id="goToHomeFromDiff">🏠 Ana Sayfa</button>
+    </div>
     <h2>🎚️ Zorluk Seviyesini Seç</h2>
-    <p style="text-align:center;color:var(--text2);margin-bottom:15px">Her seviyede tam 20 soru, 100 puan üzerinden değerlendirme</p>
+    <p style="text-align:center;color:var(--text2);margin-bottom:15px">Her seviyede <strong>20 soru</strong>, <strong>100 puan</strong> üzerinden değerlendirme</p>
     <div class="difficulty-buttons">
       <div class="difficulty-btn" data-diff="easy">🟢 Kolay <span style="font-size:0.9rem;margin-left:10px">🌸</span></div>
       <div class="difficulty-btn" data-diff="medium">🟡 Orta <span style="font-size:0.9rem;margin-left:10px">📚</span></div>
@@ -141,18 +132,23 @@
       <div class="difficulty-btn selected" data-diff="all">🌈 Tümü (Karışık) <span style="font-size:0.9rem;margin-left:10px">🎲</span></div>
     </div>
     <button id="startExamAfterDiff">✨ Sınava Başla (20 Soru, 100 Puan)</button>
+    <div class="footer">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
   </div>
 
   <!-- Sınav -->
   <div class="screen" id="examScreen">
-    <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
+    <div class="nav-buttons">
+      <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
+    </div>
     <div id="questionsContainer"></div>
     <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
   </div>
 
   <!-- Bekleme -->
   <div class="screen" id="waitScreen">
-    <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
+    <div class="nav-buttons">
+      <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
+    </div>
     <h2>⏳ Sınavın Kaydedildi</h2>
     <p style="text-align:center;margin-bottom:15px;color:var(--text2)">Sonuç linkini paylaş, yönetici yayınlayınca gör.</p>
     <div class="link-box" id="linkBox" title="Tıkla kopyala"></div>
@@ -162,11 +158,14 @@
       <button id="shareMailBtn" style="background:#EA4335">✉️ Mail ile Gönder</button>
     </div>
     <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
+    <div class="footer">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
   </div>
 
   <!-- Sonuç -->
   <div class="screen" id="resultScreen">
-    <button class="back-btn" id="backToHomeResultBtn">⬅️ Ana Sayfa</button>
+    <div class="nav-buttons">
+      <button class="back-btn" id="backToHomeResultBtn">⬅️ Ana Sayfa</button>
+    </div>
     <div class="stats-grid">
       <div class="stats-item"><span class="value" id="scoreDisplay">0</span><span class="label">Puan</span></div>
       <div class="stats-item"><span class="value" id="correctDisplay">0</span><span class="label">Doğru</span></div>
@@ -182,6 +181,8 @@
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
     </div>
     <div id="mailSuccessMsg" class="success-msg" style="display:none"></div>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <div class="footer">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
   </div>
 </div>
 
@@ -221,11 +222,11 @@
         <div id="studentList"></div>
         <div id="studentDetail" style="margin-top:15px"></div>
       </div>
+      <div class="footer" style="margin-top:20px;border-top:1px solid var(--border)">Tasarlayan & Düzenleyen: <span>{ak_ersan} v1.1.0</span></div>
     </div>
   </div>
 </div>
 <button class="admin-fab" id="openAdminBtn">🔐</button>
-<div class="feedback-pop" id="feedbackPop"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -306,7 +307,7 @@ const questionPool = [
 
 let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1800, selectedDifficulty = 'all';
 
-// Animasyonlu arka plan öğeleri
+// Animasyonlu arka plan
 function createFloatingItems() {
   const container = document.getElementById('floatingItems');
   const items = ['📚', '✏️', '🎓', '📐', '📏', '🦉', '⭐', '🌸', '📖', '🏆'];
@@ -346,16 +347,6 @@ function showScreen(id) {
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 
-// Anlık geri bildirim
-function showFeedback(emoji) {
-  const pop = document.getElementById('feedbackPop');
-  pop.textContent = emoji;
-  pop.classList.remove('show');
-  void pop.offsetWidth;
-  pop.classList.add('show');
-  setTimeout(() => pop.classList.remove('show'), 700);
-}
-
 // Zorluk seçimi
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', function() {
@@ -364,6 +355,9 @@ document.querySelectorAll('.difficulty-btn').forEach(btn => {
     selectedDifficulty = this.dataset.diff;
   });
 });
+
+// Ana sayfa butonları
+document.getElementById('goToHomeFromDiff').addEventListener('click', () => showScreen('loginScreen'));
 
 document.getElementById('startBtn').addEventListener('click', () => {
   const name = document.getElementById('nameInput').value.trim();
@@ -376,8 +370,6 @@ document.getElementById('startBtn').addEventListener('click', () => {
 });
 
 document.getElementById('backToLoginBtn').addEventListener('click', () => showScreen('loginScreen'));
-document.getElementById('goToHomeFromDiff').addEventListener('click', () => showScreen('loginScreen'));
-document.getElementById('goToHomeFromLogin').addEventListener('click', () => showScreen('loginScreen'));
 
 document.getElementById('startExamAfterDiff').addEventListener('click', async () => {
   const snap = await get(examsRef);
@@ -423,14 +415,12 @@ function renderExamQuestions() {
   document.getElementById('questionsContainer').innerHTML = html;
   document.querySelectorAll('.opt').forEach(el => el.addEventListener('click', function() {
     const qIdx = +this.dataset.q, val = this.dataset.o;
-    const isCorrect = (val !== 'blank' && +val === allQuestions[qIdx].a);
     answers[qIdx] = val === 'blank' ? 'blank' : +val;
     answeredSet.add(qIdx);
     this.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('chosen'));
     this.classList.add('chosen');
     document.getElementById('stickyAnswered').textContent = answeredSet.size;
     document.getElementById('stickyProgress').textContent = Math.round(answeredSet.size / allQuestions.length * 100);
-    if (val !== 'blank') showFeedback(isCorrect ? '✅' : '❌');
   }));
 }
 
@@ -493,7 +483,6 @@ function showResult(data) {
   });
   document.getElementById('analysisContainer').innerHTML = html;
   confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-  setTimeout(() => showFeedback('🏆'), 500);
   const link = location.origin + location.pathname + '?exam=' + examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Sonucum: ' + link)}`);
   document.getElementById('sendMailResult').onclick = () => sendMail(data, link);
@@ -516,7 +505,7 @@ async function sendMail(data, link) {
   } catch(e) { alert('Mail hatası: ' + e.message); }
 }
 
-// Diğer butonlar
+// Paylaş butonları
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!')));
 document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> window.open(`https://wa.me/?text=${encodeURIComponent('KPSS linkim: ' + document.getElementById('linkBox').textContent)}`));
 document.getElementById('shareMailBtn').addEventListener('click', ()=> window.location.href = `mailto:?subject=KPSS Linkim&body=${encodeURIComponent(document.getElementById('linkBox').textContent)}`);
