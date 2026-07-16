@@ -17,10 +17,23 @@
     body{
       background:linear-gradient(135deg, #0b0914 0%, #1a1030 50%, #0b0914 100%);
       background-size:400% 400%;animation:bgMove 15s ease infinite;
-      color:var(--text);min-height:100vh;overflow-x:hidden;
+      color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;
     }
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    .container{max-width:800px;margin:0 auto;padding:20px}
+
+    /* Eğitim animasyonları */
+    .floating-items{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+    .float-item{
+      position:absolute;font-size:2rem;animation:floatAround 8s linear infinite;opacity:0.15;
+    }
+    @keyframes floatAround{
+      0%{transform:translate(0, 100vh) rotate(0deg);opacity:0}
+      10%{opacity:0.2}
+      90%{opacity:0.2}
+      100%{transform:translate(100vw, -100px) rotate(360deg);opacity:0}
+    }
+
+    .container{max-width:800px;margin:0 auto;padding:20px;position:relative;z-index:1}
 
     .sticky-bar{
       position:sticky;top:0;z-index:100;background:var(--surface);border:1px solid var(--border);
@@ -49,18 +62,31 @@
 
     .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer}
     .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex}
-    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:600px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto}
+    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:650px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto}
     .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
     .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}.list-item:hover{background:rgba(244,63,94,0.06)}
     .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border)}.tab.active{background:var(--accent);color:#fff}
-    .btn-sm{padding:8px 16px;font-size:0.85rem;width:auto;border-radius:10px}
+    .btn-sm{padding:8px 14px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
     .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center}
     .difficulty-buttons{display:flex;flex-direction:column;gap:15px;margin:20px 0}
     .difficulty-btn{background:var(--card);border:2px solid var(--border);color:var(--text);padding:20px;border-radius:16px;font-size:1.3rem;font-weight:700;cursor:pointer;transition:0.4s;text-align:center}
     .difficulty-btn:hover{border-color:var(--accent)}.difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
+
+    .success-msg{color:var(--success);text-align:center;margin-top:10px;font-weight:600}
+    .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px}
+
+    /* Doğru/Yanlış anlık efekt */
+    .feedback-pop{
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+      font-size:4rem;z-index:1000;pointer-events:none;transition:transform 0.3s ease;
+    }
+    .feedback-pop.show{transform:translate(-50%,-50%) scale(1);animation:popBounce 0.6s ease forwards}
+    @keyframes popBounce{0%{transform:translate(-50%,-50%) scale(0)}50%{transform:translate(-50%,-50%) scale(1.3)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
   </style>
 </head>
 <body>
+<div class="floating-items" id="floatingItems"></div>
+
 <div class="container">
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 30:00</span>
@@ -68,34 +94,41 @@
     <span>İlerleme: <strong id="stickyProgress">0</strong>%</span>
   </div>
 
+  <!-- Giriş -->
   <div class="screen active" id="loginScreen">
     <h2>🎯 KPSS Deneme Sınavı</h2>
     <p style="text-align:center;margin-bottom:25px;color:var(--text2)">Ad, soyad ve e-posta ile giriş yap. Tek hakkın var!</p>
-    <div id="loginError" class="error-msg" style="display:none;color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px"></div>
+    <div id="loginError" class="error-msg" style="display:none"></div>
     <div class="row"><input type="text" id="nameInput" placeholder="Adın"/><input type="text" id="surnameInput" placeholder="Soyadın"/></div>
     <input type="email" id="emailInput" placeholder="E-posta adresin"/>
     <button id="startBtn">🚀 Devam Et</button>
+    <p style="text-align:center;margin-top:15px;font-size:0.8rem;color:var(--text2)">
+      Yönetici iseniz sağ alttaki 🔐 butonuna tıklayın.
+    </p>
     <div class="help-mail" style="text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)">📧 İletişim: <a href="mailto:akersan1999@gmail.com" style="color:var(--info)">akersan1999@gmail.com</a></div>
   </div>
 
+  <!-- Zorluk Seçimi -->
   <div class="screen" id="difficultyScreen">
     <button class="back-btn" id="backToLoginBtn">⬅️ Geri</button>
     <h2>🎚️ Zorluk Seviyesini Seç</h2>
     <div class="difficulty-buttons">
-      <div class="difficulty-btn" data-diff="easy">🟢 Kolay</div>
-      <div class="difficulty-btn" data-diff="medium">🟡 Orta</div>
-      <div class="difficulty-btn" data-diff="hard">🔴 Zor</div>
-      <div class="difficulty-btn selected" data-diff="all">🌈 Tümü (Karışık)</div>
+      <div class="difficulty-btn" data-diff="easy">🟢 Kolay <span style="font-size:0.9rem;margin-left:10px">🌸</span></div>
+      <div class="difficulty-btn" data-diff="medium">🟡 Orta <span style="font-size:0.9rem;margin-left:10px">📚</span></div>
+      <div class="difficulty-btn" data-diff="hard">🔴 Zor <span style="font-size:0.9rem;margin-left:10px">🧠</span></div>
+      <div class="difficulty-btn selected" data-diff="all">🌈 Tümü (Karışık) <span style="font-size:0.9rem;margin-left:10px">🎲</span></div>
     </div>
     <button id="startExamAfterDiff">✨ Sınava Başla</button>
   </div>
 
+  <!-- Sınav -->
   <div class="screen" id="examScreen">
     <button class="back-btn" id="backToHomeBtn">⬅️ Ana Sayfa</button>
     <div id="questionsContainer"></div>
     <button id="finishBtn">✨ Sınavı Bitir ve Gönder</button>
   </div>
 
+  <!-- Bekleme -->
   <div class="screen" id="waitScreen">
     <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
     <h2>⏳ Sınavın Kaydedildi</h2>
@@ -107,6 +140,7 @@
     <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
   </div>
 
+  <!-- Sonuç -->
   <div class="screen" id="resultScreen">
     <button class="back-btn" id="backToHomeResultBtn">⬅️ Ana Sayfa</button>
     <div class="stats-grid">
@@ -121,10 +155,11 @@
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp</button>
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
     </div>
-    <div id="mailSuccessMsg" style="color:var(--success);text-align:center;margin-top:10px;font-weight:600;display:none"></div>
+    <div id="mailSuccessMsg" class="success-msg" style="display:none"></div>
   </div>
 </div>
 
+<!-- Yönetici Modal -->
 <div class="modal" id="adminModal">
   <div class="modal-content">
     <span class="close-modal" id="closeAdminModal">&times;</span>
@@ -147,6 +182,7 @@
           <button id="yayinlaBtn" style="background:var(--success)">✅ Yayınla & Mail</button>
           <button id="kilitleBtn" style="background:var(--warning);color:#000">🔒 Kilitle</button>
         </div>
+        <button id="silTumBtn" style="background:var(--danger);margin-top:10px">🗑️ Tüm Sınavları Sil</button>
       </div>
       <div id="questionsTab" style="display:none">
         <button id="addQuestionBtn" style="background:var(--success);margin-bottom:15px">➕ Yeni Soru Ekle</button>
@@ -163,6 +199,8 @@
   </div>
 </div>
 <button class="admin-fab" id="openAdminBtn">🔐</button>
+
+<div class="feedback-pop" id="feedbackPop"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -187,13 +225,14 @@ const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
 const MAIL_TEMPLATE_ID = "template_pqqrclq";
 
+// Havuz
 const questionPool = [
   { q:"Türkiye'nin başkenti?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:0, difficulty:"easy", n:"Ankara." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
   { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
   { q:"İstiklal Marşı yazarı?", o:["Mehmet Akif","Namık Kemal","Yahya Kemal","Orhan Veli","Can Yücel"], a:0, difficulty:"easy", n:"Mehmet Akif Ersoy." },
   { q:"En büyük gezegen?", o:["Dünya","Mars","Jüpiter","Satürn","Uranüs"], a:2, difficulty:"easy", n:"Jüpiter." },
-  { q:"Su kaynama noktası?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
+  { q:"Su kaç derecede kaynar?", o:["50","75","100","125","150"], a:2, difficulty:"easy", n:"100°C." },
   { q:"1 m = ? cm", o:["10","100","1000","10000","100000"], a:1, difficulty:"easy", n:"100 cm." },
   { q:"En kalabalık kıta?", o:["Afrika","Asya","Avrupa","Amerika","Avustralya"], a:1, difficulty:"easy", n:"Asya." },
   { q:"Atatürk nerede doğdu?", o:["İstanbul","Ankara","Selanik","Manastır","İzmir"], a:2, difficulty:"easy", n:"Selanik." },
@@ -238,20 +277,30 @@ const questionPool = [
   { q:"İlk bilgisayar?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
   { q:"Hangi ülkenin başkenti yok?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
   { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." },
-  { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
-  { q:"Dünyanın en uzun kara sınırı?", o:["ABD-Kanada","Rusya-Çin","Hindistan-Bangladeş","Brezilya-Arjantin","Şili-Arjantin"], a:0, difficulty:"hard", n:"ABD-Kanada." }
+  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." }
 ];
 
-let allQuestions = [];
-let userData = {};
-let examId = null;
-let answers = [];
-let answeredSet = new Set();
-let timer = null;
-let remaining = 1800;
-let selectedDifficulty = 'all';
+// Değişkenler
+let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1800, selectedDifficulty = 'all';
 
+// Animasyonlu arka plan öğeleri
+function createFloatingItems() {
+  const container = document.getElementById('floatingItems');
+  const items = ['📚', '✏️', '🎓', '📐', '📏', '🦉', '⭐', '🌸', '📖', '🏆'];
+  for (let i = 0; i < 15; i++) {
+    const el = document.createElement('div');
+    el.className = 'float-item';
+    el.textContent = items[Math.floor(Math.random() * items.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    el.style.animationDelay = Math.random() * 10 + 's';
+    el.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+    container.appendChild(el);
+  }
+}
+createFloatingItems();
+
+// Oturum
 if (sessionStorage.getItem('examState')) {
   const state = JSON.parse(sessionStorage.getItem('examState'));
   if (state.screen) showScreen(state.screen);
@@ -274,6 +323,17 @@ function showScreen(id) {
   sessionStorage.setItem('examState', JSON.stringify({screen:id, examId, userData}));
 }
 
+// Anlık geri bildirim
+function showFeedback(emoji) {
+  const pop = document.getElementById('feedbackPop');
+  pop.textContent = emoji;
+  pop.classList.remove('show');
+  void pop.offsetWidth;
+  pop.classList.add('show');
+  setTimeout(() => pop.classList.remove('show'), 700);
+}
+
+// Zorluk seçimi
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('selected'));
@@ -297,7 +357,9 @@ document.getElementById('backToLoginBtn').addEventListener('click', () => showSc
 document.getElementById('startExamAfterDiff').addEventListener('click', async () => {
   const snap = await get(examsRef);
   if (Object.values(snap.val()||{}).some(e=>e.email===userData.email)) {
-    alert('Bu e-posta ile zaten sınav girilmiş.');
+    document.getElementById('loginError').textContent = 'Bu e-posta ile zaten sınav girilmiş. Yöneticiden silmesini isteyin.';
+    document.getElementById('loginError').style.display = 'block';
+    showScreen('loginScreen');
     return;
   }
   showScreen('examScreen');
@@ -336,12 +398,16 @@ function renderExamQuestions() {
   document.getElementById('questionsContainer').innerHTML = html;
   document.querySelectorAll('.opt').forEach(el => el.addEventListener('click', function() {
     const qIdx = +this.dataset.q, val = this.dataset.o;
+    const isCorrect = (val !== 'blank' && +val === allQuestions[qIdx].a);
     answers[qIdx] = val === 'blank' ? 'blank' : +val;
     answeredSet.add(qIdx);
     this.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('chosen'));
     this.classList.add('chosen');
     document.getElementById('stickyAnswered').textContent = answeredSet.size;
     document.getElementById('stickyProgress').textContent = Math.round(answeredSet.size / allQuestions.length * 100);
+    if (val !== 'blank') {
+      showFeedback(isCorrect ? '✅' : '❌');
+    }
   }));
 }
 
@@ -358,7 +424,6 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
     const score = Math.round(correct / allQuestions.length * 100);
     const newRef = push(examsRef);
     examId = newRef.key;
-    // Sınav verisine soruları da ekle (açıklamalarıyla birlikte)
     await set(newRef, {
       ...userData,
       score, correct, wrong, empty,
@@ -383,7 +448,6 @@ function showResult(data) {
   document.getElementById('wrongDisplay').textContent = data.wrong;
   document.getElementById('emptyDisplay').textContent = data.empty;
   document.getElementById('nameSurnameDisplay').textContent = `${data.name} ${data.surname} - ${data.email}`;
-  // Kayıtlı soruları kullan
   const questions = data.questions || allQuestions;
   let html = '';
   questions.forEach((q, i) => {
@@ -401,7 +465,8 @@ function showResult(data) {
       <small>💡 ${q.n||''}</small></div>`;
   });
   document.getElementById('analysisContainer').innerHTML = html;
-  confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+  confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+  setTimeout(() => showFeedback('🏆'), 500);
   const link = location.origin + location.pathname + '?exam=' + examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Sonucum: ' + link)}`);
   document.getElementById('sendMailResult').onclick = () => sendMail(data, link);
@@ -482,15 +547,30 @@ function renderExamList() {
   let html='';
   ids.sort((a,b)=>adminExams[b].submittedAt-adminExams[a].submittedAt).forEach(id => {
     const e=adminExams[id];
-    html+=`<div class="list-item" data-id="${id}"><div><strong>${e.name} ${e.surname}</strong><br><small>${e.email}</small></div><div style="text-align:right"><span style="color:var(--accent);font-weight:700">${e.score}p</span><br>${e.revealed?'✅':'🔒'}</div></div>`;
+    html+=`<div class="list-item" data-id="${id}">
+      <div style="flex:1"><strong>${e.name} ${e.surname}</strong><br><small>${e.email}</small></div>
+      <div style="text-align:right;margin-right:10px"><span style="color:var(--accent);font-weight:700">${e.score}p</span><br>${e.revealed?'✅':'🔒'}</div>
+      <button class="btn-sm delete-exam" data-id="${id}" style="background:var(--danger)" title="Bu sınavı sil">🗑️</button>
+    </div>`;
   });
   list.innerHTML=html;
-  document.querySelectorAll('#examList .list-item').forEach(el=>el.addEventListener('click', function() {
+  document.querySelectorAll('#examList .list-item').forEach(el=>el.addEventListener('click', function(e) {
+    if (e.target.classList.contains('delete-exam')) return;
     document.querySelectorAll('#examList .list-item').forEach(i=>i.classList.remove('selected'));
     this.classList.add('selected'); selectedExamId=this.dataset.id;
     showExamDetail(selectedExamId); document.getElementById('adminActions').style.display='flex';
   }));
+  document.querySelectorAll('.delete-exam').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      if (confirm('Bu sınav kaydı silinsin mi?')) {
+        await remove(ref(db, `exams/${id}`));
+      }
+    });
+  });
 }
+
 function showExamDetail(id) {
   const e=adminExams[id];
   const questions = e.questions || allQuestions;
@@ -509,8 +589,13 @@ document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
   sendMail({ email: exam.email, name: exam.name + ' ' + exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, location.origin+location.pathname+'?exam='+selectedExamId);
 });
 document.getElementById('kilitleBtn').addEventListener('click', async ()=>{ if(selectedExamId) await update(ref(db,`exams/${selectedExamId}`),{revealed:false}); });
+document.getElementById('silTumBtn').addEventListener('click', ()=>{
+  if (confirm('TÜM SINAVLAR SİLİNECEK! Emin misiniz?')) {
+    set(examsRef, null).then(() => location.reload());
+  }
+});
 
-// Gelişim tablosu
+// Gelişim
 function renderStudentList() {
   const emails = [...new Set(Object.values(adminExams).map(e=>e.email))];
   const list = document.getElementById('studentList');
@@ -541,7 +626,6 @@ function showStudentProgress(email) {
   });
   html += '</table>';
   container.innerHTML = html;
-  // Basit çizgi grafik
   setTimeout(() => {
     const canvas = document.getElementById('progressChart');
     if (!canvas) return;
@@ -591,7 +675,6 @@ document.getElementById('addQuestionBtn').addEventListener('click', ()=>{
   const n=prompt('Not:')||'';
   push(questionsRef,{q,o:opts,a:+a,difficulty:d,n});
 });
-
 function editQuestion(id) {
   get(questionsRef).then(snap => {
     const questions = snap.val()||{};
