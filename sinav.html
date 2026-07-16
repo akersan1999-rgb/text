@@ -172,9 +172,11 @@
             padding: 24px;
             margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s;
         }
         .question-card.active-q {
-            border-color: rgba(244, 63, 94, 0.4);
+            border-color: #f43f5e;
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
         }
         .q-head {
             display: flex;
@@ -211,7 +213,11 @@
             border: 2px solid #3c244f;
             border-radius: 12px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
+        }
+        .option:hover {
+            border-color: #f43f5e;
+            background: rgba(244, 63, 94, 0.08);
         }
         .option input {
             display: none;
@@ -225,6 +231,7 @@
             align-items: center;
             justify-content: center;
             transition: 0.2s;
+            flex-shrink: 0;
         }
         .dot::after {
             content: '';
@@ -233,18 +240,18 @@
             background: #f43f5e;
             border-radius: 50%;
             transform: scale(0);
-            transition: 0.2s;
+            transition: transform 0.2s ease;
         }
-        .option input:checked+.dot {
+        .option.selected-opt {
             border-color: #f43f5e;
             background: rgba(244, 63, 94, 0.1);
         }
-        .option input:checked+.dot::after {
-            transform: scale(1);
-        }
-        .selected-opt {
+        .option.selected-opt .dot {
             border-color: #f43f5e;
-            background: rgba(244, 63, 94, 0.05);
+            background: rgba(244, 63, 94, 0.2);
+        }
+        .option.selected-opt .dot::after {
+            transform: scale(1);
         }
         .blank-option {
             border-style: dashed;
@@ -261,6 +268,11 @@
             color: #fff;
             cursor: pointer;
             margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* BEKLEME */
@@ -376,20 +388,18 @@
             box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.6);
             transition: transform 0.3s;
         }
-        .admin-panel.collapsed .admin-content {
-            display: none;
-        }
         .admin-toggle {
             background: #f43f5e;
             border: none;
             color: #fff;
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 20px;
             font-weight: 700;
             cursor: pointer;
             margin-bottom: 10px;
             width: 100%;
             text-align: center;
+            font-size: 1rem;
         }
         .admin-content {
             display: flex;
@@ -400,6 +410,7 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
         .admin-row input {
             flex: 1;
@@ -408,6 +419,7 @@
             border: 1px solid #3c244f;
             background: #0f0b19;
             color: #fff;
+            min-width: 120px;
         }
         .admin-buttons {
             display: flex;
@@ -415,12 +427,20 @@
             flex-wrap: wrap;
         }
         .admin-btn {
-            padding: 10px 20px;
+            padding: 10px 16px;
             border: none;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             flex: 1;
+            transition: filter 0.2s;
+        }
+        .admin-btn:hover {
+            filter: brightness(1.1);
+        }
+        .btn-giris {
+            background: #6366f1;
+            color: #fff;
         }
         .btn-yayinla {
             background: #10b981;
@@ -434,20 +454,24 @@
             background: #ef4444;
             color: #fff;
         }
-        .btn-giris {
-            background: #6366f1;
-            color: #fff;
+        .admin-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.6;
         }
         .admin-msg {
             font-size: 0.85rem;
-            color: #cbd5e1;
+            color: #fbbf24;
             text-align: center;
         }
 
         /* TOAST */
         .toast {
             position: fixed;
-            bottom: 180px;
+            bottom: 200px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #ec4899;
@@ -497,7 +521,7 @@
                 <span><span id="progressPercent">0</span>%</span>
             </div>
             <div id="quizArea"></div>
-            <button class="btn-submit" id="submitBtn">Sınavı Bitir ve Gönder ✨</button>
+            <button type="button" class="btn-submit" id="submitBtn">Sınavı Bitir ve Gönder ✨</button>
         </div>
 
         <!-- BEKLEME EKRANI -->
@@ -523,11 +547,12 @@
     <!-- SABİT YÖNETİCİ PANELİ -->
     <div class="admin-panel" id="adminPanel">
         <button class="admin-toggle" id="adminToggle">⚙️ Yönetici Panelini Aç / Kapat</button>
-        <div class="admin-content" id="adminContent">
+        <div class="admin-content" id="adminContent" style="display: none;">
             <div class="admin-row">
-                <input type="password" id="adminPassInput" placeholder="Yönetici şifresi (1923)" />
+                <input type="password" id="adminPassInput" placeholder="Şifre (1923)" />
                 <button class="admin-btn btn-giris" id="adminGirisBtn">Giriş</button>
             </div>
+            <div class="admin-info" id="adminInfo" style="display: none;"></div>
             <div class="admin-buttons" id="adminButtons" style="display: none;">
                 <button class="admin-btn btn-yayinla" id="yayinlaBtn">✅ Yayınla</button>
                 <button class="admin-btn btn-kilitle" id="kilitleBtn">🔒 Kilitle</button>
@@ -554,16 +579,9 @@
             measurementId: "G-1K995EJ7WR"
         };
 
-        let db, examRef;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
-            examRef = ref(db, 'kpss_exam');
-            console.log("✅ Firebase bağlantısı başarılı");
-        } catch (e) {
-            alert("Firebase bağlanamadı! Sayfayı yenileyin.");
-            throw e;
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const examRef = ref(db, 'kpss_exam');
 
         const questions = [
             { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
@@ -701,35 +719,48 @@
             document.getElementById('progressBar').style.width = (count / total) * 100 + '%';
         }
 
-        function submitExam() {
-            clearInterval(timerInterval);
-            let correct = 0,
-                wrong = 0,
-                empty = 0;
-            const userAnswers = [];
-            questions.forEach((q, idx) => {
-                const val = tempAnswers[idx] !== undefined ? tempAnswers[idx] : 'blank';
-                userAnswers.push(val);
-                if (val === 'blank') empty++;
-                else if (val === q.ans) correct++;
-                else wrong++;
-            });
-            const score = Math.round((correct / total) * 100);
-            set(examRef, {
-                email: userEmail,
-                score,
-                correct,
-                wrong,
-                empty,
-                answers: userAnswers,
-                status: 'completed',
-                revealed: false
-            }).then(() => {
+        async function submitExam() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gönderiliyor...';
+
+            try {
+                clearInterval(timerInterval);
+                let correct = 0, wrong = 0, empty = 0;
+                const userAnswers = [];
+                questions.forEach((q, idx) => {
+                    const val = tempAnswers[idx] !== undefined ? tempAnswers[idx] : 'blank';
+                    userAnswers.push(val);
+                    if (val === 'blank') empty++;
+                    else if (val === q.ans) correct++;
+                    else wrong++;
+                });
+                const score = Math.round((correct / total) * 100);
+                const now = Date.now();
+
+                await set(examRef, {
+                    email: userEmail,
+                    score,
+                    correct,
+                    wrong,
+                    empty,
+                    answers: userAnswers,
+                    status: 'completed',
+                    revealed: false,
+                    submittedAt: now
+                });
+
                 document.getElementById('examScreen').style.display = 'none';
                 document.getElementById('waitingScreen').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 showToast('✨ Sınav kaydedildi! Yönetici onayı bekleniyor.');
-            }).catch(e => showToast('❌ Kayıt hatası: ' + e.message, true));
+            } catch (error) {
+                console.error('Gönderme hatası:', error);
+                showToast('❌ Sınav gönderilemedi: ' + error.message, true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sınavı Bitir ve Gönder ✨';
+            }
         }
 
         function showResults(data) {
@@ -770,37 +801,60 @@
         // ----- YÖNETİCİ PANELİ İŞLEMLERİ -----
         const adminContent = document.getElementById('adminContent');
         const adminButtons = document.getElementById('adminButtons');
+        const adminInfo = document.getElementById('adminInfo');
         const adminMsg = document.getElementById('adminMsg');
 
         document.getElementById('adminToggle').addEventListener('click', () => {
-            adminContent.style.display = adminContent.style.display === 'none' ? 'flex' : 'none';
+            if (adminContent.style.display === 'none' || adminContent.style.display === '') {
+                adminContent.style.display = 'flex';
+            } else {
+                adminContent.style.display = 'none';
+            }
         });
 
         document.getElementById('adminGirisBtn').addEventListener('click', () => {
             const pass = document.getElementById('adminPassInput').value.trim();
             if (pass === '1923') {
                 adminButtons.style.display = 'flex';
-                adminMsg.textContent = '✅ Giriş başarılı. İşlem seçin.';
-                // Bilgileri göster
-                get(examRef).then(snap => {
+                adminInfo.style.display = 'block';
+                adminMsg.textContent = '✅ Giriş başarılı. Güncel sınav bilgisi:';
+                // Canlı veriyi dinle
+                onValue(examRef, (snap) => {
                     const d = snap.val();
-                    if (d) adminMsg.textContent += ` Aday: ${d.email}, Puan: ${d.score}`;
-                }).catch(e => adminMsg.textContent = '❌ Veri okunamadı.');
+                    if (d) {
+                        const tarih = new Date(d.submittedAt).toLocaleString('tr-TR');
+                        adminInfo.innerHTML = `
+                            <div><strong>👤 Aday:</strong> ${d.email}</div>
+                            <div><strong>📊 Puan:</strong> ${d.score} / 100</div>
+                            <div><strong>✅ Doğru:</strong> ${d.correct} | ❌ Yanlış: ${d.wrong} | ⬜ Boş: ${d.empty}</div>
+                            <div><strong>🕒 Gönderim:</strong> ${tarih}</div>
+                            <div><strong>Durum:</strong> ${d.revealed ? 'Yayında ✅' : 'Kilitli 🔒'}</div>
+                        `;
+                    } else {
+                        adminInfo.innerHTML = '<div>Henüz sınav verisi yok.</div>';
+                    }
+                });
             } else {
                 adminMsg.textContent = '❌ Yanlış şifre! (1923)';
             }
         });
 
-        document.getElementById('yayinlaBtn').addEventListener('click', () => {
-            update(examRef, { revealed: true }).then(() => {
+        document.getElementById('yayinlaBtn').addEventListener('click', async () => {
+            try {
+                await update(examRef, { revealed: true });
                 adminMsg.textContent = '✅ Sonuçlar yayınlandı!';
-            }).catch(e => adminMsg.textContent = '❌ ' + e.message);
+            } catch (e) {
+                adminMsg.textContent = '❌ ' + e.message;
+            }
         });
 
-        document.getElementById('kilitleBtn').addEventListener('click', () => {
-            update(examRef, { revealed: false }).then(() => {
+        document.getElementById('kilitleBtn').addEventListener('click', async () => {
+            try {
+                await update(examRef, { revealed: false });
                 adminMsg.textContent = '🔒 Sonuçlar kilitlendi.';
-            }).catch(e => adminMsg.textContent = '❌ ' + e.message);
+            } catch (e) {
+                adminMsg.textContent = '❌ ' + e.message;
+            }
         });
 
         document.getElementById('sifirlaBtn').addEventListener('click', () => {
@@ -812,16 +866,22 @@
             }
         });
 
-        // Sonuç kontrol butonu (aday)
-        document.getElementById('checkResultBtn').addEventListener('click', () => {
-            get(examRef).then(snap => {
+        // Aday için sonuç kontrol butonu
+        document.getElementById('checkResultBtn').addEventListener('click', async () => {
+            try {
+                const snap = await get(examRef);
                 const d = snap.val();
-                if (d && d.revealed) showResults(d);
-                else showToast('⏳ Sonuçlar henüz yayınlanmadı.', true);
-            });
+                if (d && d.revealed) {
+                    showResults(d);
+                } else {
+                    showToast('⏳ Sonuçlar henüz yayınlanmadı.', true);
+                }
+            } catch (e) {
+                showToast('❌ Hata: ' + e.message, true);
+            }
         });
 
-        // Otomatik sonuç açma (yayınlandığında)
+        // Otomatik sonuç açma (aday bekleme ekranındayken yayınlanırsa)
         onValue(examRef, (snap) => {
             const d = snap.val();
             if (d && d.revealed && document.getElementById('waitingScreen').style.display === 'block') {
