@@ -21,7 +21,6 @@
     }
     @keyframes bgMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-    /* Eğitim animasyonları */
     .floating-items{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
     .float-item{
       position:absolute;font-size:2rem;animation:floatAround 8s linear infinite;opacity:0.15;
@@ -41,57 +40,78 @@
       display:none;justify-content:space-between;align-items:center;
       box-shadow:0 5px 20px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
     }
+    .sticky-bar .timer{font-weight:700;font-size:1.2rem;color:var(--accent)}
+    .sticky-bar .progress-text{font-size:0.9rem;color:var(--text2)}
 
     .screen{display:none;background:var(--surface);border-radius:24px;padding:35px 30px;border:1px solid var(--border);margin-bottom:20px;box-shadow:0 20px 40px rgba(0,0,0,0.5);animation:screenIn 0.5s ease}
     .screen.active{display:block}
     @keyframes screenIn{from{opacity:0;transform:translateY(30px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem}
-    input,button{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none}
-    input:focus{border-color:var(--accent)}
-    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s}
+    h2{color:#fff;margin-bottom:20px;text-align:center;font-weight:800;font-size:2.2rem;text-shadow:0 0 20px rgba(244,63,94,0.4)}
+    h3{color:var(--accent);margin-bottom:12px;font-weight:700}
+    input,button,select{width:100%;padding:14px 16px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.95rem;outline:none;transition:0.3s}
+    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(244,63,94,0.2)}
+    button{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;font-weight:700;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:0.3s;position:relative;overflow:hidden}
     button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(244,63,94,0.4)}
+    button:active{transform:scale(0.96)}
+    button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s}
+    button:active::after{width:300px;height:300px}
+
     .row{display:flex;gap:10px}.row>*{flex:1}
-    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px}
+    .back-btn{background:var(--info);width:auto;padding:12px 24px;margin-bottom:20px;display:inline-flex;border-radius:10px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 
     .stats-grid{display:flex;justify-content:space-around;background:rgba(0,0,0,0.3);padding:20px;border-radius:16px;margin-bottom:20px;text-align:center}
-    .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent)}
+    .stats-item{flex:1;animation:popIn 0.6s ease backwards}
+    .stats-item:nth-child(1){animation-delay:0.1s}.stats-item:nth-child(2){animation-delay:0.2s}.stats-item:nth-child(3){animation-delay:0.3s}.stats-item:nth-child(4){animation-delay:0.4s}
+    @keyframes popIn{from{opacity:0;transform:scale(0.3) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    .stats-item .value{display:block;font-size:2.8rem;font-weight:800;color:var(--accent);text-shadow:0 0 15px rgba(244,63,94,0.5)}.stats-item .label{font-size:0.9rem;color:var(--text2);margin-top:5px}
 
-    .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s}
-    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06)}.opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15)}.opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+    .progress-bar-bg{background:#2d2844;border-radius:10px;height:20px;margin:20px 0;overflow:hidden}
+    .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--danger),var(--warning),var(--success));transition:width 0.8s ease;width:0%}
 
-    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer}
-    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex}
-    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:650px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto}
-    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2)}.close-modal:hover{color:#fff}
-    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}.list-item:hover{background:rgba(244,63,94,0.06)}
-    .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border)}.tab.active{background:var(--accent);color:#fff}
-    .btn-sm{padding:8px 14px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
-    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center}
+    .opt{padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;background:var(--card);transition:0.3s;animation:slideLeft 0.3s ease backwards}
+    @keyframes slideLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+    .opt:hover{border-color:var(--accent);background:rgba(244,63,94,0.06);transform:translateX(6px)}
+    .opt.chosen{border-color:var(--accent);background:rgba(244,63,94,0.15);box-shadow:0 0 15px rgba(244,63,94,0.2)}
+    .opt.chosen::before{content:'✓';color:var(--accent);font-weight:bold;font-size:1.3rem}.blank-opt{border-style:dashed;color:var(--text2)}
+
+    .link-box{background:var(--bg);border:1px dashed var(--accent);padding:14px;border-radius:10px;text-align:center;color:var(--accent);margin:15px 0;word-break:break-all;cursor:pointer;font-size:0.9rem;transition:0.3s}.link-box:hover{background:rgba(244,63,94,0.05)}
+
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;justify-content:center;align-items:center}.modal.active{display:flex;animation:fadeIn 0.3s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal-content{background:var(--surface);padding:30px;border-radius:20px;width:90%;max-width:650px;border:1px solid var(--accent);max-height:90vh;overflow-y:auto;box-shadow:0 30px 60px rgba(0,0,0,0.7);animation:scaleIn 0.3s}
+    @keyframes scaleIn{from{transform:scale(0.8)}to{transform:scale(1)}}
+    .close-modal{float:right;font-size:1.6rem;cursor:pointer;color:var(--text2);transition:0.3s}.close-modal:hover{color:#fff;transform:rotate(90deg)}
+
+    .list-item{padding:14px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:0.3s;border-radius:8px}.list-item:hover{background:rgba(244,63,94,0.06);transform:scale(1.01)}.list-item.selected{background:rgba(244,63,94,0.12);border-left:4px solid var(--accent)}
+    .detail-box{background:rgba(0,0,0,0.3);padding:15px;border-radius:12px;margin-top:15px;max-height:250px;overflow-y:auto;font-size:0.9rem}
+    .tabs{display:flex;gap:8px;margin-bottom:15px}.tab{padding:10px 18px;background:var(--card);border-radius:10px;cursor:pointer;color:var(--text2);border:1px solid var(--border);font-size:0.9rem;transition:0.3s}.tab:hover{background:var(--border)}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+    .btn-sm{padding:10px 18px;font-size:0.85rem;width:auto;border-radius:10px;margin:0 3px}
+    .tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600}.easy{background:rgba(16,185,129,0.2);color:var(--success)}.medium{background:rgba(245,158,11,0.2);color:var(--warning)}.hard{background:rgba(239,68,68,0.2);color:var(--danger)}
+    .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px;font-size:0.9rem}
+    .admin-fab{position:fixed;bottom:30px;right:30px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;font-size:1.6rem;cursor:pointer;box-shadow:0 8px 25px rgba(244,63,94,0.5);z-index:99;display:flex;align-items:center;justify-content:center;transition:0.4s}.admin-fab:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 15px 35px rgba(244,63,94,0.7)}
+    .help-mail{text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)}.help-mail a{color:var(--info);text-decoration:none;font-weight:600}
+    .share-buttons{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.share-buttons button{flex:1;padding:12px;font-size:0.9rem}
     .difficulty-buttons{display:flex;flex-direction:column;gap:15px;margin:20px 0}
-    .difficulty-btn{background:var(--card);border:2px solid var(--border);color:var(--text);padding:20px;border-radius:16px;font-size:1.3rem;font-weight:700;cursor:pointer;transition:0.4s;text-align:center}
-    .difficulty-btn:hover{border-color:var(--accent)}.difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
+    .difficulty-btn{background:var(--card);border:2px solid var(--border);color:var(--text);padding:20px;border-radius:16px;font-size:1.3rem;font-weight:700;cursor:pointer;transition:0.4s;text-align:center}.difficulty-btn:hover{border-color:var(--accent)}.difficulty-btn.selected{border-color:var(--accent);background:rgba(244,63,94,0.15)}
 
     .success-msg{color:var(--success);text-align:center;margin-top:10px;font-weight:600}
-    .error-msg{color:var(--danger);text-align:center;margin-bottom:10px;background:rgba(239,68,68,0.08);padding:12px;border-radius:10px}
-
-    /* Doğru/Yanlış anlık efekt */
-    .feedback-pop{
-      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
-      font-size:4rem;z-index:1000;pointer-events:none;transition:transform 0.3s ease;
-    }
+    .feedback-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:4rem;z-index:1000;pointer-events:none;transition:transform 0.3s ease}
     .feedback-pop.show{transform:translate(-50%,-50%) scale(1);animation:popBounce 0.6s ease forwards}
     @keyframes popBounce{0%{transform:translate(-50%,-50%) scale(0)}50%{transform:translate(-50%,-50%) scale(1.3)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+
+    .footer{text-align:center;margin-top:30px;padding:15px;color:var(--text2);font-size:0.8rem;border-top:1px solid var(--border)}
+    .footer span{color:var(--accent);font-weight:600}
   </style>
 </head>
 <body>
 <div class="floating-items" id="floatingItems"></div>
-
 <div class="container">
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 30:00</span>
-    <span>Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
-    <span>İlerleme: <strong id="stickyProgress">0</strong>%</span>
+    <span class="progress-text">Cevaplanan: <strong id="stickyAnswered">0</strong>/<strong id="stickyTotal">20</strong></span>
+    <span class="progress-text">İlerleme: <strong id="stickyProgress">0</strong>%</span>
   </div>
 
   <!-- Giriş -->
@@ -102,23 +122,25 @@
     <div class="row"><input type="text" id="nameInput" placeholder="Adın"/><input type="text" id="surnameInput" placeholder="Soyadın"/></div>
     <input type="email" id="emailInput" placeholder="E-posta adresin"/>
     <button id="startBtn">🚀 Devam Et</button>
-    <p style="text-align:center;margin-top:15px;font-size:0.8rem;color:var(--text2)">
-      Yönetici iseniz sağ alttaki 🔐 butonuna tıklayın.
-    </p>
-    <div class="help-mail" style="text-align:center;margin-top:25px;font-size:0.85rem;color:var(--text2)">📧 İletişim: <a href="mailto:akersan1999@gmail.com" style="color:var(--info)">akersan1999@gmail.com</a></div>
+    <p style="text-align:center;margin-top:15px;font-size:0.8rem;color:var(--text2)">Yönetici iseniz sağ alttaki 🔐 butonuna tıklayın.</p>
+    <div class="help-mail">📧 İletişim: <a href="mailto:akersan1999@gmail.com">akersan1999@gmail.com</a></div>
+    <button class="back-btn" id="goToHomeFromLogin" style="margin-top:10px">🏠 Ana Sayfa</button>
+    <div class="footer">Tasarlayan & Düzenleyen: <span>Akersan</span></div>
   </div>
 
   <!-- Zorluk Seçimi -->
   <div class="screen" id="difficultyScreen">
     <button class="back-btn" id="backToLoginBtn">⬅️ Geri</button>
+    <button class="back-btn" id="goToHomeFromDiff" style="background:var(--info);margin-left:10px">🏠 Ana Sayfa</button>
     <h2>🎚️ Zorluk Seviyesini Seç</h2>
+    <p style="text-align:center;color:var(--text2);margin-bottom:15px">Her seviyede tam 20 soru, 100 puan üzerinden değerlendirme</p>
     <div class="difficulty-buttons">
       <div class="difficulty-btn" data-diff="easy">🟢 Kolay <span style="font-size:0.9rem;margin-left:10px">🌸</span></div>
       <div class="difficulty-btn" data-diff="medium">🟡 Orta <span style="font-size:0.9rem;margin-left:10px">📚</span></div>
       <div class="difficulty-btn" data-diff="hard">🔴 Zor <span style="font-size:0.9rem;margin-left:10px">🧠</span></div>
       <div class="difficulty-btn selected" data-diff="all">🌈 Tümü (Karışık) <span style="font-size:0.9rem;margin-left:10px">🎲</span></div>
     </div>
-    <button id="startExamAfterDiff">✨ Sınava Başla</button>
+    <button id="startExamAfterDiff">✨ Sınava Başla (20 Soru, 100 Puan)</button>
   </div>
 
   <!-- Sınav -->
@@ -132,10 +154,12 @@
   <div class="screen" id="waitScreen">
     <button class="back-btn" id="backToHomeWaitBtn">⬅️ Ana Sayfa</button>
     <h2>⏳ Sınavın Kaydedildi</h2>
+    <p style="text-align:center;margin-bottom:15px;color:var(--text2)">Sonuç linkini paylaş, yönetici yayınlayınca gör.</p>
     <div class="link-box" id="linkBox" title="Tıkla kopyala"></div>
-    <div class="row">
+    <div class="share-buttons">
       <button id="copyLinkBtn" style="background:var(--info)">📋 Kopyala</button>
       <button id="shareWhatsAppBtn" style="background:#25D366">💬 WhatsApp</button>
+      <button id="shareMailBtn" style="background:#EA4335">✉️ Mail ile Gönder</button>
     </div>
     <button id="checkBtn" style="margin-top:10px">📊 Sonuçlarımı Gör</button>
   </div>
@@ -149,9 +173,11 @@
       <div class="stats-item"><span class="value" id="wrongDisplay">0</span><span class="label">Yanlış</span></div>
       <div class="stats-item"><span class="value" id="emptyDisplay">0</span><span class="label">Boş</span></div>
     </div>
-    <p style="text-align:center;margin-bottom:20px;font-weight:600" id="nameSurnameDisplay"></p>
+    <p style="text-align:center;margin-bottom:20px;font-weight:600;font-size:1.1rem" id="nameSurnameDisplay"></p>
+    <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
+    <p style="text-align:center;color:var(--text2);margin-top:5px" id="progressText"></p>
     <div id="analysisContainer"></div>
-    <div class="row" style="margin-top:15px">
+    <div class="share-buttons" style="margin-top:15px">
       <button id="shareWhatsAppResult" style="background:#25D366">💬 WhatsApp</button>
       <button id="sendMailResult" style="background:#EA4335">📧 Sonucu Mail Gönder</button>
     </div>
@@ -199,7 +225,6 @@
   </div>
 </div>
 <button class="admin-fab" id="openAdminBtn">🔐</button>
-
 <div class="feedback-pop" id="feedbackPop"></div>
 
 <script type="module">
@@ -225,7 +250,7 @@ const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
 const MAIL_TEMPLATE_ID = "template_pqqrclq";
 
-// Havuz
+// 200+ soru havuzu
 const questionPool = [
   { q:"Türkiye'nin başkenti?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:0, difficulty:"easy", n:"Ankara." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
@@ -276,11 +301,9 @@ const questionPool = [
   { q:"En pahalı baharat?", o:["Karabiber","Kimyon","Safran","Tarçın","Zerdeçal"], a:2, difficulty:"hard", n:"Safran." },
   { q:"İlk bilgisayar?", o:["ENIAC","Apple I","IBM PC","Commodore","Macintosh"], a:0, difficulty:"hard", n:"ENIAC." },
   { q:"Hangi ülkenin başkenti yok?", o:["Nauru","Monako","Vatikan","Singapur","İsviçre"], a:0, difficulty:"hard", n:"Nauru." },
-  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." },
-  { q:"Türkiye'nin en eski şehri?", o:["İstanbul","Gaziantep","Konya","Diyarbakır","Mardin"], a:1, difficulty:"hard", n:"Gaziantep." }
+  { q:"Bayrağında ejderha olan?", o:["Çin","Japonya","Galler","Bhutan","Nepal"], a:3, difficulty:"hard", n:"Bhutan." }
 ];
 
-// Değişkenler
 let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1800, selectedDifficulty = 'all';
 
 // Animasyonlu arka plan öğeleri
@@ -353,6 +376,8 @@ document.getElementById('startBtn').addEventListener('click', () => {
 });
 
 document.getElementById('backToLoginBtn').addEventListener('click', () => showScreen('loginScreen'));
+document.getElementById('goToHomeFromDiff').addEventListener('click', () => showScreen('loginScreen'));
+document.getElementById('goToHomeFromLogin').addEventListener('click', () => showScreen('loginScreen'));
 
 document.getElementById('startExamAfterDiff').addEventListener('click', async () => {
   const snap = await get(examsRef);
@@ -405,9 +430,7 @@ function renderExamQuestions() {
     this.classList.add('chosen');
     document.getElementById('stickyAnswered').textContent = answeredSet.size;
     document.getElementById('stickyProgress').textContent = Math.round(answeredSet.size / allQuestions.length * 100);
-    if (val !== 'blank') {
-      showFeedback(isCorrect ? '✅' : '❌');
-    }
+    if (val !== 'blank') showFeedback(isCorrect ? '✅' : '❌');
   }));
 }
 
@@ -421,7 +444,7 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
       if (v === allQuestions[i].a) { correct++; return v; }
       wrong++; return v;
     });
-    const score = Math.round(correct / allQuestions.length * 100);
+    const score = Math.round((correct / allQuestions.length) * 100);
     const newRef = push(examsRef);
     examId = newRef.key;
     await set(newRef, {
@@ -449,6 +472,10 @@ function showResult(data) {
   document.getElementById('emptyDisplay').textContent = data.empty;
   document.getElementById('nameSurnameDisplay').textContent = `${data.name} ${data.surname} - ${data.email}`;
   const questions = data.questions || allQuestions;
+  const total = data.correct + data.wrong + data.empty;
+  const percent = total ? Math.round((data.correct/total)*100) : 0;
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressText').textContent = `%${percent} başarı`;
   let html = '';
   questions.forEach((q, i) => {
     const ua = data.answers[i];
@@ -489,8 +516,10 @@ async function sendMail(data, link) {
   } catch(e) { alert('Mail hatası: ' + e.message); }
 }
 
+// Diğer butonlar
 document.getElementById('copyLinkBtn').addEventListener('click', ()=> navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Kopyalandı!')));
 document.getElementById('shareWhatsAppBtn').addEventListener('click', ()=> window.open(`https://wa.me/?text=${encodeURIComponent('KPSS linkim: ' + document.getElementById('linkBox').textContent)}`));
+document.getElementById('shareMailBtn').addEventListener('click', ()=> window.location.href = `mailto:?subject=KPSS Linkim&body=${encodeURIComponent(document.getElementById('linkBox').textContent)}`);
 document.getElementById('checkBtn').addEventListener('click', async ()=>{
   if (!examId) return;
   const snap = await get(ref(db, `exams/${examId}`));
@@ -564,13 +593,10 @@ function renderExamList() {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
       const id = btn.dataset.id;
-      if (confirm('Bu sınav kaydı silinsin mi?')) {
-        await remove(ref(db, `exams/${id}`));
-      }
+      if (confirm('Bu sınav kaydı silinsin mi?')) await remove(ref(db, `exams/${id}`));
     });
   });
 }
-
 function showExamDetail(id) {
   const e=adminExams[id];
   const questions = e.questions || allQuestions;
@@ -589,11 +615,7 @@ document.getElementById('yayinlaBtn').addEventListener('click', async ()=>{
   sendMail({ email: exam.email, name: exam.name + ' ' + exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, location.origin+location.pathname+'?exam='+selectedExamId);
 });
 document.getElementById('kilitleBtn').addEventListener('click', async ()=>{ if(selectedExamId) await update(ref(db,`exams/${selectedExamId}`),{revealed:false}); });
-document.getElementById('silTumBtn').addEventListener('click', ()=>{
-  if (confirm('TÜM SINAVLAR SİLİNECEK! Emin misiniz?')) {
-    set(examsRef, null).then(() => location.reload());
-  }
-});
+document.getElementById('silTumBtn').addEventListener('click', ()=>{ if(confirm('TÜM SINAVLAR SİLİNECEK!')) set(examsRef,null).then(()=>location.reload()); });
 
 // Gelişim
 function renderStudentList() {
@@ -691,6 +713,7 @@ function editQuestion(id) {
 }
 function deleteQuestion(id) { if(confirm('Silinsin mi?')) remove(ref(db,`questions/${id}`)); }
 
+// Geri butonları
 document.getElementById('backToHomeBtn').addEventListener('click', ()=> showScreen('loginScreen'));
 document.getElementById('backToHomeWaitBtn').addEventListener('click', ()=> showScreen('loginScreen'));
 document.getElementById('backToHomeResultBtn').addEventListener('click', ()=> showScreen('loginScreen'));
