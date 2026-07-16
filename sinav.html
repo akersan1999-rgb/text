@@ -158,8 +158,8 @@
   const db = getDatabase(app);
 
   const ADMIN_PIN = "1923"; 
-  
-  // Sorular listesi (TÜMÜ KORUNDU)
+
+  // Sorular listesi
   const questions = [
     { q: "Aşağıdakilerden hangisi Türkiye'de görülen iklim tiplerinden biri değildir?", opts: ["Akdeniz", "Karasal", "Muson", "Karadeniz", "Marmara"], ans: 2, note: "Muson iklimi Asya'nın güneydoğusunda görülür sevgilim. ❤️" },
     { q: "TBMM hangi tarihte açılmıştır?", opts: ["23 Nisan 1920", "29 Ekim 1923", "19 Mayıs 1919", "30 Ağustos 1922", "15 Temmuz 2016"], ans: 0, note: "23 Nisan meclisimizin açılış günüdür bitanem! 🌸" },
@@ -261,7 +261,7 @@
     });
     area.innerHTML = html;
 
-    // Seçenek tıklama olaylarını JS ile bağlıyoruz (Garantili yöntem)
+    // Seçenek tıklama olaylarını JS ile bağlıyoruz
     document.querySelectorAll('.option').forEach(element => {
       element.addEventListener('click', function() {
         const qIdx = parseInt(this.getAttribute('data-q'));
@@ -389,6 +389,7 @@
 
   // ★★★ GELİŞMİŞ UZAKTAN YÖNETİCİ PANELİ ★★★
   function openAdminPanel() {
+    // HİÇBİR URL KONTROLÜ YOK! DOĞRUDAN ŞİFRE EKRANI ÇIKACAK.
     const pin = prompt("Yönetici Şifresini Girin:");
     if (pin !== ADMIN_PIN) { showToast("❌ Geçersiz şifre!", true); return; }
 
@@ -401,7 +402,7 @@
         return;
       }
 
-      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLI (Kız arkadaşın bekliyor)";
+      const statusInfo = data.revealed ? "YAYINLANDI (Kız arkadaşının ekranı açık)" : "KİLİTLİ (Kız arkadaşın bekliyor)";
       
       const action = prompt(
         `🚨 YÖNETİCİ KONTROL PANELİ\n\n` +
