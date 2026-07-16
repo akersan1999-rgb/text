@@ -26,7 +26,7 @@
     .wrapper { max-width: 720px; width: 100%; }
 
     /* Ekran Kontrolleri */
-    .start-screen, .exam-screen, .result-screen { display: none; }
+    .start-screen, .exam-screen, .result-screen, .waiting-screen { display: none; }
 
     /* GİRİŞ EKRANI */
     .start-screen {
@@ -81,6 +81,20 @@
       transition: 0.3s;
     }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3); }
+
+    /* SAYAÇ VE EKSTRA BİLGİ */
+    .timer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 12px 20px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+    }
+    .timer-label { font-size: 0.95rem; font-weight: 600; color: #f43f5e; }
+    .timer-clock { font-size: 1.25rem; font-weight: 800; color: #fff; background: #f43f5e; padding: 4px 12px; border-radius: 8px; font-family: monospace; }
 
     /* SINAV BAŞLIK VE DİNAMİK MESAJ */
     .header {
@@ -179,6 +193,21 @@
     .btn-submit.loading .btn-text { display: none; }
     .btn-submit.loading .spinner { display: block; }
 
+    /* BEKLEME EKRANI (AÇIKLANMADAN ÖNCEKİ HALİ) */
+    .waiting-screen {
+      background: linear-gradient(145deg, #19132e, #22183e);
+      border-radius: 24px;
+      padding: 45px 30px;
+      text-align: center;
+      border: 1px solid #3c244f;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      animation: fadeUp 0.5s ease;
+    }
+    .waiting-screen h2 { font-size: 1.8rem; color: #fff; margin-bottom: 15px; }
+    .waiting-screen p { color: #cbd5e1; font-size: 1.05rem; margin-bottom: 20px; line-height: 1.6; }
+    .waiting-icon { font-size: 4rem; margin-bottom: 15px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
     /* SONUÇ EKRANI */
     .result-screen {
       background: linear-gradient(145deg, #19132e, #22183e);
@@ -229,12 +258,22 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.error { background: #ef4444; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3); }
 
+    /* YÖNETİCİ GİZLİ PANELİ */
+    .admin-panel-trigger {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      user-select: none;
+    }
+
     @media (max-width: 500px) {
       .header h1 { font-size: 1.5rem; }
       .question-card .q-text { font-size: 0.95rem; }
       .option { padding: 12px 14px; }
       .btn-submit { font-size: 1.1rem; padding: 16px; }
-      .start-screen, .result-screen { padding: 30px 20px; }
+      .start-screen, .result-screen, .waiting-screen { padding: 30px 20px; }
     }
   </style>
 </head>
@@ -246,13 +285,18 @@
   <div class="start-screen" id="startScreen">
     <h2>🎯 2026 KPSS Özel Denemesi</h2>
     <p>Senin için hazırlanmış çok özel bir deneme sınavı. Hazır olduğunda başla düğmesine basarak testi başlatabilirsin.</p>
-    <div class="warning-box">⚠️ Dikkat: Bu sınava sadece TEK BİR giriş hakkın vardır. Yarım bırakırsan veya sayfayı yenilersen sınav sonlanır!</div>
+    <div class="warning-box">⚠️ Dikkat: Bu sınava sadece 30 dakikan var! Süre bittiğinde sınav otomatik olarak kaydedilecektir.</div>
     <input type="email" id="userEmail" placeholder="E-posta adresini girerek başla..." />
     <button class="btn-primary" onclick="startExam()">Sınava Başla 🚀</button>
   </div>
 
   <!-- SINAV EKRANI -->
   <div class="exam-screen" id="examScreen">
+    <div class="timer-container">
+      <span class="timer-label">⏱️ Kalan Süren:</span>
+      <span class="timer-clock" id="timerClock">30:00</span>
+    </div>
+
     <div class="header">
       <h1>🎯 KPSS Deneme Sınavı</h1>
       <p>Başarılar dilerim bitanem, odaklan ve en iyisini yap! 🍀</p>
@@ -273,6 +317,14 @@
     </button>
   </div>
 
+  <!-- SONUÇ BEKLEME EKRANI (Siz açıklamadan önceki kilit ekranı) -->
+  <div class="waiting-screen" id="waitingScreen">
+    <div class="waiting-icon">⏳</div>
+    <h2>Sınavın Başarıyla Kaydedildi!</h2>
+    <p>Cevapların sevgiline ulaştı bile. ❤️</p>
+    <p style="font-size: 0.95rem; color: #a5b4fc;">Sınav sonuçların ve özel analizlerin, sevgilin sistemi erişime açtığında tam bu ekranda görünecek. Şimdi heyecanla bekleme vakti!</p>
+  </div>
+
   <!-- SONUÇ EKRANI -->
   <div class="result-screen" id="resultScreen">
     <div class="result-header">
@@ -289,6 +341,9 @@
     <div class="analysis-container" id="analysisArea"></div>
   </div>
 
+  <!-- Gizli Yönetici Girişi -->
+  <div class="admin-panel-trigger" onclick="openAdminPanel()">⚙️ Yönetici Ayarları</div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -298,6 +353,9 @@
   const PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
   const SERVICE_ID = "service_qdab76q";
   const TEMPLATE_ID = "template_64cuej9";
+
+  // Yönetici Şifresi (Sıfırlama ve Sonuçları Açıklama yetkisi için)
+  const ADMIN_PIN = "1923"; 
 
   // ★★★ SORULAR VE CEVAPLARI ★★★
   const questions = [
@@ -326,8 +384,9 @@
   let userEmail = '';
   let answered = new Set();
   const total = questions.length;
+  let timerInterval = null;
+  let secondsRemaining = 1800; // 30 Dakika = 1800 Saniye
 
-  // Moral verici dinamik durum mesajları
   const moralMessages = {
     0: "Yolun başındayız, harika gidiyorsun sevgilim! ❤️",
     5: "Harika başladık, sorular senden korksun canımın içi! 🔥",
@@ -340,13 +399,41 @@
 
   // Sayfa yüklendiğinde kilit durumunu kontrol et
   window.addEventListener('DOMContentLoaded', () => {
-    const isLocked = localStorage.getItem('kpss_exam_completed');
-    if (isLocked) {
+    const isCompleted = localStorage.getItem('kpss_exam_completed');
+    const isRevealed = localStorage.getItem('kpss_results_revealed') === 'true';
+    
+    if (isCompleted) {
       const savedData = JSON.parse(localStorage.getItem('kpss_exam_data'));
-      showResults(savedData.score, savedData.correct, savedData.wrong, savedData.empty, savedData.answers);
-      showToast('⚠️ Bu sınava daha önce giriş yapılmış. Sonuçların kilitlendi!', true);
+      if (isRevealed) {
+        // Eğer yönetici sonuçları daha önce açtıysa direkt sonuç ekranı
+        showResults(savedData.score, savedData.correct, savedData.wrong, savedData.empty, savedData.answers);
+      } else {
+        // Sınav bitti ama sonuçlar henüz gizliyse bekleme ekranı
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('waitingScreen').style.display = 'block';
+        showToast('🔒 Sınavın bitti. Sonuçlar sevgilinin kontrolünde!', false);
+      }
     }
   });
+
+  // ★★★ SAYAÇ BAŞLATMA FONKSİYONU ★★★
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      secondsRemaining--;
+      
+      let mins = Math.floor(secondsRemaining / 60);
+      let secs = secondsRemaining % 60;
+      
+      document.getElementById('timerClock').textContent = 
+        `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+
+      if (secondsRemaining <= 0) {
+        clearInterval(timerInterval);
+        showToast('⌛ Süre bitti! Sınav otomatik olarak gönderiliyor...', true);
+        submitExam(); // Süre dolduğunda otomatik kaydet
+      }
+    }, 1000);
+  }
 
   // ★★★ SINAV BAŞLAT ★★★
   function startExam() {
@@ -356,6 +443,7 @@
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('examScreen').style.display = 'block';
     renderQuestions();
+    startTimer(); // Sayacı çalıştır
   }
 
   // ★★★ SORULARI EKLE ★★★
@@ -402,7 +490,6 @@
       }); 
     }
     
-    // Aktif kart rengi ve kenarlık stilleri
     document.getElementById(`q-${qIdx}`).classList.add('active-q');
     document.querySelectorAll(`#q-${qIdx} .option`).forEach(label => label.classList.remove('selected-opt'));
     document.getElementById(`opt-label-${qIdx}-${optIdx}`).classList.add('selected-opt');
@@ -446,7 +533,6 @@
     document.getElementById('progressPercent').textContent = percent;
     document.getElementById('progressBar').style.width = percent + '%';
 
-    // Dinamik moral mesajı baloncuğunu tetikle
     const bubble = document.getElementById('moralBubble');
     if (moralMessages[count]) {
       bubble.textContent = moralMessages[count];
@@ -456,6 +542,7 @@
 
   // ★★★ BİTİR VE DEĞERLENDİR ★★★
   function submitExam() {
+    clearInterval(timerInterval); // Sayacı durdur
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.classList.add('loading');
@@ -505,7 +592,7 @@
     })
     .then(res => {
       if (res.ok) {
-        // BAŞARILI: Tarayıcı hafızasına kilitle
+        // Veriyi kaydet ve kısıtla ama SONUÇLARI HEMEN REVEAL ETME (Açıklama)
         const examData = {
           score: totalScore,
           correct: correctCount,
@@ -514,9 +601,14 @@
           answers: userAnswers
         };
         localStorage.setItem('kpss_exam_completed', 'true');
+        localStorage.setItem('kpss_results_revealed', 'false'); // Varsayılan: Kapalı
         localStorage.setItem('kpss_exam_data', JSON.stringify(examData));
 
-        showResults(totalScore, correctCount, wrongCount, emptyCount, userAnswers);
+        // Sonuçları göstermek yerine bekleme ekranına aktar
+        document.getElementById('examScreen').style.display = 'none';
+        document.getElementById('waitingScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('✨ Cevaplar başarıyla gönderildi ve kilitlendi!', false);
       } else {
         res.text().then(text => showToast('❌ Gönderme hatası: ' + text, true));
         btn.disabled = false;
@@ -535,6 +627,7 @@
   function showResults(score, correct, wrong, empty, answers) {
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('examScreen').style.display = 'none';
+    document.getElementById('waitingScreen').style.display = 'none';
     document.getElementById('resultScreen').style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -582,6 +675,51 @@
     });
     
     document.getElementById('analysisArea').innerHTML = analysisHtml;
+  }
+
+  // ★★★ YÖNETİCİ PANELİ (SIFIRLAMA VE AÇIKLAMA YETKİSİ) ★★★
+  function openAdminPanel() {
+    const pin = prompt("Yönetici Şifrenizi Girin:");
+    if (pin !== ADMIN_PIN) {
+      showToast("❌ Geçersiz şifre!", true);
+      return;
+    }
+
+    const action = prompt(
+      "Yönetici Menüsü:\n\n" +
+      "[1] Sonuçları Görünüme Aç / Kapat\n" +
+      "[2] Sınavı Tamamen Sıfırla (Tekrar girmesini sağlamak için)\n" +
+      "Lütfen yapmak istediğiniz işlemin numarasını girin:"
+    );
+
+    if (action === "1") {
+      const currentReveal = localStorage.getItem('kpss_results_revealed') === 'true';
+      if (currentReveal) {
+        localStorage.setItem('kpss_results_revealed', 'false');
+        showToast("🔒 Sonuç ekranı tekrar kilitlendi!", false);
+        setTimeout(() => location.reload(), 1500);
+      } else {
+        const completed = localStorage.getItem('kpss_exam_completed');
+        if (!completed) {
+          showToast("⚠️ Sınav henüz tamamlanmadığı için sonuçlar açılmıyor.", true);
+          return;
+        }
+        localStorage.setItem('kpss_results_revealed', 'true');
+        showToast("🔓 Sonuçlar ve mektuplar görünür hale getirildi!", false);
+        setTimeout(() => location.reload(), 1500);
+      }
+    } else if (action === "2") {
+      const confirmReset = confirm("Sınav verilerini silmek ve ekranı sıfırlamak istediğinize emin misiniz? (Tüm yerel kilitleri kaldırır)");
+      if (confirmReset) {
+        localStorage.removeItem('kpss_exam_completed');
+        localStorage.removeItem('kpss_results_revealed');
+        localStorage.removeItem('kpss_exam_data');
+        showToast("🧹 Sınav sıfırlandı! Tekrar çözmeye hazır.", false);
+        setTimeout(() => location.reload(), 1500);
+      }
+    } else {
+      showToast("Geçersiz seçim.", true);
+    }
   }
 
   function showToast(msg, isError = false) {
