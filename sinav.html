@@ -10,7 +10,6 @@
   <style>
     :root {
       --primary: #4f46e5;
-      --primary-dark: #4338ca;
       --secondary: #7c3aed;
       --bg-start: #e0e7ff;
       --bg-end: #c7d2fe;
@@ -21,7 +20,6 @@
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --radius: 20px;
       --shadow: 0 8px 30px rgba(0,0,0,0.08);
     }
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
@@ -147,8 +145,16 @@
       max-height:85vh; overflow-y:auto; position:relative;
     }
     .close-modal {
-      position:absolute; top:15px; right:20px; font-size:2rem; cursor:pointer;
-      background:none; border:none; color:var(--text-light);
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      background: none;
+      border: none;
+      font-size: 2.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      z-index: 10;
+      line-height: 1;
     }
     .tabs { display:flex; gap:8px; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; }
     .tab { padding:8px 18px; border-radius:8px; cursor:pointer; font-weight:600; color:var(--text-light); }
@@ -328,7 +334,7 @@ const questionsRef = ref(db, 'questions');
 const ADMIN_PASS = "1923";
 emailjs.init("dbF3yWuvy9um9nAdp");
 
-// SORU HAVUZU - orijinal sorular + KPSS + yeni eklenenler (200+)
+// SORU HAVUZU (tamamı, 200+)
 const defaultPool = [
   {q:"Türkiye'nin başkenti?",o:["Ankara","İstanbul","İzmir","Bursa","Antalya"],a:0,difficulty:"easy",n:"Ankara."},
   {q:"TBMM açılış tarihi?",o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"],a:0,difficulty:"easy",n:"23 Nisan 1920."},
@@ -618,7 +624,7 @@ document.getElementById('newExamBtn').addEventListener('click', ()=> location.hr
 document.getElementById('backToLoginBtn').addEventListener('click', ()=> showScreen('loginScreen'));
 document.getElementById('backToHomeBtn').addEventListener('click', ()=>{ if(confirm('Çık?')) location.reload(); });
 
-// ADMIN PANEL - Kapatma butonu çalışıyor
+// ADMIN PANEL (butonlar düzgün)
 const modal = document.getElementById('adminModal');
 document.getElementById('openAdminBtn').addEventListener('click', ()=> modal.classList.add('active'));
 document.getElementById('closeAdminModal').addEventListener('click', ()=> modal.classList.remove('active'));
