@@ -40,8 +40,21 @@
       backdrop-filter: blur(20px);
       border-radius: 32px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      padding: 30px 25px;
+      padding: 30px 25px 20px;
       border: 1px solid rgba(255,255,255,0.5);
+      position: relative;
+    }
+    .footer-note {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      letter-spacing: 0.3px;
+      opacity: 0.7;
+    }
+    .footer-note span {
+      font-weight: 500;
+      color: #64748b;
     }
     .sticky-bar {
       display: none;
@@ -154,9 +167,6 @@
       box-shadow:0 10px 25px rgba(79,70,229,0.4); z-index:80; transition:0.3s;
     }
     .admin-fab:hover { transform:scale(1.08) rotate(30deg); }
-    .info-tip {
-      font-size:0.8rem; color:var(--text-light); text-align:center; margin-top:-10px; margin-bottom:20px;
-    }
     @media (max-width:600px) {
       .container { padding:20px 15px; }
       .stats-grid { grid-template-columns: repeat(2,1fr); }
@@ -182,7 +192,6 @@
     </div>
     <input type="email" id="emailInput" placeholder="E-posta Adresiniz" />
     <button id="startBtn">🚀 Sisteme Giriş Yap</button>
-    <p class="info-tip">Bilgileriniz sadece sonuç paylaşımı için kullanılır.</p>
   </div>
 
   <!-- ZORLUK & SORU SAYISI SEÇİM -->
@@ -204,7 +213,6 @@
       </select>
     </div>
     <button id="startExamAfterDiff">⏳ Sınavı Başlat</button>
-    <p class="info-tip">Sorular her sınavda rastgele seçilir, tekrarlanmaz.</p>
   </div>
 
   <!-- SINAV EKRANI -->
@@ -245,6 +253,11 @@
     <h3 style="margin-top:30px;">📝 Soru Çözümleri</h3>
     <div id="analysisContainer"></div>
     <button id="newExamBtn" style="background:#1e293b;margin-top:25px;">🔄 Yeni Sınav Çöz</button>
+  </div>
+  
+  <!-- FOOTER -->
+  <div class="footer-note">
+    { <span>tasarım: ak_eran</span> • <span>akersan1999@gmail.com</span> }
   </div>
 </div>
 
@@ -503,7 +516,7 @@ document.querySelectorAll('.diff-card').forEach(c => c.addEventListener('click',
 
 document.getElementById('startExamAfterDiff').addEventListener('click', () => {
   qCount = parseInt(document.getElementById('questionCount').value);
-  remaining = qCount * 60; // her soru için 1 dakika
+  remaining = qCount * 60;
   startExam();
 });
 
