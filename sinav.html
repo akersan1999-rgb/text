@@ -52,10 +52,7 @@
       letter-spacing: 0.3px;
       opacity: 0.7;
     }
-    .footer-note span {
-      font-weight: 500;
-      color: #64748b;
-    }
+    .footer-note span { font-weight: 500; color: #64748b; }
     .sticky-bar {
       display: none;
       justify-content: space-between;
@@ -69,11 +66,7 @@
       top: 15px;
       z-index: 50;
     }
-    .sticky-bar .timer {
-      font-weight: 800;
-      font-size: 1.8rem;
-      color: var(--danger);
-    }
+    .sticky-bar .timer { font-weight: 800; font-size: 1.8rem; color: var(--danger); }
     .screen { display:none; animation: fadeSlide 0.35s ease; }
     .screen.active { display:block; }
     @keyframes fadeSlide {
@@ -254,7 +247,7 @@
     <div id="analysisContainer"></div>
     <button id="newExamBtn" style="background:#1e293b;margin-top:25px;">🔄 Yeni Sınav Çöz</button>
   </div>
-  
+
   <!-- FOOTER -->
   <div class="footer-note">
     { <span>tasarım: ak_eran</span> • <span>akersan1999@gmail.com</span> }
@@ -335,7 +328,7 @@ const questionsRef = ref(db, 'questions');
 const ADMIN_PASS = "1923";
 emailjs.init("dbF3yWuvy9um9nAdp");
 
-// GENİŞ SORU HAVUZU (orijinal + yeni 200+)
+// SORU HAVUZU - orijinal sorular + KPSS + yeni eklenenler (200+)
 const defaultPool = [
   {q:"Türkiye'nin başkenti?",o:["Ankara","İstanbul","İzmir","Bursa","Antalya"],a:0,difficulty:"easy",n:"Ankara."},
   {q:"TBMM açılış tarihi?",o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"],a:0,difficulty:"easy",n:"23 Nisan 1920."},
@@ -625,7 +618,7 @@ document.getElementById('newExamBtn').addEventListener('click', ()=> location.hr
 document.getElementById('backToLoginBtn').addEventListener('click', ()=> showScreen('loginScreen'));
 document.getElementById('backToHomeBtn').addEventListener('click', ()=>{ if(confirm('Çık?')) location.reload(); });
 
-// ADMIN
+// ADMIN PANEL - Kapatma butonu çalışıyor
 const modal = document.getElementById('adminModal');
 document.getElementById('openAdminBtn').addEventListener('click', ()=> modal.classList.add('active'));
 document.getElementById('closeAdminModal').addEventListener('click', ()=> modal.classList.remove('active'));
