@@ -51,7 +51,6 @@
       position: relative;
     }
 
-    /* Üst Bilgi Çubuğu */
     .sticky-bar {
       display: none;
       justify-content: space-between;
@@ -69,7 +68,6 @@
     .sticky-bar .timer { font-weight: 800; font-size: 1.8rem; color: var(--danger); letter-spacing: 1px; }
     .sticky-bar span { font-weight: 600; color: var(--text-light); }
 
-    /* Ekran Geçişleri */
     .screen { display: none; animation: fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .screen.active { display: block; }
     @keyframes fadeSlide {
@@ -77,12 +75,10 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Tipografi */
     h2 { font-weight: 800; font-size: 2.2rem; text-align: center; color: var(--text); margin-bottom: 12px; letter-spacing: -0.5px; }
     h3 { font-weight: 700; margin-bottom: 15px; color: var(--text); }
     .subtitle { text-align: center; color: var(--text-light); margin-bottom: 30px; font-size: 1.05rem; }
 
-    /* Form Elemanları */
     input, select, textarea {
       width: 100%; padding: 16px 20px; border-radius: 16px; border: 2px solid var(--border);
       background: #f8fafc; font-size: 1rem; margin-bottom: 18px; outline: none; transition: 0.3s;
@@ -107,7 +103,6 @@
     .row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
     .row > * { flex: 1; min-width: 150px; }
 
-    /* Zorluk Seçim Grid */
     .difficulty-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;
     }
@@ -122,7 +117,6 @@
     }
     .diff-card .emoji { font-size: 2.5rem; display: block; margin-bottom: 10px; }
 
-    /* Sorular ve Şıklar */
     .question-card {
       background: white; border-radius: 24px; padding: 30px; margin-bottom: 25px;
       border: 1px solid var(--border); box-shadow: var(--shadow); transition: 0.3s;
@@ -144,7 +138,6 @@
     .blank-opt { border: 2px dashed #94a3b8; color: #94a3b8; justify-content: center; background: transparent; }
     .blank-opt:hover { border-color: var(--text); color: var(--text); background: #f1f5f9; transform: none; }
 
-    /* İstatistik ve Sonuçlar */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0; }
     .stat-card {
       background: white; padding: 25px 15px; border-radius: 20px; text-align: center;
@@ -163,7 +156,7 @@
     .analysis-card.empty { border-left-color: #94a3b8; background: #f8fafc; }
 
     /* =========================================
-       YÖNETİCİ MODALI VE LİSTE DÜZENLEMELERİ (DÜZELTİLDİ)
+       YÖNETİCİ MODALI VE LİSTE DÜZENLEMELERİ
        ========================================= */
     .modal {
       display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
@@ -177,25 +170,11 @@
       max-height: 85vh; overflow-y: auto; position: relative; box-shadow: var(--shadow-lg);
     }
     
-    /* KAPATMA BUTONU DÜZELTİLDİ */
     .close-modal {
-      position: absolute;
-      top: 25px;
-      right: 25px;
-      width: 45px;
-      height: 45px;
-      background: #f1f5f9;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-light);
-      transition: all 0.3s ease;
-      z-index: 10;
-      box-shadow: none;
+      position: absolute; top: 25px; right: 25px; width: 45px; height: 45px;
+      background: #f1f5f9; border: none; border-radius: 50%; font-size: 1.8rem;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: var(--text-light); transition: all 0.3s ease; z-index: 10; box-shadow: none;
     }
     .close-modal:hover { background: var(--danger); color: white; transform: rotate(90deg); }
 
@@ -204,19 +183,11 @@
     .tab:hover { background: #f1f5f9; }
     .tab.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(79,70,229,0.3); }
     
-    /* EKSİK OLAN LİSTE SINIFI EKLENDİ VE GÜZELLEŞTİRİLDİ */
+    /* YÖNETİCİ EKRANI LİSTESİ - DÜZELTİLMİŞ VE BELİRGİN HALE GETİRİLMİŞ */
     .list-item {
-      padding: 20px;
-      border: 1px solid var(--border);
-      margin-bottom: 15px;
-      border-radius: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ffffff;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      padding: 20px; border: 1px solid var(--border); margin-bottom: 15px;
+      border-radius: 16px; display: flex; justify-content: space-between; align-items: center;
+      background: #ffffff; cursor: pointer; transition: all 0.2s ease; box-shadow: var(--shadow-sm);
     }
     .list-item:hover { border-color: var(--primary); transform: translateX(5px); box-shadow: var(--shadow); }
     .list-item.selected { border-left: 6px solid var(--primary); background: #eef2ff; }
@@ -232,7 +203,6 @@
     .footer-note { text-align: center; margin-top: 30px; font-size: 0.8rem; color: #94a3b8; letter-spacing: 0.5px; opacity: 0.8; }
     .footer-note span { font-weight: 600; color: #64748b; }
     
-    /* Scrollbar Özelleştirme */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 10px; }
@@ -256,13 +226,24 @@
   <div class="screen active" id="loginScreen">
     <h2>🎯 KPSS Deneme Sınavı</h2>
     <p class="subtitle">Ortaöğretim · Önlisans | Gerçek sınav ayarında</p>
-    <div id="loginError" style="color:#ef4444;background:#fef2f2;padding:15px;border-radius:12px;font-weight:600;display:none;margin-bottom:20px;text-align:center;"></div>
-    <div class="row">
-      <input type="text" id="nameInput" placeholder="Adınız" />
-      <input type="text" id="surnameInput" placeholder="Soyadınız" />
+    <div id="resumePrompt" style="display:none; background:#eef2ff; border:2px solid var(--primary); padding:20px; border-radius:16px; text-align:center; margin-bottom:20px;">
+      <h3 style="color:var(--primary); margin-bottom:10px;">Yarım Kalan Sınavınız Var!</h3>
+      <p style="color:var(--text); margin-bottom:15px; font-weight:500;">Sayfa yenilendiği için sınavınız duraklatıldı. Kaldığınız yerden devam etmek ister misiniz?</p>
+      <div class="row">
+        <button id="resumeYesBtn" style="box-shadow:none;">Kaldığım Yerden Devam Et</button>
+        <button id="resumeNoBtn" class="secondary">Hayır, Yeni Sınav Başlat</button>
+      </div>
     </div>
-    <input type="email" id="emailInput" placeholder="E-posta Adresiniz" />
-    <button id="startBtn">🚀 Sisteme Giriş Yap</button>
+
+    <div id="loginFormArea">
+      <div id="loginError" style="color:#ef4444;background:#fef2f2;padding:15px;border-radius:12px;font-weight:600;display:none;margin-bottom:20px;text-align:center;"></div>
+      <div class="row">
+        <input type="text" id="nameInput" placeholder="Adınız" />
+        <input type="text" id="surnameInput" placeholder="Soyadınız" />
+      </div>
+      <input type="email" id="emailInput" placeholder="E-posta Adresiniz" />
+      <button id="startBtn">🚀 Sisteme Giriş Yap</button>
+    </div>
   </div>
 
   <!-- ZORLUK & SORU SAYISI SEÇİM -->
@@ -354,16 +335,19 @@
       <!-- Sınavlar Sekmesi -->
       <div id="examsTab">
         <input type="text" id="searchExam" placeholder="Öğrenci adı veya e-posta ile ara..." />
-        <p style="margin-bottom: 15px; color: var(--text-light); font-weight: 500;">Sistemde toplam <strong id="totalExams" style="color: var(--primary);">0</strong> sınav kaydı var.</p>
+        <p style="margin-bottom: 15px; color: var(--text-light); font-weight: 500;">Sistemde toplam <strong id="totalExams" style="color: var(--primary);">0</strong> sınav kaydı var. <br><small>(En son bitirilen sınav en üstte görünür)</small></p>
         
-        <div id="examList" style="max-height:400px; overflow-y:auto; padding-right: 5px;"></div>
+        <!-- Yükseklik sınırlandırıldı, böylece alt kısımdaki butonlar kaybolmaz -->
+        <div id="examList" style="max-height:300px; overflow-y:auto; padding-right: 10px; margin-bottom: 20px;"></div>
         
-        <div id="detailPanel" style="display:none; background:#f8fafc; padding:20px; border-radius:16px; margin:20px 0; border: 1px solid var(--border);"></div>
-        
-        <div id="adminActions" style="display:none; gap:15px; margin-top:20px;">
-          <button id="yayinlaBtn" style="background:var(--success); box-shadow: 0 8px 20px rgba(16,185,129,0.3);">Yayınla & Mail At</button>
-          <button id="kilitleBtn" style="background:var(--warning); box-shadow: 0 8px 20px rgba(245,158,11,0.3);">Sonucu Gizle</button>
-          <button id="silTekBtn" style="background:var(--danger); box-shadow: none;">Kaydı Sil</button>
+        <div id="adminDetailArea">
+          <div id="detailPanel" style="display:none; background:#f8fafc; padding:20px; border-radius:16px; margin:20px 0; border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(79,70,229,0.1);"></div>
+          
+          <div id="adminActions" style="display:none; gap:15px; margin-top:10px;">
+            <button id="yayinlaBtn" style="background:var(--success); box-shadow: 0 8px 20px rgba(16,185,129,0.3);">Yayınla & Mail At</button>
+            <button id="kilitleBtn" style="background:var(--warning); box-shadow: 0 8px 20px rgba(245,158,11,0.3);">Sonucu Gizle</button>
+            <button id="silTekBtn" style="background:var(--danger); box-shadow: none;">Kaydı Sil</button>
+          </div>
         </div>
         
         <button id="silTumBtn" style="background:#dc2626; margin-top:40px; box-shadow: none;">⚠️ Tüm Sınav Kayıtlarını Sıfırla</button>
@@ -427,7 +411,7 @@ const questionsRef = ref(db, 'questions');
 const ADMIN_PASS = "1923";
 emailjs.init("dbF3yWuvy9um9nAdp");
 
-// SORU HAVUZU (HİÇBİR EKSİLTME YAPILMADI, TAMAMI BURADA)
+// TAM SORU HAVUZU
 const defaultPool = [
   {q:"Türkiye'nin başkenti?",o:["Ankara","İstanbul","İzmir","Bursa","Antalya"],a:0,difficulty:"easy",n:"Ankara."},
   {q:"TBMM açılış tarihi?",o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"],a:0,difficulty:"easy",n:"23 Nisan 1920."},
@@ -552,6 +536,7 @@ const defaultPool = [
 
 let pool = [...defaultPool];
 let currentQuestions = [], user = {}, examId = null, answers = [], answered = new Set(), timer = null, remaining = 1200, diff = 'all', qCount = 10;
+let adminExamsData = {}; 
 
 async function loadPool() {
   try {
@@ -559,19 +544,61 @@ async function loadPool() {
     if (snap.exists() && snap.val().length) pool = snap.val();
     else await set(questionsRef, defaultPool);
   } catch(e) { pool = [...defaultPool]; }
-  document.getElementById('totalQuestions').textContent = pool.length;
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadPool();
-  const p = new URLSearchParams(location.search).get('exam');
-  if (p) {
-    examId = p;
+  const urlParam = new URLSearchParams(location.search).get('exam');
+  
+  if (urlParam) {
+    // Sonuç linkinden geliniyorsa
+    examId = urlParam;
     const snap = await get(ref(db, `exams/${examId}`));
     if (snap.exists() && snap.val().revealed) showResult(snap.val());
-    else { alert('Bu sınavın sonuçları henüz yönetici tarafından yayınlanmadı.'); showScreen('loginScreen'); }
+    else { alert('Sonuç henüz yayınlanmadı.'); showScreen('loginScreen'); }
+  } else {
+    // Normal girişte local storage kontrolü (Kaldığın yerden devam etme)
+    const savedState = localStorage.getItem('kpssActiveExam');
+    if(savedState) {
+      document.getElementById('resumePrompt').style.display = 'block';
+      document.getElementById('loginFormArea').style.display = 'none';
+    }
   }
 });
+
+// YARIM KALAN SINAVA DEVAM ETME İŞLEMLERİ
+document.getElementById('resumeYesBtn').addEventListener('click', () => {
+  const savedState = JSON.parse(localStorage.getItem('kpssActiveExam'));
+  user = savedState.user;
+  currentQuestions = savedState.currentQuestions;
+  answers = savedState.answers;
+  answered = new Set(savedState.answered);
+  remaining = savedState.remaining;
+  qCount = savedState.qCount;
+  
+  document.getElementById('stickyTotal').textContent = qCount;
+  document.getElementById('stickyAnswered').textContent = answered.size;
+  
+  showScreen('examScreen');
+  renderQuestions();
+  startTimer();
+});
+
+document.getElementById('resumeNoBtn').addEventListener('click', () => {
+  localStorage.removeItem('kpssActiveExam');
+  document.getElementById('resumePrompt').style.display = 'none';
+  document.getElementById('loginFormArea').style.display = 'block';
+});
+
+// DURUMU LOCAL STORAGE'A KAYDET
+function saveExamState() {
+  if (document.getElementById('examScreen').classList.contains('active')) {
+    const state = {
+      user, currentQuestions, answers, answered: Array.from(answered), remaining, qCount
+    };
+    localStorage.setItem('kpssActiveExam', JSON.stringify(state));
+  }
+}
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -599,7 +626,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   const e = document.getElementById('emailInput').value.trim();
   if (!n || !s || !e.includes('@')) {
     document.getElementById('loginError').style.display = 'block';
-    document.getElementById('loginError').textContent = 'Lütfen ad, soyad ve geçerli e-posta adresinizi girin.';
+    document.getElementById('loginError').textContent = 'Lütfen bilgilerinizi eksiksiz girin.';
     return;
   }
   user = {name: n, surname: s, email: e};
@@ -622,11 +649,13 @@ function startExam() {
   currentQuestions = pickQuestions();
   answers = Array(currentQuestions.length).fill('blank');
   answered.clear();
-  document.getElementById('stickyTotal').textContent = currentQuestions.length;
+  document.getElementById('stickyTotal').textContent = qCount;
   document.getElementById('stickyAnswered').textContent = '0';
+  
   showScreen('examScreen');
   renderQuestions();
   startTimer();
+  saveExamState();
 }
 
 function startTimer() {
@@ -635,6 +664,7 @@ function startTimer() {
     remaining--;
     const m = Math.floor(remaining / 60), s = remaining % 60;
     document.getElementById('stickyTimer').textContent = `⏱️ ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    saveExamState(); // Her saniye durumu kaydet
     if (remaining <= 0) finishExam();
   }, 1000);
 }
@@ -643,24 +673,40 @@ function renderQuestions() {
   let html = '';
   currentQuestions.forEach((q, i) => {
     html += `<div class="question-card"><div class="question-title">${i + 1}. ${q.q}</div>`;
-    q.o.forEach((o, oi) => html += `<div class="opt" data-q="${i}" data-o="${oi}"><strong>${String.fromCharCode(65 + oi)})</strong>&nbsp;&nbsp;${o}</div>`);
-    html += `<div class="opt blank-opt" data-q="${i}" data-o="blank">Bu Soruyu Boş Bırak</div></div>`;
+    q.o.forEach((o, oi) => {
+      const isChosen = answers[i] === oi ? 'chosen' : '';
+      html += `<div class="opt ${isChosen}" data-q="${i}" data-o="${oi}"><strong>${String.fromCharCode(65 + oi)})</strong>&nbsp;&nbsp;${o}</div>`;
+    });
+    const isBlank = answers[i] === 'blank' ? 'chosen' : '';
+    html += `<div class="opt blank-opt ${isBlank}" data-q="${i}" data-o="blank">Bu Soruyu Boş Bırak</div></div>`;
   });
+  
   document.getElementById('questionsContainer').innerHTML = html;
   
   document.querySelectorAll('.opt').forEach(el => el.addEventListener('click', function() {
     const qi = +this.dataset.q, val = this.dataset.o;
     answers[qi] = val === 'blank' ? 'blank' : +val;
-    answered.add(qi);
+    
+    if (val !== 'blank') answered.add(qi);
+    else answered.delete(qi);
+    
     this.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('chosen'));
     this.classList.add('chosen');
+    
     document.getElementById('stickyAnswered').textContent = answered.size;
+    saveExamState(); // Şık işaretlendiğinde kaydet
   }));
 }
 
-document.getElementById('finishBtn').addEventListener('click', async function() {
-  if (answered.size < currentQuestions.length && !confirm('Cevaplamadığınız sorular var, yine de sınavı bitirmek istiyor musunuz?')) return;
-  this.disabled = true; this.textContent = 'Sonuçlar Kaydediliyor...';
+document.getElementById('finishBtn').addEventListener('click', finishExam);
+
+async function finishExam() {
+  if (answered.size < currentQuestions.length && remaining > 0) {
+    if (!confirm('Cevaplamadığınız sorular var, yinede sınavı bitirmek istiyor musunuz?')) return;
+  }
+  
+  document.getElementById('finishBtn').disabled = true; 
+  document.getElementById('finishBtn').textContent = 'Sonuçlar Kaydediliyor...';
   clearInterval(timer);
   
   let correct = 0, wrong = 0, empty = 0;
@@ -675,12 +721,17 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
   
   const ref = push(examsRef);
   examId = ref.key;
+  
   await set(ref, {...user, score, correct, wrong, empty, net, answers, questions: currentQuestions, status: 'completed', revealed: false, submittedAt: Date.now()});
+  
+  // Sınav bitti, lokal depolamayı temizle
+  localStorage.removeItem('kpssActiveExam');
   
   showScreen('waitScreen');
   document.getElementById('linkBox').textContent = location.origin + location.pathname + '?exam=' + examId;
-  this.disabled = false; this.textContent = '📤 Sınavı Bitir ve Sonuçları Gönder';
-});
+  document.getElementById('finishBtn').disabled = false; 
+  document.getElementById('finishBtn').textContent = '📤 Sınavı Bitir ve Sonuçları Gönder';
+}
 
 document.getElementById('copyLinkBtn').addEventListener('click', () => navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(() => alert('Link başarıyla kopyalandı!')));
 document.getElementById('shareWhatsAppBtn').addEventListener('click', () => window.open(`https://wa.me/?text=${encodeURIComponent('KPSS Deneme Sınavı sonuç linkim: ' + document.getElementById('linkBox').textContent)}`));
@@ -731,12 +782,20 @@ document.getElementById('sendMailResult').addEventListener('click', async () => 
   } catch(e) { alert('Mail gönderimi sırasında bir hata oluştu.'); }
 });
 
-document.getElementById('newExamBtn').addEventListener('click', () => location.href = location.origin + location.pathname);
+document.getElementById('newExamBtn').addEventListener('click', () => {
+  localStorage.removeItem('kpssActiveExam');
+  location.href = location.origin + location.pathname;
+});
 document.getElementById('backToLoginBtn').addEventListener('click', () => showScreen('loginScreen'));
-document.getElementById('backToHomeBtn').addEventListener('click', () => { if(confirm('Sınavdan çıkmak istediğinize emin misiniz? Tüm ilerlemeniz kaybolacak.')) location.reload(); });
+document.getElementById('backToHomeBtn').addEventListener('click', () => { 
+  if(confirm('Sınavdan çıkmak istediğinize emin misiniz? İlerlemeniz silinecektir.')) {
+    localStorage.removeItem('kpssActiveExam');
+    location.reload(); 
+  }
+});
 
 // =========================================
-// YÖNETİCİ PANELİ KODLARI (HATASIZ)
+// YÖNETİCİ PANELİ KODLARI (KUSURSUZ HALE GETİRİLDİ)
 // =========================================
 const modal = document.getElementById('adminModal');
 document.getElementById('openAdminBtn').addEventListener('click', () => modal.classList.add('active'));
@@ -759,21 +818,26 @@ function initAdmin() {
   }));
   
   onValue(examsRef, snap => {
-    const data = snap.val() || {};
-    document.getElementById('totalExams').textContent = Object.keys(data).length;
-    renderExamList(data);
+    adminExamsData = snap.val() || {}; // Global değişkende saklıyoruz
+    document.getElementById('totalExams').textContent = Object.keys(adminExamsData).length;
+    renderExamList();
   });
   
-  document.getElementById('searchExam').addEventListener('input', () => onValue(examsRef, snap => renderExamList(snap.val() || {})));
+  document.getElementById('searchExam').addEventListener('input', () => renderExamList());
 }
 
-function renderExamList(data) {
+function renderExamList() {
   const list = document.getElementById('examList');
   const s = document.getElementById('searchExam').value.toLowerCase();
-  const ids = Object.keys(data).filter(id => (data[id].name + ' ' + data[id].surname + ' ' + data[id].email).toLowerCase().includes(s));
   
-  list.innerHTML = ids.length ? ids.sort((a,b) => data[b].submittedAt - data[a].submittedAt).map(id => {
-    const e = data[id];
+  // En yeniler en üstte olacak şekilde kronolojik sıralama
+  const ids = Object.keys(adminExamsData).filter(id => {
+    const e = adminExamsData[id];
+    return (e.name + ' ' + e.surname + ' ' + e.email).toLowerCase().includes(s);
+  }).sort((a,b) => adminExamsData[b].submittedAt - adminExamsData[a].submittedAt);
+  
+  list.innerHTML = ids.length ? ids.map(id => {
+    const e = adminExamsData[id];
     const statusText = e.revealed ? '<span style="color:var(--success); font-weight:700;">🌍 Yayınlandı</span>' : '<span style="color:var(--warning); font-weight:700;">🔒 Gizli</span>';
     return `<div class="list-item" data-id="${id}">
       <div>
@@ -785,42 +849,51 @@ function renderExamList(data) {
         ${statusText}
       </div>
     </div>`;
-  }).join('') : '<p style="text-align:center; padding:20px; color:var(--text-light);">Eşleşen kayıt bulunamadı.</p>';
-  
-  document.querySelectorAll('.list-item').forEach(el => el.addEventListener('click', function() {
-    document.querySelectorAll('.list-item').forEach(el => el.classList.remove('selected'));
-    this.classList.add('selected');
-    selectedExamId = this.dataset.id;
-    const e = data[selectedExamId];
-    
-    document.getElementById('detailPanel').innerHTML = `
-      <h3 style="margin-bottom:10px; color:var(--primary);">${e.name} ${e.surname}</h3>
-      <div style="display:flex; justify-content:space-between; font-weight:600; font-size:1.1rem;">
-        <span style="color:var(--success);">Doğru: ${e.correct}</span>
-        <span style="color:var(--danger);">Yanlış: ${e.wrong}</span>
-        <span style="color:var(--text-light);">Boş: ${e.empty}</span>
-        <span>Net: ${e.net}</span>
-      </div>
-    `;
-    document.getElementById('detailPanel').style.display = 'block';
-    document.getElementById('adminActions').style.display = 'flex';
-  }));
+  }).join('') : '<p style="text-align:center; padding:20px; color:var(--text-light);">Kayıt bulunamadı.</p>';
 }
+
+// EVENT DELEGATION: Tıklama olayının kaybolmaması için dinleyiciyi List'in kendisine veriyoruz
+document.getElementById('examList').addEventListener('click', function(e) {
+  const item = e.target.closest('.list-item');
+  if (!item) return;
+  
+  document.querySelectorAll('.list-item').forEach(el => el.classList.remove('selected'));
+  item.classList.add('selected');
+  selectedExamId = item.dataset.id;
+  const exam = adminExamsData[selectedExamId];
+  
+  document.getElementById('detailPanel').innerHTML = `
+    <h3 style="margin-bottom:15px; color:var(--primary);">${exam.name} ${exam.surname}</h3>
+    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.15rem;">
+      <span style="color:var(--success);">Doğru: ${exam.correct}</span>
+      <span style="color:var(--danger);">Yanlış: ${exam.wrong}</span>
+      <span style="color:var(--text-light);">Boş: ${exam.empty}</span>
+      <span>Net: ${exam.net}</span>
+    </div>
+  `;
+  document.getElementById('detailPanel').style.display = 'block';
+  document.getElementById('adminActions').style.display = 'flex';
+  
+  // Tıklandığında ekranı panelin olduğu yere kaydırır (Çok önemli - Görememe sorununu çözer)
+  document.getElementById('adminDetailArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
 
 document.getElementById('yayinlaBtn').addEventListener('click', async () => {
   if (!selectedExamId) return;
   await update(ref(db, `exams/${selectedExamId}`), {revealed: true});
-  const e = (await get(ref(db, `exams/${selectedExamId}`))).val();
+  const e = adminExamsData[selectedExamId];
   await emailjs.send("service_qdab76q", "template_pqqrclq", {to_email: e.email, to_name: e.name, score: e.score, link: location.origin + location.pathname + '?exam=' + selectedExamId});
   alert('Sonuç başarıyla yayınlandı ve öğrenciye e-posta gönderildi.');
 });
 
 document.getElementById('kilitleBtn').addEventListener('click', async () => { 
+  if(!selectedExamId) return;
   await update(ref(db, `exams/${selectedExamId}`), {revealed: false}); 
   alert('Sonuç gizlendi.'); 
 });
 
 document.getElementById('silTekBtn').addEventListener('click', async () => { 
+  if(!selectedExamId) return;
   if(confirm('Bu öğrencinin kaydını silmek istediğinize emin misiniz?')) {
     await remove(ref(db, `exams/${selectedExamId}`)); 
     selectedExamId = null;
@@ -830,7 +903,11 @@ document.getElementById('silTekBtn').addEventListener('click', async () => {
 });
 
 document.getElementById('silTumBtn').addEventListener('click', () => { 
-  if(confirm('DİKKAT: Sistemdeki tüm sınav kayıtları kalıcı olarak silinecektir! Onaylıyor musunuz?')) set(examsRef, null); 
+  if(confirm('DİKKAT: Sistemdeki tüm sınav kayıtları kalıcı olarak silinecektir! Onaylıyor musunuz?')) {
+    set(examsRef, null);
+    document.getElementById('detailPanel').style.display = 'none';
+    document.getElementById('adminActions').style.display = 'none';
+  }
 });
 
 document.getElementById('addQuestionBtn').addEventListener('click', async () => {
@@ -846,10 +923,8 @@ document.getElementById('addQuestionBtn').addEventListener('click', async () => 
   await set(questionsRef, pool);
   document.getElementById('totalQuestions').textContent = pool.length;
   
-  // Formu temizle
   document.getElementById('newQ').value = '';
   ['opt0','opt1','opt2','opt3','opt4','correctAns','notInput'].forEach(id => document.getElementById(id).value = '');
-  
   alert('Yeni soru başarıyla havuza eklendi!');
 });
 
