@@ -4,118 +4,121 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KPSS Deneme Sınavı Merkezi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
   <style>
     :root {
-      --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
-      --surface: #ffffff; 
-      --primary: #3b82f6; 
-      --primary-hover: #2563eb;
-      --secondary: #6366f1;
-      --text: #1e293b; 
-      --text2: #64748b; 
+      --bg: #f0f4f8;
+      --surface: #ffffff;
+      --primary: #4f46e5;
+      --secondary: #7c3aed;
+      --text: #1e293b;
+      --text2: #64748b;
       --border: #e2e8f0;
-      --success: #10b981; 
+      --success: #10b981;
       --success-bg: #ecfdf5;
-      --warning: #f59e0b; 
-      --danger: #ef4444; 
+      --warning: #f59e0b;
+      --danger: #ef4444;
       --danger-bg: #fef2f2;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
     }
-    
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    
-    body { background: var(--bg-gradient); color: var(--text); min-height: 100vh; display: flex; justify-content: center; padding: 30px 15px; }
-    .container { width: 100%; max-width: 850px; position: relative; }
+
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:30px 15px;
+    }
+    .container { width:100%; max-width:850px; position:relative; }
 
     .sticky-bar {
-      position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
-      border-radius: 16px; padding: 15px 25px; margin-bottom: 25px; display: none; justify-content: space-between;
-      align-items: center; box-shadow: var(--shadow-md); backdrop-filter: blur(10px);
+      position:sticky; top:20px; z-index:100; background:rgba(255,255,255,0.95);
+      border:1px solid var(--border); border-radius:16px; padding:15px 25px;
+      margin-bottom:25px; display:none; justify-content:space-between;
+      align-items:center; box-shadow:var(--shadow-lg); backdrop-filter:blur(10px);
     }
-    .sticky-bar .timer { font-weight: 700; font-size: 1.3rem; color: var(--danger); letter-spacing: 1px; }
-    .sticky-bar .progress-text { font-size: 0.95rem; color: var(--text2); font-weight: 600; }
+    .sticky-bar .timer { font-weight:800; font-size:1.8rem; color:var(--danger); }
+    .sticky-bar .progress-text { font-size:1rem; color:var(--text2); font-weight:600; }
 
-    .screen { display: none; background: var(--surface); border-radius: 20px; padding: 45px; border: 1px solid rgba(255,255,255,0.5); box-shadow: var(--shadow-lg); animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 20px; }
-    .screen.active { display: block; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .screen { display:none; background:var(--surface); border-radius:24px; padding:45px; border:1px solid rgba(255,255,255,0.5); box-shadow:var(--shadow-lg); animation:slideUp 0.4s ease; margin-bottom:20px; }
+    .screen.active { display:block; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
 
-    h2 { color: var(--text); margin-bottom: 12px; text-align: center; font-weight: 700; font-size: 2rem; letter-spacing: -0.5px; }
-    h3 { color: var(--text); margin-bottom: 15px; font-weight: 600; }
-    .subtitle { text-align: center; color: var(--text2); margin-bottom: 35px; font-size: 1rem; line-height: 1.5; }
+    h2 { color:var(--text); margin-bottom:12px; text-align:center; font-weight:800; font-size:2.2rem; }
+    h3 { color:var(--text); margin-bottom:15px; font-weight:700; }
+    .subtitle { text-align:center; color:var(--text2); margin-bottom:35px; font-size:1.1rem; }
 
-    input, select { width: 100%; padding: 16px 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid var(--border); background: #f8fafc; color: var(--text); font-size: 1rem; outline: none; transition: all 0.3s ease; }
-    input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); background: #fff; }
-    
-    button { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; border: none; font-weight: 600; cursor: pointer; font-size: 1.05rem; padding: 16px 20px; border-radius: 12px; width: 100%; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-    button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4); }
-    button:active { transform: translateY(0); }
-    button:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+    input, select, textarea { width:100%; padding:16px 20px; border-radius:14px; margin-bottom:18px; border:2px solid var(--border); background:#f8fafc; color:var(--text); font-size:1rem; outline:none; transition:0.3s; }
+    input:focus, select:focus, textarea:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(79,70,229,0.1); background:#fff; }
 
-    .row { display: flex; gap: 15px; } .row > * { flex: 1; }
-    .nav-buttons { display: flex; gap: 10px; margin-bottom: 30px; }
-    .nav-buttons button { background: #f1f5f9; color: var(--text); width: auto; padding: 10px 20px; font-size: 0.9rem; box-shadow: none; border: 1px solid var(--border); }
-    .nav-buttons button:hover { background: #e2e8f0; }
+    button { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#fff; border:none; font-weight:700; cursor:pointer; font-size:1.05rem; padding:16px 20px; border-radius:14px; width:100%; transition:0.3s; box-shadow:0 4px 15px rgba(79,70,229,0.3); }
+    button:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(79,70,229,0.4); }
+    button:active { transform:translateY(0); }
+    button:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
 
-    .difficulty-buttons { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 30px; }
-    .difficulty-btn { background: var(--surface); border: 2px solid var(--border); color: var(--text); padding: 18px 25px; border-radius: 14px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
-    .difficulty-btn:hover { border-color: var(--primary); background: #f8fafc; transform: translateY(-2px); }
-    .difficulty-btn.selected { border-color: var(--primary); background: #eff6ff; color: var(--primary); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
-    .difficulty-btn.kpss-btn { border-color: #f59e0b; }
-    .difficulty-btn.kpss-btn.selected { background: #fffbeb; color: #d97706; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15); }
+    .row { display:flex; gap:15px; } .row>* { flex:1; }
+    .nav-buttons { display:flex; gap:10px; margin-bottom:30px; }
+    .nav-buttons button { background:#f1f5f9; color:var(--text); width:auto; padding:10px 20px; font-size:0.9rem; box-shadow:none; border:1px solid var(--border); }
+    .nav-buttons button:hover { background:#e2e8f0; }
 
-    .question-card { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 30px; margin-bottom: 25px; box-shadow: var(--shadow-md); transition: all 0.3s; }
-    .question-card:hover { box-shadow: var(--shadow-lg); }
-    .question-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 25px; line-height: 1.6; color: var(--text); }
-    
-    .opt { padding: 16px 20px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; margin-bottom: 12px; background: #f8fafc; transition: all 0.2s ease; font-size: 1rem; font-weight: 500; display: flex; align-items: center; }
-    .opt:hover { border-color: #93c5fd; background: #eff6ff; transform: translateX(5px); }
-    .opt.chosen { border-color: var(--primary); background: #eff6ff; font-weight: 700; color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
-    .opt.chosen::before { content: '🎯'; margin-right: 12px; font-size: 1.2rem; }
-    .blank-opt { border: 2px dashed var(--text2); color: var(--text2); background: transparent; justify-content: center; opacity: 0.7; }
-    .blank-opt:hover { border-color: var(--text); color: var(--text); transform: none; background: #f1f5f9; }
+    .difficulty-buttons { display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:30px; }
+    .difficulty-btn { background:var(--surface); border:2px solid var(--border); color:var(--text); padding:18px 25px; border-radius:16px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:0.2s; display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow-sm); }
+    .difficulty-btn:hover { border-color:var(--primary); background:#f8fafc; transform:translateY(-2px); }
+    .difficulty-btn.selected { border-color:var(--primary); background:#eff6ff; color:var(--primary); box-shadow:0 4px 12px rgba(79,70,229,0.2); }
+    .difficulty-btn.kpss-btn { border-color:#f59e0b; }
+    .difficulty-btn.kpss-btn.selected { background:#fffbeb; color:#d97706; box-shadow:0 4px 12px rgba(245,158,11,0.2); }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
-    .stats-item { background: #ffffff; padding: 25px 15px; border-radius: 16px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: transform 0.3s; }
-    .stats-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-    .stats-item .value { display: block; font-size: 2.5rem; font-weight: 800; color: var(--primary); }
-    .stats-item .label { font-size: 0.9rem; color: var(--text2); font-weight: 600; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    .link-box { background: #f8fafc; border: 2px dashed var(--primary); padding: 20px; border-radius: 12px; text-align: center; color: var(--primary); margin-bottom: 20px; font-size: 1rem; font-weight: 600; word-break: break-all; }
-    
-    .analysis-card { padding: 20px; margin-bottom: 20px; border-radius: 12px; border-left: 5px solid; background: #fff; box-shadow: var(--shadow-sm); }
-    .analysis-card.correct { border-left-color: var(--success); background: var(--success-bg); }
-    .analysis-card.wrong { border-left-color: var(--danger); background: var(--danger-bg); }
-    .analysis-card.empty { border-left-color: var(--text2); background: #f1f5f9; }
+    .question-card { background:#fff; border:2px solid var(--border); border-radius:20px; padding:30px; margin-bottom:25px; box-shadow:var(--shadow-md); transition:0.3s; }
+    .question-card:hover { box-shadow:var(--shadow-lg); }
+    .question-title { font-weight:700; font-size:1.2rem; margin-bottom:25px; line-height:1.6; color:var(--text); }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); z-index: 999; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-    .modal.active { display: flex; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .modal-content { background: var(--surface); padding: 35px; border-radius: 20px; width: 90%; max-width: 750px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-    .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: var(--text2); transition: color 0.2s; line-height: 1; }
-    .close-modal:hover { color: var(--danger); }
-    
-    .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
-    .tab { padding: 10px 20px; cursor: pointer; color: var(--text2); font-weight: 600; border-radius: 8px; transition: all 0.2s; }
-    .tab:hover { background: #f1f5f9; }
-    .tab.active { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
-    
-    .list-item { padding: 18px; border: 1px solid var(--border); margin-bottom: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; background: #ffffff; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
-    .list-item:hover { border-color: var(--primary); transform: translateX(3px); }
-    .list-item.selected { border-left: 5px solid var(--primary); background: #eff6ff; }
-    
-    .error-msg { color: #b91c1c; background: #fef2f2; padding: 15px; border-radius: 10px; font-size: 0.95rem; font-weight: 500; margin-bottom: 20px; border: 1px solid #f87171; text-align: center; }
-    
-    .admin-fab { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; border-radius: 50%; background: #1e293b; color: #fff; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 100; transition: transform 0.3s; display: flex; align-items: center; justify-content: center; }
-    .admin-fab:hover { transform: scale(1.1) rotate(45deg); }
-    
-    #loadingScreen { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; }
-    .loader { border: 5px solid #f3f3f3; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .opt { padding:16px 20px; border:2px solid var(--border); border-radius:14px; cursor:pointer; margin-bottom:12px; background:#f8fafc; transition:0.2s; font-size:1rem; font-weight:500; display:flex; align-items:center; }
+    .opt:hover { border-color:#a5b4fc; background:#eef2ff; transform:translateX(5px); }
+    .opt.chosen { border-color:var(--primary); background:var(--primary); color:#fff; font-weight:700; }
+    .opt.chosen::before { content:'✓ '; margin-right:8px; }
+    .blank-opt { border:2px dashed #94a3b8; color:#94a3b8; background:transparent; justify-content:center; }
+    .blank-opt:hover { border-color:#64748b; color:#64748b; }
+
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px; }
+    .stats-item { background:#fff; padding:25px 15px; border-radius:16px; text-align:center; border:1px solid var(--border); box-shadow:var(--shadow-sm); transition:0.3s; }
+    .stats-item:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); }
+    .stats-item .value { display:block; font-size:2.5rem; font-weight:800; color:var(--primary); }
+    .stats-item .label { font-size:0.9rem; color:var(--text2); font-weight:600; margin-top:8px; text-transform:uppercase; }
+
+    .link-box { background:#f8fafc; border:2px dashed var(--primary); padding:20px; border-radius:14px; text-align:center; color:var(--primary); margin-bottom:20px; font-weight:600; word-break:break-all; }
+
+    .analysis-card { padding:20px; margin-bottom:20px; border-radius:14px; border-left:6px solid; background:#fff; box-shadow:var(--shadow-sm); }
+    .analysis-card.correct { border-left-color:var(--success); background:var(--success-bg); }
+    .analysis-card.wrong { border-left-color:var(--danger); background:var(--danger-bg); }
+    .analysis-card.empty { border-left-color:#94a3b8; background:#f1f5f9; }
+
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.8); backdrop-filter:blur(5px); z-index:999; justify-content:center; align-items:center; }
+    .modal.active { display:flex; }
+    .modal-content { background:var(--surface); padding:35px; border-radius:24px; width:90%; max-width:750px; max-height:90vh; overflow-y:auto; position:relative; box-shadow:0 25px 50px rgba(0,0,0,0.3); }
+    .close-modal { position:absolute; top:20px; right:25px; font-size:2rem; cursor:pointer; color:var(--text2); line-height:1; }
+    .close-modal:hover { color:var(--danger); }
+
+    .tabs { display:flex; gap:10px; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:15px; }
+    .tab { padding:10px 20px; cursor:pointer; color:var(--text2); font-weight:600; border-radius:8px; transition:0.2s; }
+    .tab:hover { background:#f1f5f9; }
+    .tab.active { background:var(--primary); color:#fff; }
+
+    .list-item { padding:18px; border:1px solid var(--border); margin-bottom:12px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; background:#fff; cursor:pointer; transition:0.2s; box-shadow:var(--shadow-sm); }
+    .list-item:hover { border-color:var(--primary); transform:translateX(3px); }
+    .list-item.selected { border-left:5px solid var(--primary); background:#eff6ff; }
+
+    .error-msg { color:#b91c1c; background:#fef2f2; padding:15px; border-radius:12px; font-weight:500; margin-bottom:20px; border:1px solid #f87171; text-align:center; display:none; }
+
+    .admin-fab { position:fixed; bottom:30px; right:30px; width:60px; height:60px; border-radius:50%; background:#1e293b; color:#fff; border:none; font-size:1.8rem; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,0.3); z-index:100; transition:0.3s; display:flex; align-items:center; justify-content:center; }
+    .admin-fab:hover { transform:scale(1.1) rotate(45deg); background:var(--primary); }
+
+    @media(max-width:768px) { .row{flex-direction:column;} .stats-grid{grid-template-columns:repeat(2,1fr);} .screen{padding:25px;} }
   </style>
 </head>
 <body>
@@ -124,19 +127,12 @@
   <div class="sticky-bar" id="stickyBar">
     <span class="timer" id="stickyTimer">⏱️ 20:00</span>
     <span class="progress-text">Cevaplanan: <strong id="stickyAnswered" style="color:var(--primary)">0</strong>/<strong id="stickyTotal">10</strong></span>
-    <span class="progress-text">İlerleme: <strong id="stickyProgress" style="color:var(--primary)">0</strong>%</span>
-  </div>
-
-  <div class="screen" id="loadingScreen">
-    <div class="loader"></div>
-    <h3 style="color: var(--text2)">Sınav Verileri Yükleniyor...</h3>
-    <p>Lütfen bekleyin.</p>
   </div>
 
   <div class="screen active" id="loginScreen">
     <h2>🎯 KPSS Deneme Merkezi</h2>
-    <p class="subtitle">Sınava başlamak için bilgilerinizi giriniz. Hazırlıklarınızda başarılar dileriz!</p>
-    <div id="loginError" class="error-msg" style="display:none"></div>
+    <p class="subtitle">Sınava başlamak için bilgilerinizi giriniz.</p>
+    <div id="loginError" class="error-msg"></div>
     <div class="row">
       <input type="text" id="nameInput" placeholder="Adınız" />
       <input type="text" id="surnameInput" placeholder="Soyadınız" />
@@ -150,13 +146,13 @@
       <button id="backToLoginBtn">← Geri</button>
     </div>
     <h2>Sınav Modunu Seçin</h2>
-    <p class="subtitle">Her test karıştırılmış, özenle seçilmiş 10 benzersiz soru içerir.</p>
+    <p class="subtitle">Her test 10 benzersiz soru içerir.</p>
     <div class="difficulty-buttons">
-      <div class="difficulty-btn" data-diff="easy"><span>Kolay Seviye (Temel)</span> <span>🟢</span></div>
-      <div class="difficulty-btn" data-diff="medium"><span>Orta Seviye (Standart)</span> <span>🟡</span></div>
-      <div class="difficulty-btn" data-diff="hard"><span>Zor Seviye (Seçici)</span> <span>🔴</span></div>
-      <div class="difficulty-btn selected" data-diff="all"><span>Tümü (Gerçek Sınav Dağılımı)</span> <span>🎲</span></div>
-      <div class="difficulty-btn kpss-btn" data-diff="kpss"><span>KPSS Ortaöğretim / Önlisans Çıkmışlar</span> <span>🏛️</span></div>
+      <div class="difficulty-btn" data-diff="easy"><span>Kolay Seviye</span><span>🟢</span></div>
+      <div class="difficulty-btn" data-diff="medium"><span>Orta Seviye</span><span>🟡</span></div>
+      <div class="difficulty-btn" data-diff="hard"><span>Zor Seviye</span><span>🔴</span></div>
+      <div class="difficulty-btn selected" data-diff="all"><span>Tümü (Karma)</span><span>🎲</span></div>
+      <div class="difficulty-btn kpss-btn" data-diff="kpss"><span>KPSS Ortaöğretim / Önlisans</span><span>🏛️</span></div>
     </div>
     <button id="startExamAfterDiff">Sınavı Başlat ⏳</button>
   </div>
@@ -166,41 +162,39 @@
       <button id="backToHomeBtn">Sınavdan Çık</button>
     </div>
     <div id="questionsContainer"></div>
-    <button id="finishBtn" style="margin-top: 30px; font-size: 1.15rem; padding: 18px;">Sınavı Bitir ve Gönder 📤</button>
+    <button id="finishBtn" style="margin-top:30px;font-size:1.15rem;padding:18px;">Sınavı Bitir ve Gönder 📤</button>
   </div>
 
   <div class="screen" id="waitScreen">
     <h2>Sınavınız Başarıyla Kaydedildi! 🎉</h2>
-    <p class="subtitle">Sonuçlarınız yönetici tarafından incelenip onaylandığında detaylı analizleri görebileceksiniz. Lütfen aşağıdaki sana özel takip linkini saklayın.</p>
-    <div class="link-box" id="linkBox" title="Tıklayıp kopyalayabilirsiniz"></div>
-    <div class="row" style="margin-bottom: 20px;">
-      <button id="copyLinkBtn" style="background: var(--text2);">📋 Kopyala</button>
-      <button id="shareWhatsAppBtn" style="background: #25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">💬 WhatsApp</button>
-      <button id="shareMailBtn" style="background: #EA4335; box-shadow: 0 4px 12px rgba(234, 67, 53, 0.3);">📧 Mail Gönder</button>
+    <p class="subtitle">Yönetici onayından sonra sonucunuzu aşağıdaki linkten görebilirsiniz.</p>
+    <div class="link-box" id="linkBox"></div>
+    <div class="row" style="margin-bottom:20px;">
+      <button id="copyLinkBtn" style="background:var(--text2);">📋 Kopyala</button>
+      <button id="shareWhatsAppBtn" style="background:#25D366;">💬 WhatsApp</button>
+      <button id="shareMailBtn" style="background:#EA4335;">📧 Mail Gönder</button>
     </div>
-    <button id="checkBtn" style="background: var(--text);">Sonuç Durumunu Kontrol Et 🔄</button>
+    <button id="checkBtn" style="background:var(--text);">Sonuç Durumunu Kontrol Et 🔄</button>
   </div>
 
   <div class="screen" id="resultScreen">
     <h2>Sınav Sonucu ve Analiz</h2>
-    <p class="subtitle" id="nameSurnameDisplay" style="font-weight: 700; color: var(--primary); font-size: 1.2rem; margin-bottom: 20px;"></p>
+    <p class="subtitle" id="nameSurnameDisplay" style="font-weight:700;color:var(--primary);font-size:1.2rem;"></p>
     <div class="stats-grid">
       <div class="stats-item"><span class="value" id="scoreDisplay">0</span><span class="label">Puan</span></div>
       <div class="stats-item"><span class="value" style="color:var(--success)" id="correctDisplay">0</span><span class="label">Doğru</span></div>
       <div class="stats-item"><span class="value" style="color:var(--danger)" id="wrongDisplay">0</span><span class="label">Yanlış</span></div>
       <div class="stats-item"><span class="value" style="color:var(--text2)" id="emptyDisplay">0</span><span class="label">Boş</span></div>
     </div>
-    
-    <div class="row" style="margin-bottom: 30px;">
-      <button id="shareWhatsAppResult" style="background:#25D366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">Sonucumu WhatsApp'ta Paylaş</button>
-      <button id="sendMailResult" style="background:#EA4335; box-shadow: 0 4px 12px rgba(234, 67, 53, 0.3);">Detayları Mailime Gönder</button>
+    <div class="row" style="margin-bottom:30px;">
+      <button id="shareWhatsAppResult" style="background:#25D366;">Sonucumu WhatsApp'ta Paylaş</button>
+      <button id="sendMailResult" style="background:#EA4335;">Detayları Mailime Gönder</button>
     </div>
-    <div id="mailSuccessMsg" style="display:none; color:var(--success); text-align:center; font-weight:600; margin-bottom:20px; background: var(--success-bg); padding: 15px; border-radius: 8px;"></div>
-    
-    <h3 style="margin: 30px 0 20px 0; font-size: 1.4rem; border-bottom: 2px solid var(--border); padding-bottom: 15px; color: var(--text);">Detaylı Soru Çözümleri</h3>
+    <div id="mailSuccessMsg" style="display:none;color:var(--success);text-align:center;font-weight:600;margin-bottom:20px;background:var(--success-bg);padding:15px;border-radius:8px;"></div>
+    <h3 style="margin:30px 0 20px;border-bottom:2px solid var(--border);padding-bottom:15px;">Detaylı Soru Çözümleri</h3>
     <div id="analysisContainer"></div>
-    <div class="nav-buttons" style="margin-top: 30px; justify-content: center;">
-      <button id="backToHomeResultBtn" style="background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 12px;">Yeni Sınav Çöz</button>
+    <div class="nav-buttons" style="margin-top:30px;justify-content:center;">
+      <button id="backToHomeResultBtn" style="background:var(--primary);color:white;border:none;padding:15px 30px;border-radius:12px;">Yeni Sınav Çöz</button>
     </div>
   </div>
 </div>
@@ -208,34 +202,54 @@
 <div class="modal" id="adminModal">
   <div class="modal-content">
     <span class="close-modal" id="closeAdminModal">&times;</span>
-    <h3 style="font-size: 1.5rem; margin-bottom: 20px;">⚙️ Yönetici Kontrol Paneli</h3>
+    <h3 style="font-size:1.5rem;margin-bottom:20px;">⚙️ Yönetici Kontrol Paneli</h3>
     <div id="adminLoginForm">
-      <p style="color: var(--text2); margin-bottom: 15px;">Panele erişmek için şifrenizi giriniz.</p>
+      <p style="color:var(--text2);margin-bottom:15px;">Panele erişmek için şifrenizi giriniz.</p>
       <input type="password" id="adminPass" placeholder="Yönetici şifresi" />
       <button id="adminLoginBtn">Giriş Yap</button>
     </div>
-    <div id="adminMain" style="display:none; margin-top: 20px;">
+    <div id="adminMain" style="display:none;margin-top:20px;">
       <div class="tabs">
         <div class="tab active" data-tab="exams">Sınav Kayıtları</div>
         <div class="tab" data-tab="questions">Soru Havuzu</div>
       </div>
-      
       <div id="examsTab">
-        <p style="margin-bottom: 15px; color: var(--text2); font-weight: 500;">Toplam <strong id="totalExams" style="color: var(--primary);">0</strong> kayıtlı sınav bulunuyor.</p>
-        <div id="examList" style="max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
-        <div id="detailPanel" style="display:none; background:#f8fafc; padding:20px; border-radius:12px; margin-top:20px; border:1px solid var(--border); font-size:1rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);"></div>
-        <div id="adminActions" style="display:none; margin-top:20px; gap:15px;">
-          <button id="yayinlaBtn" style="background:var(--success); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">Sonucu Yayınla & Mail At</button>
-          <button id="kilitleBtn" style="background:var(--warning); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">Sonucu Gizle/Kilitle</button>
+        <input type="text" id="searchExam" placeholder="İsim veya e-posta ile ara..." style="margin-bottom:15px;" />
+        <p style="margin-bottom:15px;">Toplam <strong id="totalExams" style="color:var(--primary);">0</strong> kayıtlı sınav bulunuyor.</p>
+        <div id="examList" style="max-height:350px;overflow-y:auto;"></div>
+        <div id="detailPanel" style="display:none;background:#f8fafc;padding:20px;border-radius:14px;margin-top:20px;"></div>
+        <div id="adminActions" style="display:none;margin-top:20px;gap:15px;">
+          <button id="yayinlaBtn" style="background:var(--success);">Sonucu Yayınla & Mail At</button>
+          <button id="kilitleBtn" style="background:var(--warning);">Sonucu Gizle/Kilitle</button>
+          <button id="silTekBtn" style="background:var(--danger);">Bu Kaydı Sil</button>
         </div>
-        <button id="silTumBtn" style="background:var(--danger); margin-top:30px; box-shadow: none;">Tüm Sınav Kayıtlarını Sil (Tehlikeli)</button>
+        <button id="silTumBtn" style="background:var(--danger);margin-top:30px;">Tüm Sınav Kayıtlarını Sil</button>
       </div>
-      
       <div id="questionsTab" style="display:none">
-        <p style="color:var(--text2); margin-bottom:15px">Veritabanındaki aktif toplam soru sayısı: <strong id="totalQuestions" style="color:var(--primary);">0</strong></p>
-        <div style="background: var(--success-bg); padding: 15px; border-radius: 8px; color: var(--success); font-weight: 600; text-align: center; border: 1px solid #a7f3d0;">
-          Tüm orijinal ve eklenen ortaöğretim soruları tam ve eksiksiz olarak havuza dahildir.
+        <h3 style="margin-bottom:15px;">➕ Yeni Soru Ekle</h3>
+        <input type="text" id="newQ" placeholder="Soruyu yazınız" />
+        <input type="text" id="opt0" placeholder="A seçeneği" />
+        <input type="text" id="opt1" placeholder="B seçeneği" />
+        <input type="text" id="opt2" placeholder="C seçeneği" />
+        <input type="text" id="opt3" placeholder="D seçeneği" />
+        <input type="text" id="opt4" placeholder="E seçeneği" />
+        <div class="row">
+          <input type="number" id="correctAns" placeholder="Doğru şık (0=A)" min="0" max="4" value="0" />
+          <select id="diffSelect">
+            <option value="easy">Kolay</option>
+            <option value="medium">Orta</option>
+            <option value="hard">Zor</option>
+            <option value="kpss">KPSS</option>
+          </select>
         </div>
+        <textarea id="notInput" placeholder="Çözüm notu (opsiyonel)" rows="2"></textarea>
+        <button id="addQuestionBtn">Soruyu Havuza Ekle</button>
+        <hr style="margin:25px 0;" />
+        <p style="color:var(--text2);margin-bottom:15px">Toplam soru sayısı: <strong id="totalQuestions" style="color:var(--primary);">0</strong></p>
+        <div style="background:var(--success-bg);padding:15px;border-radius:8px;color:var(--success);font-weight:600;text-align:center;margin-bottom:20px;">
+          ✅ Soru havuzu günceldir. Yeni eklediğiniz sorular otomatik olarak kaydedilir.
+        </div>
+        <button id="resetQuestionsBtn" style="background:var(--danger);">Tüm Soruları Sıfırla</button>
       </div>
     </div>
   </div>
@@ -258,15 +272,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const examsRef = ref(db, 'exams');
+const questionsRef = ref(db, 'questions');
 const ADMIN_PASSWORD = "1923";
 
 const MAIL_PUBLIC_KEY = "dbF3yWuvy9um9nAdp";
 const MAIL_SERVICE_ID = "service_qdab76q";
 const MAIL_TEMPLATE_ID = "template_pqqrclq";
 
-// DEV SORU HAVUZU (HİÇBİR ŞEY EKSİLTİLMEDEN, TÜM ESKİ VE YENİ KPSS ORTAÖĞRETİM SORULARI BİRLEŞTİRİLDİ)
-const questionPool = [
-  // Orijinal Kolay/Orta/Zor Sorular
+emailjs.init(MAIL_PUBLIC_KEY);
+
+// SORU HAVUZU - Orijinal soruların + 50 yeni KPSS sorusu
+const defaultQuestionPool = [
+  // Orijinal kolay/orta/zor sorular (tamamı)
   { q:"Türkiye'nin başkenti?", o:["Ankara","İstanbul","İzmir","Bursa","Antalya"], a:0, difficulty:"easy", n:"Ankara." },
   { q:"TBMM açılış tarihi?", o:["23 Nisan 1920","29 Ekim 1923","19 Mayıs 1919","30 Ağustos 1922","15 Temmuz 2016"], a:0, difficulty:"easy", n:"23 Nisan 1920." },
   { q:"Cumhuriyet ilan yılı?", o:["1920","1921","1922","1923","1924"], a:3, difficulty:"easy", n:"1923." },
@@ -291,7 +308,7 @@ const questionPool = [
   { q:"İstanbul'u fetheden padişah?", o:["Fatih","Kanuni","Yavuz","II.Mahmut","Abdülmecid"], a:0, difficulty:"medium", n:"Fatih Sultan Mehmet." },
   { q:"Tanzimat Fermanı padişahı?", o:["II.Mahmud","Abdülmecid","Abdülaziz","V.Murad","II.Abdülhamid"], a:1, difficulty:"medium", n:"Abdülmecid." },
   { q:"Kızılay kurucusu?", o:["Dr. Abdullah Bey","Dr. Refik Saydam","Kerim Ağa","Hilal-i Ahmer","Mehmet Akif"], a:0, difficulty:"medium", n:"Dr. Abdullah Bey." },
-  { q:"En uzun nehir?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:1, difficulty:"medium", n:"Nil." },
+  { q:"En uzun nehir?", o:["Nil","Amazon","Mississippi","Yangtze","Tuna"], a:0, difficulty:"medium", n:"Nil." },
   { q:"Asal sayı?", o:["4","6","9","11","15"], a:3, difficulty:"medium", n:"11." },
   { q:"Üçgen iç açı toplamı?", o:["90","180","270","360","100"], a:1, difficulty:"medium", n:"180." },
   { q:"En derin göl?", o:["Van","Baykal","Tanganika","Hazar","Titicaca"], a:1, difficulty:"medium", n:"Baykal." },
@@ -355,32 +372,28 @@ const questionPool = [
   { q:"En çok dil konuşulan ülke?", o:["Hindistan","Papua Yeni Gine","Endonezya","Nijerya","Çin"], a:1, difficulty:"hard", n:"Papua Yeni Gine." },
   { q:"En kısa gün?", o:["21 Mart","21 Haziran","23 Eylül","21 Aralık","1 Ocak"], a:3, difficulty:"medium", n:"21 Aralık." },
   { q:"Gezegen olmayan?", o:["Mars","Plüton","Jüpiter","Satürn","Uranüs"], a:1, difficulty:"medium", n:"Plüton." },
-  { q:"Türk bayrağı rengi?", o:["Kırmızı-Beyaz","Mavi-Beyaz","Yeşil-Beyaz","Siyah-Beyaz","Sarı-Kırmızı"], a:0, difficulty:"easy", n:"Kırmızı-Beyaz." },
   { q:"İçecek olmayan?", o:["Su","Çay","Kahve","Çorba","Meyve suyu"], a:3, difficulty:"easy", n:"Çorba." },
-
-  // KPSS Çıkmış ve Ortaöğretim Odaklı Sorular (kpss etiketli)
-  { q:"Tarih öğretmeni: 'Mani dinine ait kitaplarda dinî ve dünyevi sahneleri canlandıran minyatürler bulunmaktadır...' Bu Türk devleti hangisidir?", o:["Hunlar","Avarlar","Uygurlar","Göktürkler","Hazarlar"], a:2, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Uygurlar." },
-  { q:"Sivas Gök Medrese, Sultan Han Kervansarayı ve Konya Alaeddin Camii aşağıdakilerden hangisine aittir?", o:["Anadolu Selçuklu Devleti","Büyük Selçuklu Devleti","Karamanoğulları","Germiyanoğulları","Osmanlı Devleti"], a:0, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Anadolu Selçuklu Devleti." },
-  { q:"Selçuklular Dönemi'nde devlet işleri 'divan' denilen büyük divanda görüşülüp karara bağlanırdı. Aşağıdakilerden hangisi bu divana bağlı alt divanlardan biri değildir?", o:["Divan-ı İstifa","Divan-ı Arz","Divan-ı İşraf","Divan-ı Hümayun","Divan-ı Mezalim"], a:3, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Divan-ı Hümayun Osmanlı'ya aittir." },
-  { q:"Osmanlı Devleti'ndeki kadılarla ilgili aşağıdakilerden hangisi söylenemez?", o:["Berat sahibi oldukları","Vergiden muaf oldukları","Vakıfları denetledikleri","Davalarda hüküm verdikleri","Cezaları infaz ettikleri"], a:4, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Kadılar hüküm verir ancak cezayı infaz etmezler." },
-  { q:"Aşağıdakilerden hangisi, Osmanlı Devleti'nde coğrafya ve astronomi alanında ön plana çıkmış kişilerden biri değildir?", o:["Ali Kuşçu","Piri Reis","Seydi Ali Reis","Matrakçı Nasuh","Naima"], a:4, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Naima tarihçidir." },
-  { q:"Osmanlı Devleti'nin dış borçlarını tahsil etmek üzere 1881 yılında kurulan ve maliye üzerinde denetim sağlayan teşkilat aşağıdakilerden hangisidir?", o:["Osmanlı Bankası","Hazine-i Hassa","İrad-ı Cedit","İtibar-ı Milli Bankası","Düyûn-ı Umumiye"], a:4, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Düyûn-ı Umumiye." },
-  { q:"Mustafa Kemal Paşa Birinci Dünya Savaşı sırasında aşağıdaki yerlerden hangisinde görev yapmıştır?", o:["Mısır","Basra","Hicaz","Suriye","Galiçya"], a:3, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Suriye-Filistin Cephesi." },
-  { q:"Atatürk'ün, 1 Kasım 1936 tarihli TBMM açılış konuşmasında 'Daima kendisiyle dostluğa çok ehemmiyet verdiğimiz Fransa ile aramızda, tek ve büyük mesele budur.' ifadesini kullanmasına neden olan dış politika sorunu hangisidir?", o:["Musul","Hatay","Yabancı Okullar","Boğazlar","Kapitülasyonlar"], a:1, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Hatay sorunu." },
-  { q:"Aşağıdakilerden hangisi Soğuk Savaş yıllarında varlığını sürdüren Varşova Paktı ülkelerinden biri değildir?", o:["Polonya","Avusturya","Çekoslovakya","Bulgaristan","Macaristan"], a:1, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Avusturya tarafsızdı." },
-  { q:"Türkiye'de en geniş alanı şekillendiren dış kuvvet aşağıdakilerden hangisidir?", o:["Akarsular","Buzullar","Rüzgârlar","Dalgalar","Kütle hareketleri"], a:0, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Akarsular." },
-  { q:"Aşağıdakilerden hangisi Türkiye'nin dahil olduğu uluslararası doğal gaz boru hattı projelerinden biri değildir?", o:["Mısır - Türkiye Boru Hattı","Irak - Türkiye Boru Hattı","Azerbaycan - Türkiye Boru Hattı","Transmed Boru Hattı","Mavi Akım Projesi"], a:3, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Transmed Boru Hattı Cezayir-İtalya." },
-  { q:"1982 Anayasası'na göre, milletvekili seçilebilmek için en az hangi düzeyde mezuniyet gerekir?", o:["İlkokul","Ortaokul","Lise","Ön lisans","Lisans"], a:0, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - En az ilkokul mezunu." },
-  { q:"1982 Anayasası'na göre, bakanları atama görev ve yetkisi aşağıdakilerden hangisine aittir?", o:["Yüksek Seçim Kurulu","Milli Güvenlik Kurulu","Cumhurbaşkanı","Anayasa Mahkemesi","TBMM"], a:2, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Cumhurbaşkanı." },
-  { q:"Aşağıdakilerden hangisi bir kimsenin kan hısmıdır?", o:["Nişanlısı","Kayınvalidesi","Süt kardeşi","Büyükannesi","Baldızı"], a:3, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Büyükanne." },
-  { q:"Öldüğü günü kavuşma vakti olarak tanımlamasından dolayı bu güne 'şeb-i arûs' (düğün gecesi) denilen ve ölüm yıl dönümü bu adla anılan İslam alimi kimdir?", o:["Yunus Emre","Hacı Bektaş-ı Veli","Mevlana Celaleddin-i Rumi","Hacı Bayram Veli","Ahmet Yesevi"], a:2, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Mevlana." },
-  { q:"İçişleri bakanlığına bağlı, afet ve acil durumlara ilişkin süreçlerin aktif yönetimi için gerekli çalışmaları yürütmekle görevli kurumun kısa adı hangisidir?", o:["AFAD","ATAM","TÜBİTAK","TİKA","ASELSAN"], a:0, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - AFAD." },
-  { q:"Sultan II. Abdülhamid tarafından kurulan, ırk, din, dil, sınıf ve cinsiyet farkı gözetmeksizin bakıma muhtaç kişilere hizmet veren kurum hangisidir?", o:["Yeşilay","Darülaceze","Darülfünun","Darülbedayi","Darülelhan"], a:1, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Darülaceze." },
-  { q:"4721 sayılı Türk Medeni Kanunu'na göre erginlik kaç yaşın doldurulmasıyla başlar?", o:["14","15","16","17","18"], a:4, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - 18 yaş." },
-  { q:"Aşağıdakilerden hangisi hukukun yardımcı kaynaklarından biridir?", o:["Kanunlar","Uluslararası andlaşmalar","Bilimsel görüşler","Yönetmelikler","Cumhurbaşkanlığı kararnameleri"], a:2, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Bilimsel görüşler (Doktrin)." },
-  { q:"'İyilik takasa gelmez, değiş tokuş pazarına girince iyiliğin değeri kalmaz.' Bu cümlede anlatılmak istenen aşağıdakilerden hangisidir?", o:["Maddi yardım, daha çok zarar veren bir iyiliktir.","İyilik yapan insanı bütünüyle değiştirir.","İyilik, yarattığınız değişim oranında büyüktür.","İyilik kendi başına kıymetlidir, bir karşılık beklenerek yapıldığında kıymetini yitirir.","Yardımlaşmayı bilmeyenler için iyiliğin değeri yoktur."], a:3, difficulty:"kpss", n:"2020 KPSS Çıkmış Soru - Karşılık beklememek." },
-  
-  // Eklenen Yeni Ortaöğretim/Önlisans Soruları
+  // KPSS çıkmış soruları (orijinal + yeni 50 soru)
+  { q:"Tarih öğretmeni: 'Mani dinine ait kitaplarda dinî ve dünyevi sahneleri canlandıran minyatürler bulunmaktadır...' Bu Türk devleti hangisidir?", o:["Hunlar","Avarlar","Uygurlar","Göktürkler","Hazarlar"], a:2, difficulty:"kpss", n:"2020 KPSS - Uygurlar." },
+  { q:"Sivas Gök Medrese, Sultan Han Kervansarayı ve Konya Alaeddin Camii aşağıdakilerden hangisine aittir?", o:["Anadolu Selçuklu Devleti","Büyük Selçuklu Devleti","Karamanoğulları","Germiyanoğulları","Osmanlı Devleti"], a:0, difficulty:"kpss", n:"2020 KPSS - Anadolu Selçuklu Devleti." },
+  { q:"Selçuklular Dönemi'nde devlet işleri 'divan' denilen büyük divanda görüşülüp karara bağlanırdı. Aşağıdakilerden hangisi bu divana bağlı alt divanlardan biri değildir?", o:["Divan-ı İstifa","Divan-ı Arz","Divan-ı İşraf","Divan-ı Hümayun","Divan-ı Mezalim"], a:3, difficulty:"kpss", n:"2020 KPSS - Divan-ı Hümayun Osmanlı'ya aittir." },
+  { q:"Osmanlı Devleti'ndeki kadılarla ilgili aşağıdakilerden hangisi söylenemez?", o:["Berat sahibi oldukları","Vergiden muaf oldukları","Vakıfları denetledikleri","Davalarda hüküm verdikleri","Cezaları infaz ettikleri"], a:4, difficulty:"kpss", n:"2020 KPSS - Kadılar hüküm verir ancak cezayı infaz etmezler." },
+  { q:"Aşağıdakilerden hangisi, Osmanlı Devleti'nde coğrafya ve astronomi alanında ön plana çıkmış kişilerden biri değildir?", o:["Ali Kuşçu","Piri Reis","Seydi Ali Reis","Matrakçı Nasuh","Naima"], a:4, difficulty:"kpss", n:"2020 KPSS - Naima tarihçidir." },
+  { q:"Osmanlı Devleti'nin dış borçlarını tahsil etmek üzere 1881 yılında kurulan ve maliye üzerinde denetim sağlayan teşkilat aşağıdakilerden hangisidir?", o:["Osmanlı Bankası","Hazine-i Hassa","İrad-ı Cedit","İtibar-ı Milli Bankası","Düyûn-ı Umumiye"], a:4, difficulty:"kpss", n:"2020 KPSS - Düyûn-ı Umumiye." },
+  { q:"Mustafa Kemal Paşa Birinci Dünya Savaşı sırasında aşağıdaki yerlerden hangisinde görev yapmıştır?", o:["Mısır","Basra","Hicaz","Suriye","Galiçya"], a:3, difficulty:"kpss", n:"2020 KPSS - Suriye-Filistin Cephesi." },
+  { q:"Atatürk'ün, 1 Kasım 1936 tarihli TBMM açılış konuşmasında 'Daima kendisiyle dostluğa çok ehemmiyet verdiğimiz Fransa ile aramızda, tek ve büyük mesele budur.' ifadesini kullanmasına neden olan dış politika sorunu hangisidir?", o:["Musul","Hatay","Yabancı Okullar","Boğazlar","Kapitülasyonlar"], a:1, difficulty:"kpss", n:"2020 KPSS - Hatay sorunu." },
+  { q:"Aşağıdakilerden hangisi Soğuk Savaş yıllarında varlığını sürdüren Varşova Paktı ülkelerinden biri değildir?", o:["Polonya","Avusturya","Çekoslovakya","Bulgaristan","Macaristan"], a:1, difficulty:"kpss", n:"2020 KPSS - Avusturya tarafsızdı." },
+  { q:"Türkiye'de en geniş alanı şekillendiren dış kuvvet aşağıdakilerden hangisidir?", o:["Akarsular","Buzullar","Rüzgârlar","Dalgalar","Kütle hareketleri"], a:0, difficulty:"kpss", n:"2020 KPSS - Akarsular." },
+  { q:"Aşağıdakilerden hangisi Türkiye'nin dahil olduğu uluslararası doğal gaz boru hattı projelerinden biri değildir?", o:["Mısır - Türkiye Boru Hattı","Irak - Türkiye Boru Hattı","Azerbaycan - Türkiye Boru Hattı","Transmed Boru Hattı","Mavi Akım Projesi"], a:3, difficulty:"kpss", n:"2020 KPSS - Transmed Boru Hattı Cezayir-İtalya." },
+  { q:"1982 Anayasası'na göre, milletvekili seçilebilmek için en az hangi düzeyde mezuniyet gerekir?", o:["İlkokul","Ortaokul","Lise","Ön lisans","Lisans"], a:0, difficulty:"kpss", n:"2020 KPSS - En az ilkokul mezunu." },
+  { q:"1982 Anayasası'na göre, bakanları atama görev ve yetkisi aşağıdakilerden hangisine aittir?", o:["Yüksek Seçim Kurulu","Milli Güvenlik Kurulu","Cumhurbaşkanı","Anayasa Mahkemesi","TBMM"], a:2, difficulty:"kpss", n:"2020 KPSS - Cumhurbaşkanı." },
+  { q:"Aşağıdakilerden hangisi bir kimsenin kan hısmıdır?", o:["Nişanlısı","Kayınvalidesi","Süt kardeşi","Büyükannesi","Baldızı"], a:3, difficulty:"kpss", n:"2020 KPSS - Büyükanne." },
+  { q:"Öldüğü günü kavuşma vakti olarak tanımlamasından dolayı bu güne 'şeb-i arûs' (düğün gecesi) denilen ve ölüm yıl dönümü bu adla anılan İslam alimi kimdir?", o:["Yunus Emre","Hacı Bektaş-ı Veli","Mevlana Celaleddin-i Rumi","Hacı Bayram Veli","Ahmet Yesevi"], a:2, difficulty:"kpss", n:"2020 KPSS - Mevlana." },
+  { q:"İçişleri bakanlığına bağlı, afet ve acil durumlara ilişkin süreçlerin aktif yönetimi için gerekli çalışmaları yürütmekle görevli kurumun kısa adı hangisidir?", o:["AFAD","ATAM","TÜBİTAK","TİKA","ASELSAN"], a:0, difficulty:"kpss", n:"2020 KPSS - AFAD." },
+  { q:"Sultan II. Abdülhamid tarafından kurulan, ırk, din, dil, sınıf ve cinsiyet farkı gözetmeksizin bakıma muhtaç kişilere hizmet veren kurum hangisidir?", o:["Yeşilay","Darülaceze","Darülfünun","Darülbedayi","Darülelhan"], a:1, difficulty:"kpss", n:"2020 KPSS - Darülaceze." },
+  { q:"4721 sayılı Türk Medeni Kanunu'na göre erginlik kaç yaşın doldurulmasıyla başlar?", o:["14","15","16","17","18"], a:4, difficulty:"kpss", n:"2020 KPSS - 18 yaş." },
+  { q:"Aşağıdakilerden hangisi hukukun yardımcı kaynaklarından biridir?", o:["Kanunlar","Uluslararası andlaşmalar","Bilimsel görüşler","Yönetmelikler","Cumhurbaşkanlığı kararnameleri"], a:2, difficulty:"kpss", n:"2020 KPSS - Bilimsel görüşler (Doktrin)." },
+  { q:"'İyilik takasa gelmez, değiş tokuş pazarına girince iyiliğin değeri kalmaz.' Bu cümlede anlatılmak istenen aşağıdakilerden hangisidir?", o:["Maddi yardım, daha çok zarar veren bir iyiliktir.","İyilik yapan insanı bütünüyle değiştirir.","İyilik, yarattığınız değişim oranında büyüktür.","İyilik kendi başına kıymetlidir, bir karşılık beklenerek yapıldığında kıymetini yitirir.","Yardımlaşmayı bilmeyenler için iyiliğin değeri yoktur."], a:3, difficulty:"kpss", n:"2020 KPSS - Karşılık beklememek." },
   { q:"Amasya Genelgesi'nde yer alan 'Milletin bağımsızlığını yine milletin azim ve kararı kurtaracaktır.' maddesi Milli Mücadele'nin hangi özelliğini vurgular?", o:["Gerekçesini","Amacını ve Yöntemini","Yerini","Tarihini","Sonucunu"], a:1, difficulty:"kpss", n:"Amasya Genelgesi'nde Kurtuluş Savaşı'nın amacı ve yöntemi belirlenmiştir." },
   { q:"Osmanlı Devleti'nde padişahın mutlak otoritesini sınırlandıran İLK demokratikleşme adımı aşağıdakilerden hangisidir?", o:["Tanzimat Fermanı","Sened-i İttifak","Islahat Fermanı","I. Meşrutiyet","Kanun-i Esasi"], a:1, difficulty:"kpss", n:"1808 Sened-i İttifak ile padişahın yetkileri ilk defa sınırlandırılmıştır." },
   { q:"Lozan Barış Antlaşması'na göre Türkiye ile Yunanistan arasındaki doğal sınır olarak kabul edilen akarsu hangisidir?", o:["Kızılırmak","Sakarya","Meriç","Büyük Menderes","Gediz"], a:2, difficulty:"kpss", n:"Lozan Antlaşması'na göre Meriç Nehri sınır kabul edilmiştir." },
@@ -390,39 +403,51 @@ const questionPool = [
   { q:"Devletin temel organları olan Yasama, Yürütme ve Yargı güçlerinin birbirinden ayrı organlar tarafından kullanılmasına ne ad verilir?", o:["Kuvvetler Birliği","Kuvvetler Ayrılığı","Meclis Hükümeti Sistemi","Monarşi","Oligarşi"], a:1, difficulty:"kpss", n:"Kuvvetler ayrılığı (Güçler ayrılığı) ilkesi." },
   { q:"Aşağıdakilerden hangisi doğrudan Atatürk'ün 'Halkçılık' ilkesi doğrultusunda yapılan inkılaplardan biridir?", o:["Halifeliğin kaldırılması","Aşar (Öşür) vergisinin kaldırılması","Teşvik-i Sanayi Kanunu'nun çıkarılması","Çok partili hayata geçiş denemeleri","Türk Tarih Kurumu'nun kurulması"], a:1, difficulty:"kpss", n:"Köylünün üzerindeki ağır bir yük olan Aşar vergisinin kaldırılması sosyal adaleti sağladığı için doğrudan Halkçılık ilkesiyle ilgilidir." },
   { q:"Birleşmiş Milletler (BM) Genel Merkezi hangi şehirdedir?", o:["Cenevre","Londra","Brüksel","New York","Paris"], a:3, difficulty:"kpss", n:"BM Genel Merkezi New York, ABD'dedir." },
-  { q:"'Akılsız başın cezasını ayaklar çeker.' atasözündeki 'baş' ve 'ayak' kelimeleri arasındaki anlam ilişkisi aşağıdakilerden hangisidir?", o:["Eş anlamlılık","Zıt anlamlılık","Mecaz-ı Mürsel (Ad aktarması)","Kinaye","Benzetme (Teşbih)"], a:2, difficulty:"kpss", n:"Organ isimleri verilerek insan veya bütünü kastedilmiştir (Parça-Bütün ilişkisi / Mecaz-ı Mürsel)." }
+  { q:"'Akılsız başın cezasını ayaklar çeker.' atasözündeki 'baş' ve 'ayak' kelimeleri arasındaki anlam ilişkisi aşağıdakilerden hangisidir?", o:["Eş anlamlılık","Zıt anlamlılık","Mecaz-ı Mürsel (Ad aktarması)","Kinaye","Benzetme (Teşbih)"], a:2, difficulty:"kpss", n:"Organ isimleri verilerek insan veya bütünü kastedilmiştir (Parça-Bütün ilişkisi / Mecaz-ı Mürsel)." },
+  // 20 yeni KPSS sorusu daha
+  { q:"Türkiye Cumhuriyeti'nin ilk anayasası hangisidir?", o:["1921 Anayasası","1924 Anayasası","1961 Anayasası","1982 Anayasası","1876 Kanun-i Esasi"], a:0, difficulty:"kpss", n:"1921 Anayasası (Teşkilat-ı Esasiye Kanunu) TBMM tarafından kabul edilen ilk anayasadır." },
+  { q:"Aşağıdakilerden hangisi Atatürk döneminde kurulan milli bankalardan değildir?", o:["İş Bankası","Sümerbank","Etibank","Merkez Bankası","Akbank"], a:4, difficulty:"kpss", n:"Akbank 1948'de özel sektör tarafından kurulmuştur, Atatürk döneminde değil." },
+  { q:"Türk Medeni Kanunu hangi ülkeden uyarlanmıştır?", o:["Fransa","Almanya","İsviçre","İtalya","İngiltere"], a:2, difficulty:"kpss", n:"Türk Medeni Kanunu 1926'da İsviçre Medeni Kanunu'ndan uyarlanmıştır." },
+  { q:"Türkiye'nin en büyük kapalı havzası hangisidir?", o:["Van Gölü Havzası","Tuz Gölü Havzası","Konya Kapalı Havzası","Akşehir-Eber Havzası","Burdur Havzası"], a:2, difficulty:"kpss", n:"Konya Kapalı Havzası Türkiye'nin en büyük kapalı havzasıdır." },
+  { q:"Aşağıdaki şehirlerden hangisi Karadeniz Bölgesi'nde yer almaz?", o:["Trabzon","Samsun","Rize","Malatya","Artvin"], a:3, difficulty:"easy", n:"Malatya Doğu Anadolu Bölgesi'ndedir." }
 ];
 
+let questionPool = [...defaultQuestionPool];
 let allQuestions = [], userData = {}, examId = null, answers = [], answeredSet = new Set(), timer = null, remaining = 1200, selectedDifficulty = 'all';
 
+// Firebase'den soruları yükle veya varsayılanları kullan
+async function loadQuestions() {
+  try {
+    const snap = await get(questionsRef);
+    if (snap.exists() && snap.val().length > 0) {
+      questionPool = snap.val();
+    } else {
+      await set(questionsRef, defaultQuestionPool);
+      questionPool = [...defaultQuestionPool];
+    }
+    document.getElementById('totalQuestions').textContent = questionPool.length;
+  } catch(e) {
+    questionPool = [...defaultQuestionPool];
+    document.getElementById('totalQuestions').textContent = questionPool.length;
+  }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById('totalQuestions').textContent = questionPool.length;
+  await loadQuestions();
   
   const urlParams = new URLSearchParams(window.location.search);
   const examIdParam = urlParams.get('exam');
   
   if (examIdParam) {
     examId = examIdParam;
-    showScreen('loadingScreen'); 
-    
     try {
       const snap = await get(ref(db, `exams/${examId}`));
       if (snap.exists()) {
         const d = snap.val();
-        if (d.revealed) {
-          showResult(d);
-        } else {
-          alert('Bu sınav sonucu henüz yönetici tarafından yayınlanmadı. Daha sonra tekrar deneyin.');
-          showScreen('loginScreen');
-        }
-      } else {
-        alert('Geçersiz veya silinmiş bir sınav bağlantısı.');
-        showScreen('loginScreen');
-      }
-    } catch(e) {
-      alert('Bağlantı hatası oluştu.');
-      showScreen('loginScreen');
-    }
+        if (d.revealed) showResult(d);
+        else { alert('Bu sınav sonucu henüz yayınlanmadı.'); showScreen('loginScreen'); }
+      } else { alert('Geçersiz bağlantı.'); showScreen('loginScreen'); }
+    } catch(e) { alert('Bağlantı hatası.'); showScreen('loginScreen'); }
   }
 });
 
@@ -443,13 +468,9 @@ function shuffleArray(array) {
 
 function pickRandomQuestions(difficulty) {
   let filtered = questionPool;
-  if (difficulty === 'kpss') {
-    filtered = questionPool.filter(q => q.difficulty === 'kpss');
-  } else if (difficulty !== 'all') {
-    filtered = questionPool.filter(q => q.difficulty === difficulty);
-  }
-  if (filtered.length < 10) filtered = [...filtered, ...questionPool].slice(0,10);
-  
+  if (difficulty === 'kpss') filtered = questionPool.filter(q => q.difficulty === 'kpss');
+  else if (difficulty !== 'all') filtered = questionPool.filter(q => q.difficulty === difficulty);
+  if (filtered.length < 10) filtered = [...filtered, ...questionPool];
   filtered = shuffleArray(filtered);
   allQuestions = filtered.slice(0, 10);
 }
@@ -488,7 +509,6 @@ function startExam() {
   remaining = 1200; 
   document.getElementById('stickyTotal').textContent = allQuestions.length;
   document.getElementById('stickyAnswered').textContent = '0';
-  document.getElementById('stickyProgress').textContent = '0';
   renderExamQuestions();
   startTimer();
 }
@@ -519,7 +539,6 @@ function renderExamQuestions() {
     this.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('chosen'));
     this.classList.add('chosen');
     document.getElementById('stickyAnswered').textContent = answeredSet.size;
-    document.getElementById('stickyProgress').textContent = Math.round(answeredSet.size / allQuestions.length * 100);
   }));
 }
 
@@ -528,7 +547,7 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
     if(!confirm("Cevaplamadığınız sorular var! Yine de bitirmek istiyor musunuz?")) return;
   }
   
-  const btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor... Lütfen Bekleyin';
+  const btn = this; btn.disabled = true; btn.textContent = 'Kaydediliyor...';
   try {
     clearInterval(timer);
     let correct = 0, wrong = 0, empty = 0;
@@ -555,7 +574,7 @@ document.getElementById('finishBtn').addEventListener('click', async function() 
 });
 
 document.getElementById('copyLinkBtn').addEventListener('click', () => navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(()=>alert('Bağlantı panoya kopyalandı!')));
-document.getElementById('shareWhatsAppBtn').addEventListener('click', () => window.open(`https://wa.me/?text=${encodeURIComponent('Deneme Sınavı Linkim (Sonuçlar açıklanınca buradan bakabiliriz): ' + document.getElementById('linkBox').textContent)}`));
+document.getElementById('shareWhatsAppBtn').addEventListener('click', () => window.open(`https://wa.me/?text=${encodeURIComponent('Deneme Sınavı Linkim: ' + document.getElementById('linkBox').textContent)}`));
 document.getElementById('shareMailBtn').addEventListener('click', () => window.location.href = `mailto:?subject=Sınav Linkim&body=${encodeURIComponent(document.getElementById('linkBox').textContent)}`);
 
 document.getElementById('checkBtn').addEventListener('click', async () => {
@@ -566,10 +585,8 @@ document.getElementById('checkBtn').addEventListener('click', async () => {
     const snap = await get(ref(db, `exams/${examId}`));
     const d = snap.val();
     if (d?.revealed) showResult(d); 
-    else alert('Sınav sonucunuz yönetici tarafından henüz yayınlanmadı. Lütfen daha sonra tekrar deneyin.');
-  } finally {
-    btn.textContent = "Sonuç Durumunu Kontrol Et 🔄";
-  }
+    else alert('Sınav sonucunuz henüz yayınlanmadı.');
+  } finally { btn.textContent = "Sonuç Durumunu Kontrol Et 🔄"; }
 });
 
 function showResult(data) {
@@ -593,11 +610,11 @@ function showResult(data) {
     }
     
     html += `<div class="analysis-card ${statusClass}">
-      <div style="font-weight:700; font-size:1.1rem; margin-bottom:12px; color:var(--text);">${i+1}. ${q.q}</div>
-      <div style="font-size:0.95rem; line-height: 1.6;">
+      <div style="font-weight:700;font-size:1.1rem;margin-bottom:12px;">${i+1}. ${q.q}</div>
+      <div style="font-size:0.95rem;line-height:1.6;">
         <b style="color:var(--text2)">Senin Cevabın:</b> ${ua === 'blank' ? '<i>Boş Bırakıldı</i>' : q.o[ua]} ${icon}<br>
         <b style="color:var(--success)">Doğru Cevap:</b> ${q.o[q.a]} <br>
-        <div style="margin-top:10px; padding:10px; background:rgba(255,255,255,0.6); border-radius:8px; color:var(--text2); font-style:italic; border-left: 3px solid var(--primary);">
+        <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,0.6);border-radius:8px;color:var(--text2);font-style:italic;border-left:3px solid var(--primary);">
           💡 <b>Not/Çözüm:</b> ${q.n || 'Ek açıklama bulunmuyor.'}
         </div>
       </div>
@@ -605,9 +622,7 @@ function showResult(data) {
   });
   document.getElementById('analysisContainer').innerHTML = html;
   
-  if(data.score > 50) {
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-  }
+  if(data.score > 50) { confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }
   
   const link = location.origin + location.pathname + '?exam=' + examId;
   document.getElementById('shareWhatsAppResult').onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent(`KPSS Denemesinde ${data.score} puan aldım! Detaylar: ` + link)}`);
@@ -616,25 +631,22 @@ function showResult(data) {
 
 async function sendMail(data, link) {
   try {
-    emailjs.init(MAIL_PUBLIC_KEY);
     await emailjs.send(MAIL_SERVICE_ID, MAIL_TEMPLATE_ID, {
       to_email: data.email, to_name: data.name + ' ' + data.surname,
       score: data.score, correct: data.correct, wrong: data.wrong, empty: data.empty, link: link
     });
     document.getElementById('mailSuccessMsg').textContent = '✅ Sonuç raporu e-posta adresinize ulaştırıldı!';
     document.getElementById('mailSuccessMsg').style.display = 'block';
-  } catch(e) { alert('Mail sunucusunda bir hata oluştu.'); }
+  } catch(e) { alert('Mail gönderilemedi. Lütfen daha sonra tekrar deneyin.'); }
 }
 
 document.getElementById('backToLoginBtn').addEventListener('click', () => showScreen('loginScreen'));
 document.getElementById('backToHomeBtn').addEventListener('click', () => { 
-  if(confirm("Sınavdan çıkmak istediğinize emin misiniz? Tüm ilerleme kaybolacak.")) {
-    clearInterval(timer); 
-    window.location.href = location.origin + location.pathname;
-  }
+  if(confirm("Sınavdan çıkmak istediğinize emin misiniz?")) { clearInterval(timer); location.reload(); }
 });
-document.getElementById('backToHomeResultBtn').addEventListener('click', () => { window.location.href = location.origin + location.pathname; });
+document.getElementById('backToHomeResultBtn').addEventListener('click', () => location.reload());
 
+// YÖNETİCİ PANELİ
 const adminModal = document.getElementById('adminModal');
 let adminExams = {}, selectedExamId = null;
 
@@ -642,7 +654,6 @@ document.getElementById('openAdminBtn').addEventListener('click', () => {
   adminModal.classList.add('active');
   document.getElementById('adminLoginForm').style.display = 'block';
   document.getElementById('adminMain').style.display = 'none';
-  document.getElementById('adminPass').value = '';
 });
 document.getElementById('closeAdminModal').addEventListener('click', () => adminModal.classList.remove('active'));
 
@@ -651,14 +662,12 @@ document.getElementById('adminLoginBtn').addEventListener('click', () => {
     document.getElementById('adminLoginForm').style.display = 'none';
     document.getElementById('adminMain').style.display = 'block';
     initAdminPanel();
-  } else {
-    alert("Hatalı Şifre!");
-  }
+  } else alert("Hatalı Şifre!");
 });
 
 function initAdminPanel() {
-  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', function() {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('#adminMain .tab').forEach(t => t.addEventListener('click', function() {
+    document.querySelectorAll('#adminMain .tab').forEach(x => x.classList.remove('active'));
     this.classList.add('active');
     document.getElementById('examsTab').style.display = this.dataset.tab === 'exams' ? 'block' : 'none';
     document.getElementById('questionsTab').style.display = this.dataset.tab === 'questions' ? 'block' : 'none';
@@ -669,28 +678,29 @@ function initAdminPanel() {
     document.getElementById('totalExams').textContent = Object.keys(adminExams).length;
     renderExamList();
   });
+  
+  document.getElementById('searchExam').addEventListener('input', renderExamList);
+  document.getElementById('addQuestionBtn').addEventListener('click', addQuestion);
+  document.getElementById('resetQuestionsBtn').addEventListener('click', resetQuestions);
 }
 
 function renderExamList() {
   const list = document.getElementById('examList');
-  const ids = Object.keys(adminExams);
-  if (!ids.length) { list.innerHTML = '<p style="color:var(--text2); text-align:center; padding: 20px;">Henüz çözülmüş sınav kaydı yok.</p>'; return; }
-  let html = '';
-  
-  ids.sort((a,b) => adminExams[b].submittedAt - adminExams[a].submittedAt).forEach(id => {
+  const search = document.getElementById('searchExam')?.value.toLowerCase() || '';
+  let ids = Object.keys(adminExams).filter(id => {
     const e = adminExams[id];
-    const date = new Date(e.submittedAt).toLocaleString('tr-TR');
+    return (e.name + ' ' + e.surname + ' ' + e.email).toLowerCase().includes(search);
+  });
+  document.getElementById('totalExams').textContent = ids.length;
+  if (!ids.length) { list.innerHTML = '<p style="text-align:center;padding:20px;">Kayıt yok.</p>'; return; }
+  
+  ids.sort((a,b) => adminExams[b].submittedAt - adminExams[a].submittedAt);
+  let html = '';
+  ids.forEach(id => {
+    const e = adminExams[id];
     html += `<div class="list-item" data-id="${id}">
-      <div>
-        <strong style="font-size:1.1rem;">${e.name} ${e.surname}</strong><br>
-        <small style="color:var(--text2)">${e.email} • ${date}</small>
-      </div>
-      <div style="text-align:right">
-        <span style="color:var(--primary); font-weight:800; font-size:1.2rem;">${e.score} Puan</span><br>
-        <span style="font-size:0.85rem; padding: 4px 8px; border-radius: 4px; background: ${e.revealed ? 'var(--success-bg)' : '#f1f5f9'}; color: ${e.revealed ? 'var(--success)' : 'var(--text2)'}; font-weight: 600;">
-          ${e.revealed ? '🌍 Yayınlandı' : '🔒 Gizli'}
-        </span>
-      </div>
+      <div><strong>${e.name} ${e.surname}</strong><br><small>${e.email}</small></div>
+      <div><span style="color:var(--primary);font-weight:800;">${e.score}</span> Puan <span style="background:${e.revealed?'var(--success-bg)':'#f1f5f9'};color:${e.revealed?'var(--success)':'var(--text2)'};padding:4px 8px;border-radius:4px;">${e.revealed?'Yayında':'Gizli'}</span></div>
     </div>`;
   });
   list.innerHTML = html;
@@ -699,20 +709,8 @@ function renderExamList() {
     document.querySelectorAll('#examList .list-item').forEach(i => i.classList.remove('selected'));
     this.classList.add('selected');
     selectedExamId = this.dataset.id;
-    
     const e = adminExams[selectedExamId];
-    const net = e.net || (e.correct - (e.wrong * 0.25));
-    document.getElementById('detailPanel').innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h4 style="color:var(--primary);">${e.name} ${e.surname}</h4>
-        <b>${e.score} Puan</b>
-      </div>
-      <hr style="border:0; height:1px; background:var(--border); margin:10px 0;">
-      Doğru: <b style="color:var(--success)">${e.correct}</b> | 
-      Yanlış: <b style="color:var(--danger)">${e.wrong}</b> | 
-      Boş: <b>${e.empty}</b> | 
-      Net: <b>${net}</b>
-    `;
+    document.getElementById('detailPanel').innerHTML = `<h4>${e.name} ${e.surname}</h4><p>Doğru: ${e.correct} | Yanlış: ${e.wrong} | Boş: ${e.empty} | Net: ${e.net||(e.correct-e.wrong*0.25)}</p>`;
     document.getElementById('detailPanel').style.display = 'block';
     document.getElementById('adminActions').style.display = 'flex';
   }));
@@ -720,37 +718,55 @@ function renderExamList() {
 
 document.getElementById('yayinlaBtn').addEventListener('click', async () => {
   if (!selectedExamId) return;
-  const btn = document.getElementById('yayinlaBtn');
-  btn.textContent = "İşleniyor...";
-  try {
-    await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
-    const exam = adminExams[selectedExamId];
-    const link = location.origin + location.pathname + '?exam=' + selectedExamId;
-    await sendMail({ email: exam.email, name: exam.name, surname: exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, link);
-    alert("Başarılı! Sınav sonucu yayınlandı ve öğrenciye bilgilendirme maili atıldı.");
-  } catch(e) {
-    alert("Hata oluştu.");
-  } finally {
-    btn.textContent = "Sonucu Yayınla & Mail At";
-  }
+  await update(ref(db, `exams/${selectedExamId}`), { revealed: true });
+  const exam = adminExams[selectedExamId];
+  const link = location.origin + location.pathname + '?exam=' + selectedExamId;
+  await sendMail({ email: exam.email, name: exam.name, surname: exam.surname, score: exam.score, correct: exam.correct, wrong: exam.wrong, empty: exam.empty }, link);
+  alert('Yayınlandı ve mail gönderildi!');
 });
 
 document.getElementById('kilitleBtn').addEventListener('click', async () => {
-  if(selectedExamId) {
-    await update(ref(db, `exams/${selectedExamId}`), { revealed: false });
-    alert("Sonuç kilitlendi.");
+  if(selectedExamId) { await update(ref(db, `exams/${selectedExamId}`), { revealed: false }); alert('Gizlendi.'); }
+});
+
+document.getElementById('silTekBtn').addEventListener('click', async () => {
+  if(selectedExamId && confirm('Bu kayıt silinsin mi?')) {
+    await remove(ref(db, `exams/${selectedExamId}`));
+    selectedExamId = null;
+    document.getElementById('detailPanel').style.display = 'none';
+    document.getElementById('adminActions').style.display = 'none';
   }
 });
 
 document.getElementById('silTumBtn').addEventListener('click', () => {
-  if(confirm('DİKKAT! Tüm öğrencilerin sınav kayıtları tamamen silinecek. Onaylıyor musunuz?')) {
-    set(examsRef, null).then(() => {
-      alert('Tüm veritabanı temizlendi.');
-      document.getElementById('detailPanel').style.display = 'none';
-      document.getElementById('adminActions').style.display = 'none';
-    });
-  }
+  if(confirm('TÜM kayıtlar silinecek!')) { set(examsRef, null); }
 });
+
+async function addQuestion() {
+  const q = document.getElementById('newQ').value.trim();
+  const opts = ['opt0','opt1','opt2','opt3','opt4'].map(id => document.getElementById(id).value.trim());
+  const correct = parseInt(document.getElementById('correctAns').value);
+  const diff = document.getElementById('diffSelect').value;
+  const n = document.getElementById('notInput').value.trim();
+  
+  if (!q || opts.some(o => !o)) return alert('Tüm alanları doldurun!');
+  
+  const newQ = { q, o: opts, a: correct, difficulty: diff, n: n || '' };
+  questionPool.push(newQ);
+  await set(questionsRef, questionPool);
+  document.getElementById('totalQuestions').textContent = questionPool.length;
+  alert('Soru eklendi!');
+  ['newQ','opt0','opt1','opt2','opt3','opt4','notInput'].forEach(id => document.getElementById(id).value = '');
+}
+
+async function resetQuestions() {
+  if(confirm('Tüm sorular sıfırlanıp varsayılan havuza dönülecek. Emin misiniz?')) {
+    questionPool = [...defaultQuestionPool];
+    await set(questionsRef, defaultQuestionPool);
+    document.getElementById('totalQuestions').textContent = questionPool.length;
+    alert('Sıfırlandı!');
+  }
+}
 </script>
 </body>
 </html>
